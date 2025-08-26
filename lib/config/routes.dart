@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pantry_ai/features/widget_tree.dart';
+import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/splash.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
-import '../features/home_screen.dart';
+import '../features/camera/presentation/screens/camera_screen.dart';
+import '../features/home/presentation/screens/home_screen.dart';
 
 GoRouter createRouter() {
   final initialLocation = '/home';
@@ -35,11 +36,11 @@ GoRouter createRouter() {
         name: 'onBoarding',
         builder: (context, state) => OnBoardingScreen(),
       ),
-      // GoRoute(
-      //   path: '/camera',
-      //   name: 'camera',
-      //   builder: (context, state) => (),
-      // ),
+      GoRoute(
+        path: '/camera',
+        name: 'camera',
+        builder: (context, state) => CameraScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => WidgetTree(child: child),
         routes: [
