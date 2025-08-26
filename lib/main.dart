@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pantry_ai/core/theme/theme.dart';
 
 import 'config/routes.dart';
 
@@ -27,8 +28,8 @@ class MyApp extends StatelessWidget {
         builder: (context) {
           return MaterialApp.router(
             routerConfig: createRouter(),
-            // theme: AppTheme.lightTheme,
-            // darkTheme: AppTheme.darkTheme,
+            theme: lightTheme,
+            darkTheme: darkTheme,
             themeMode: ThemeMode.system,
             debugShowCheckedModeBanner: false,
           );

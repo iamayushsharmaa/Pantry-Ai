@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pantry_ai/splash.dart';
 import 'package:pantry_ai/features/widget_tree.dart';
+import 'package:pantry_ai/splash.dart';
 
 import '../core/network/dio_client.dart';
+import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home_screen.dart';
 
 GoRouter createRouter() {
@@ -29,14 +30,15 @@ GoRouter createRouter() {
         builder: (context, state) => Splash(),
       ),
 
+      GoRoute(
+        path: '/onboarding',
+        name: 'onBoarding',
+        builder: (context, state) => OnBoardingScreen(),
+      ),
       // GoRoute(
-      //   path: '/onboarding',
-      //   name: 'onBoarding',
-      //   builder: (context, state) =>
-      //       BlocProvider(
-      //         create: (context) => AuthBloc(authRepository),
-      //         child: OnBoardingScreen(),
-      //       ),
+      //   path: '/camera',
+      //   name: 'camera',
+      //   builder: (context, state) => (),
       // ),
       ShellRoute(
         builder: (context, state, child) => WidgetTree(child: child),

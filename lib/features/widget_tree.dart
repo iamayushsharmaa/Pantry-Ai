@@ -20,9 +20,7 @@ class WidgetTree extends StatelessWidget {
   }
 
   bool _shouldShowFAB(String location) {
-    return location.startsWith('/home') ||
-        //location.startsWith('/clients') ||
-        location.startsWith('/invoice');
+    return location.startsWith('/home') || location.startsWith('/invoice');
   }
 
   @override
@@ -57,7 +55,7 @@ class WidgetTree extends StatelessWidget {
       floatingActionButton: _shouldShowFAB(location)
           ? FloatingActionButton(
               onPressed: () {
-                context.pushNamed('addInvoice');
+                context.pushNamed('camera');
               },
               child: const Icon(Icons.add),
             )
