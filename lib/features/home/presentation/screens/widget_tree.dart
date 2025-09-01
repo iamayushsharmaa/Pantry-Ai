@@ -9,7 +9,10 @@ class WidgetTree extends StatelessWidget {
   static const _tabs = ['/home', '/analytics'];
 
   int _getSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
+    final location = GoRouterState
+        .of(context)
+        .uri
+        .toString();
     return _tabs.indexWhere((path) => location.startsWith(path));
   }
 
@@ -20,12 +23,15 @@ class WidgetTree extends StatelessWidget {
   }
 
   bool _shouldShowFAB(String location) {
-    return location.startsWith('/home') || location.startsWith('/invoice');
+    return location.startsWith('/home') || location.startsWith('/analytics');
   }
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
+    final location = GoRouterState
+        .of(context)
+        .uri
+        .toString();
     final selectedIndex = _getSelectedIndex(context);
 
     return Scaffold(
@@ -36,15 +42,13 @@ class WidgetTree extends StatelessWidget {
           currentIndex: selectedIndex,
           onTap: (index) => _onTabTapped(context, index),
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
+          selectedItemColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           unselectedItemColor: Colors.grey,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.receipt),
-              label: 'Invoices',
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Clients'),
             BottomNavigationBarItem(
               icon: Icon(Icons.analytics),
               label: 'Analytics',
@@ -54,11 +58,11 @@ class WidgetTree extends StatelessWidget {
       ),
       floatingActionButton: _shouldShowFAB(location)
           ? FloatingActionButton(
-              onPressed: () {
-                context.pushNamed('camera');
-              },
-              child: const Icon(Icons.add),
-            )
+        onPressed: () {
+          context.pushNamed('camera');
+        },
+        child: const Icon(Icons.add),
+      )
           : null,
     );
   }
