@@ -2,12 +2,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CameraScreen extends StatefulWidget {
+class ScanScreen extends StatefulWidget {
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  _ScanScreenState createState() => _ScanScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _ScanScreenState extends State<ScanScreen> {
   CameraController? _controller;
   List<CameraDescription>? cameras;
   bool isFlashOn = false;

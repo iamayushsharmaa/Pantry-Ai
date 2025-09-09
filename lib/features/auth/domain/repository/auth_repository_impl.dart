@@ -86,7 +86,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  FutureEither<void> signOut() {
-    throw UnimplementedError();
+  FutureEither<void> signOut() async {
+    try {
+      await service.clearToken();
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure("Failed to sign out"));
+    }
   }
 }

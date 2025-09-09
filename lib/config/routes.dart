@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/features/dishes/presentation/screens/dishes_detail_screen.dart';
+import 'package:pantry_ai/features/dishes/presentation/screens/dishes_list_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/splash.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
-import '../features/camera/presentation/screens/camera_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
+import '../features/scan/presentation/screens/scan_screen.dart';
 
 GoRouter createRouter() {
   final initialLocation = '/home';
@@ -39,7 +41,17 @@ GoRouter createRouter() {
       GoRoute(
         path: '/camera',
         name: 'camera',
-        builder: (context, state) => CameraScreen(),
+        builder: (context, state) => ScanScreen(),
+      ),
+      GoRoute(
+        path: '/dishes-detail',
+        name: 'dishesDetail',
+        builder: (context, state) => DishesDetailScreen(),
+      ),
+      GoRoute(
+        path: '/dishes-list',
+        name: 'dishesList',
+        builder: (context, state) => DishesListScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => WidgetTree(child: child),
