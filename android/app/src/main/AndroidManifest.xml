@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="pantry_ai">
-        <uses-feature android:name="android.hardware.camera" />
+        android:label="pantry_ai"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
