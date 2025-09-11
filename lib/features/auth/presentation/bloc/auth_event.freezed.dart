@@ -55,7 +55,7 @@ extension AuthEventPatterns on AuthEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Started value)?  started,TResult Function( CheckAuthStatus value)?  checkAuthStatus,TResult Function( ContinueWithGoogle value)?  continueWithGoogle,TResult Function( SignIn value)?  signIn,TResult Function( SignUp value)?  signUp,TResult Function( SignOut value)?  signOut,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Started value)?  started,TResult Function( CheckAuthStatus value)?  checkAuthStatus,TResult Function( ContinueWithGoogle value)?  continueWithGoogle,TResult Function( SignIn value)?  signIn,TResult Function( SignUp value)?  signUp,TResult Function( SignOut value)?  signOut,TResult Function( DeleteAccount value)?  deleteAccount,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case Started() when started != null:
@@ -64,7 +64,8 @@ return checkAuthStatus(_that);case ContinueWithGoogle() when continueWithGoogle 
 return continueWithGoogle(_that);case SignIn() when signIn != null:
 return signIn(_that);case SignUp() when signUp != null:
 return signUp(_that);case SignOut() when signOut != null:
-return signOut(_that);case _:
+return signOut(_that);case DeleteAccount() when deleteAccount != null:
+return deleteAccount(_that);case _:
   return orElse();
 
 }
@@ -82,7 +83,7 @@ return signOut(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Started value)  started,required TResult Function( CheckAuthStatus value)  checkAuthStatus,required TResult Function( ContinueWithGoogle value)  continueWithGoogle,required TResult Function( SignIn value)  signIn,required TResult Function( SignUp value)  signUp,required TResult Function( SignOut value)  signOut,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Started value)  started,required TResult Function( CheckAuthStatus value)  checkAuthStatus,required TResult Function( ContinueWithGoogle value)  continueWithGoogle,required TResult Function( SignIn value)  signIn,required TResult Function( SignUp value)  signUp,required TResult Function( SignOut value)  signOut,required TResult Function( DeleteAccount value)  deleteAccount,}){
 final _that = this;
 switch (_that) {
 case Started():
@@ -91,7 +92,8 @@ return checkAuthStatus(_that);case ContinueWithGoogle():
 return continueWithGoogle(_that);case SignIn():
 return signIn(_that);case SignUp():
 return signUp(_that);case SignOut():
-return signOut(_that);case _:
+return signOut(_that);case DeleteAccount():
+return deleteAccount(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,7 +110,7 @@ return signOut(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Started value)?  started,TResult? Function( CheckAuthStatus value)?  checkAuthStatus,TResult? Function( ContinueWithGoogle value)?  continueWithGoogle,TResult? Function( SignIn value)?  signIn,TResult? Function( SignUp value)?  signUp,TResult? Function( SignOut value)?  signOut,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Started value)?  started,TResult? Function( CheckAuthStatus value)?  checkAuthStatus,TResult? Function( ContinueWithGoogle value)?  continueWithGoogle,TResult? Function( SignIn value)?  signIn,TResult? Function( SignUp value)?  signUp,TResult? Function( SignOut value)?  signOut,TResult? Function( DeleteAccount value)?  deleteAccount,}){
 final _that = this;
 switch (_that) {
 case Started() when started != null:
@@ -117,7 +119,8 @@ return checkAuthStatus(_that);case ContinueWithGoogle() when continueWithGoogle 
 return continueWithGoogle(_that);case SignIn() when signIn != null:
 return signIn(_that);case SignUp() when signUp != null:
 return signUp(_that);case SignOut() when signOut != null:
-return signOut(_that);case _:
+return signOut(_that);case DeleteAccount() when deleteAccount != null:
+return deleteAccount(_that);case _:
   return null;
 
 }
@@ -134,7 +137,7 @@ return signOut(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  checkAuthStatus,TResult Function()?  continueWithGoogle,TResult Function( String email,  String password)?  signIn,TResult Function( String name,  String email,  String password)?  signUp,TResult Function()?  signOut,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  checkAuthStatus,TResult Function()?  continueWithGoogle,TResult Function( String email,  String password)?  signIn,TResult Function( String name,  String email,  String password)?  signUp,TResult Function()?  signOut,TResult Function()?  deleteAccount,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Started() when started != null:
 return started();case CheckAuthStatus() when checkAuthStatus != null:
@@ -142,7 +145,8 @@ return checkAuthStatus();case ContinueWithGoogle() when continueWithGoogle != nu
 return continueWithGoogle();case SignIn() when signIn != null:
 return signIn(_that.email,_that.password);case SignUp() when signUp != null:
 return signUp(_that.name,_that.email,_that.password);case SignOut() when signOut != null:
-return signOut();case _:
+return signOut();case DeleteAccount() when deleteAccount != null:
+return deleteAccount();case _:
   return orElse();
 
 }
@@ -160,7 +164,7 @@ return signOut();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  checkAuthStatus,required TResult Function()  continueWithGoogle,required TResult Function( String email,  String password)  signIn,required TResult Function( String name,  String email,  String password)  signUp,required TResult Function()  signOut,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  checkAuthStatus,required TResult Function()  continueWithGoogle,required TResult Function( String email,  String password)  signIn,required TResult Function( String name,  String email,  String password)  signUp,required TResult Function()  signOut,required TResult Function()  deleteAccount,}) {final _that = this;
 switch (_that) {
 case Started():
 return started();case CheckAuthStatus():
@@ -168,7 +172,8 @@ return checkAuthStatus();case ContinueWithGoogle():
 return continueWithGoogle();case SignIn():
 return signIn(_that.email,_that.password);case SignUp():
 return signUp(_that.name,_that.email,_that.password);case SignOut():
-return signOut();case _:
+return signOut();case DeleteAccount():
+return deleteAccount();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,7 +190,7 @@ return signOut();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  checkAuthStatus,TResult? Function()?  continueWithGoogle,TResult? Function( String email,  String password)?  signIn,TResult? Function( String name,  String email,  String password)?  signUp,TResult? Function()?  signOut,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  checkAuthStatus,TResult? Function()?  continueWithGoogle,TResult? Function( String email,  String password)?  signIn,TResult? Function( String name,  String email,  String password)?  signUp,TResult? Function()?  signOut,TResult? Function()?  deleteAccount,}) {final _that = this;
 switch (_that) {
 case Started() when started != null:
 return started();case CheckAuthStatus() when checkAuthStatus != null:
@@ -193,7 +198,8 @@ return checkAuthStatus();case ContinueWithGoogle() when continueWithGoogle != nu
 return continueWithGoogle();case SignIn() when signIn != null:
 return signIn(_that.email,_that.password);case SignUp() when signUp != null:
 return signUp(_that.name,_that.email,_that.password);case SignOut() when signOut != null:
-return signOut();case _:
+return signOut();case DeleteAccount() when deleteAccount != null:
+return deleteAccount();case _:
   return null;
 
 }
@@ -459,6 +465,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AuthEvent.signOut()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class DeleteAccount implements AuthEvent {
+  const DeleteAccount();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DeleteAccount);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthEvent.deleteAccount()';
 }
 
 

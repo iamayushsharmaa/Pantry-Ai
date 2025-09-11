@@ -52,6 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await cred.user?.updateDisplayName(name);
 
       final model = UserModel.fromFirebaseUser(cred.user!);
+      await _firestore.collection('users').doc(model.uid).set(model.toJson());
       return Right(UserMapper.toEntity(model));
     } catch (e) {
       return Left(Failure(e.toString()));
@@ -89,6 +90,11 @@ class AuthRepositoryImpl implements AuthRepository {
       final userCred = await _firebaseAuth.signInWithCredential(credential);
 
       final model = UserModel.fromFirebaseUser(userCred.user!);
+      await _firestore
+          .collection('users')
+          .doc(model.uid)
+          .set(model.toJson(), SetOptions(merge: true));
+
       return Right(UserMapper.toEntity(model));
     } catch (e) {
       return Left(Failure(e.toString()));
@@ -100,6 +106,37 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
       return Right(null);
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  FutureEither<void> deleteAccount() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        return Left(Failure('No user logged in'));
+      }
+
+      // delete from Firestore first
+      await _firestore.collection('users').doc(user.uid).delete();
+
+      // then delete from Firebase Auth
+      await user.delete();
+
+      // also sign out from Google if needed
+      await _googleSignIn.signOut();
+
+      return Right(null);
+    } on fb.FirebaseAuthException catch (e) {
+      // Firebase requires recent login for deletion sometimes
+      if (e.code == 'requires-recent-login') {
+        return Left(
+          Failure('Please reauthenticate before deleting your account.'),
+        );
+      }
+      return Left(Failure(e.message ?? 'Unknown error'));
     } catch (e) {
       return Left(Failure(e.toString()));
     }

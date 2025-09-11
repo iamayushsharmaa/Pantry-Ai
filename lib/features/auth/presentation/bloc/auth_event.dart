@@ -16,4 +16,6 @@ class AuthEvent with _$AuthEvent {
       SignUp;
 
   const factory AuthEvent.signOut() = SignOut;
+
+  const factory AuthEvent.deleteAccount() = DeleteAccount;
 }

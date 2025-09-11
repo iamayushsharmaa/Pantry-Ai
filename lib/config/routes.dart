@@ -1,27 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:pantry_ai/features/dishes/presentation/screens/dishes_detail_screen.dart';
 import 'package:pantry_ai/features/dishes/presentation/screens/dishes_list_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/splash.dart';
 
-import '../core/network/dio_client.dart';
+import '../features/auth/domain/repository/auth_repository_impl.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
 
 GoRouter createRouter() {
-  final initialLocation = '/home';
+  final initialLocation = '/splash';
 
   final storage = FlutterSecureStorage();
-  final dio = DioClient.create(storage);
-  // final authService = AuthService(
-  //   dio: dio,
-  //   googleSignIn: GoogleSignIn(),
-  //   storage: storage,
-  // );
-  // final authRepository = AuthRepositoryImpl(authService);
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebase_auth = FirebaseAuth.instance;
+  final GoogleSignIn google_sign_in = GoogleSignIn();
+  final authRepository = AuthRepositoryImpl(
+    firestore: firestore,
+    firebaseAuth: firebase_auth,
+    googleSignIn: google_sign_in,
+  );
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -30,13 +38,43 @@ GoRouter createRouter() {
       GoRoute(
         path: '/splash',
         name: 'splash',
-        builder: (context, state) => Splash(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => AuthBloc(authRepository: authRepository),
+            child: Splash(),
+          );
+        },
       ),
-
       GoRoute(
         path: '/onboarding',
         name: 'onBoarding',
-        builder: (context, state) => OnBoardingScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => AuthBloc(authRepository: authRepository),
+            child: OnBoardingScreen(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: '/sign-in',
+        name: 'signIn',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => AuthBloc(authRepository: authRepository),
+            child: SigninScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/sign-up',
+        name: 'signUp',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => AuthBloc(authRepository: authRepository),
+            child: SignupScreen(),
+          );
+        },
       ),
       GoRoute(
         path: '/camera',

@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignIn>(_onSignIn);
     on<SignUp>(_onSignUp);
     on<SignOut>(_onSignOut);
+    on<DeleteAccount>(_onDeleteAccount);
   }
 
   Future<void> _onCheckAuthStatus(
@@ -67,6 +68,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthState.error(failure.message)),
       (_) => emit(const AuthState.unauthenticated()),
+    );
+  }
+
+  Future<void> _onDeleteAccount(DeleteAccount event, Emitter<AuthState> emit) async {
+    emit(const AuthState.loading());
+    final result = await authRepository.deleteAccount();
+    result.fold(
+          (failure) => emit(AuthState.error(failure.message)),
+          (_) => emit(const AuthState.unauthenticated()),
     );
   }
 }

@@ -12,4 +12,6 @@ abstract class AuthRepository {
   FutureEither<UserEntity> continueWithGoogle();
 
   FutureEither<void> signOut();
+
+  FutureEither<void> deleteAccount();
 }
