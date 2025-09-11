@@ -1,97 +1,107 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:fpdart/fpdart.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pantry_ai/core/type_def.dart';
+import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
+import 'package:pantry_ai/features/auth/domain/mapper/user_mapper.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../core/type_def.dart';
-import '../../data/models/google_signin_request.dart';
-import '../../data/models/sign_in_request.dart';
-import '../../data/models/sign_up_request.dart';
-import '../../data/remote/auth_api_service.dart';
+import '../../data/models/user_model.dart';
 import '../../data/repository/auth_repository.dart';
-import '../entity/auth_token.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthService service;
+  final FirebaseFirestore _firestore;
+  final fb.FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
 
-  AuthRepositoryImpl(this.service);
+  AuthRepositoryImpl({
+    required FirebaseFirestore firestore,
+    fb.FirebaseAuth? firebaseAuth,
+    GoogleSignIn? googleSignIn,
+  }) : _firebaseAuth = firebaseAuth ?? fb.FirebaseAuth.instance,
+       _firestore = firestore,
+       _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   @override
-  FutureEither<AuthToken> chechAuthStatus() async {
+  FutureEither<UserEntity> chechAuthStatus() async {
     try {
-      final token = await service.getToken();
-      if (token != null && !JwtDecoder.isExpired(token)) {
-        return Right(AuthToken(token));
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        return Left(Failure('No user logged in'));
       }
-      await service.clearToken();
-      return Left(AuthFailure('No valid token found.'));
+      final model = UserModel.fromFirebaseUser(user);
+      return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(ServerFailure('Failed to check auth status'));
+      return Left(Failure(e.toString()));
     }
   }
 
   @override
-  FutureEither<AuthToken> continueWithGoogle() async {
-    try {
-      final idToken = await service.getGoogleIdToken();
-      if (idToken == null) {
-        return Left(AuthFailure('Google sign-in cancelled'));
-      }
-      final response = await service.continueWithGoogle(
-        GoogleSignInRequest(token: idToken),
-      );
-      if (response.token != null) {
-        await service.saveToken(response.token!);
-        return Right(AuthToken(response.token!));
-      }
-      return Left(AuthFailure(response.error ?? 'Google sign-in failed'));
-    } catch (e) {
-      return Left(ServerFailure('Server error during Google sign-in'));
-    }
-  }
-
-  @override
-  FutureEither<AuthToken> register(
+  FutureEither<UserEntity> register(
     String name,
     String email,
     String password,
   ) async {
     try {
-      final response = await service.register(
-        RegisterRequest(name: name, email: email, password: password),
+      final cred = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      if (response.token != null) {
-        await service.saveToken(response.token!);
-        return Right(AuthToken(response.token!));
-      }
-      return Left(AuthFailure(response.error ?? 'Registration failed'));
+
+      await cred.user?.updateDisplayName(name);
+
+      final model = UserModel.fromFirebaseUser(cred.user!);
+      return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(ServerFailure('Server error during registration'));
+      return Left(Failure(e.toString()));
     }
   }
 
   @override
-  FutureEither<AuthToken> signIn(String email, String password) async {
+  FutureEither<UserEntity> signIn(String email, String password) async {
     try {
-      final response = await service.authenticate(
-        SignInRequest(email: email, password: password),
+      final cred = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      if (response.token != null) {
-        await service.saveToken(response.token!);
-        return Right(AuthToken(response.token!));
-      }
-      return Left(AuthFailure(response.error ?? 'Authentication failed'));
+
+      final model = UserModel.fromFirebaseUser(cred.user!);
+      return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(ServerFailure('Server error during sign-in'));
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  FutureEither<UserEntity> continueWithGoogle() async {
+    try {
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return Left(Failure('Cancelled by user'));
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = fb.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCred = await _firebaseAuth.signInWithCredential(credential);
+
+      final model = UserModel.fromFirebaseUser(userCred.user!);
+      return Right(UserMapper.toEntity(model));
+    } catch (e) {
+      return Left(Failure(e.toString()));
     }
   }
 
   @override
   FutureEither<void> signOut() async {
     try {
-      await service.clearToken();
-      return const Right(null);
+      await Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
+      return Right(null);
     } catch (e) {
-      return Left(ServerFailure("Failed to sign out"));
+      return Left(Failure(e.toString()));
     }
   }
 }

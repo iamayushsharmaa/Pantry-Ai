@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await authRepository.chechAuthStatus();
     result.fold(
       (failure) => emit(const AuthState.unauthenticated()),
-      (token) => emit(AuthState.authenticated(token.token)),
+      (user) => emit(AuthState.authenticated(user)), // now pass UserEntity
     );
   }
 
@@ -35,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await authRepository.continueWithGoogle();
     result.fold(
       (failure) => emit(AuthState.error(failure.message)),
-      (token) => emit(AuthState.authenticated(token.token)),
+      (user) => emit(AuthState.authenticated(user)),
     );
   }
 
@@ -44,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await authRepository.signIn(event.email, event.password);
     result.fold(
       (failure) => emit(AuthState.error(failure.message)),
-      (token) => emit(AuthState.authenticated(token.token)),
+      (user) => emit(AuthState.authenticated(user)),
     );
   }
 
@@ -57,17 +57,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     result.fold(
       (failure) => emit(AuthState.error(failure.message)),
-      (token) => emit(AuthState.authenticated(token.token)),
+      (user) => emit(AuthState.authenticated(user)),
     );
   }
 
   Future<void> _onSignOut(SignOut event, Emitter<AuthState> emit) async {
     emit(const AuthState.loading());
-    try {
-      await authRepository.signOut();
-      emit(const AuthState.unauthenticated());
-    } catch (_) {
-      emit(const AuthState.error("Failed to sign out"));
-    }
+    final result = await authRepository.signOut();
+    result.fold(
+      (failure) => emit(AuthState.error(failure.message)),
+      (_) => emit(const AuthState.unauthenticated()),
+    );
   }
 }

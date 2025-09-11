@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "188767015495",
+    "project_id": "pantry-ai-59e44",
+    "storage_bucket": "pantry-ai-59e44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188767015495:android:77be0d472d43177aa19762",
+        "android_client_info": {
+          "package_name": "com.example.pantry_ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188767015495-ef26puh4tjl2cvl7kq6ag5seej55vngf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6TNdgorJqjI_zAIN1PzaFJH9ip3uNU80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188767015495-ef26puh4tjl2cvl7kq6ag5seej55vngf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

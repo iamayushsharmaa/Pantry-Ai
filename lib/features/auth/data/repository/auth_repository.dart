@@ -1,14 +1,15 @@
+import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
+
 import '../../../../core/type_def.dart';
-import '../../domain/entity/auth_token.dart';
 
 abstract class AuthRepository {
-  FutureEither<AuthToken> chechAuthStatus();
+  FutureEither<UserEntity> chechAuthStatus();
 
-  FutureEither<AuthToken> register(String name, String email, String password);
+  FutureEither<UserEntity> register(String name, String email, String password);
 
-  FutureEither<AuthToken> signIn(String email, String password);
+  FutureEither<UserEntity> signIn(String email, String password);
 
-  FutureEither<AuthToken> continueWithGoogle();
+  FutureEither<UserEntity> continueWithGoogle();
 
   FutureEither<void> signOut();
 }
