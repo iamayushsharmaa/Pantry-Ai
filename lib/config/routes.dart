@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:pantry_ai/features/dishes/presentation/screens/dishes_detail_screen.dart';
@@ -12,23 +8,13 @@ import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/splash.dart';
 
 import '../features/analytics/presentation/screens/analytics_screen.dart';
-import '../features/auth/domain/repository/auth_repository_impl.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
+import '../features/settings/presentation/screens/settings_screen.dart';
 
 GoRouter createRouter() {
   final initialLocation = '/splash';
-
-  final storage = FlutterSecureStorage();
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth firebase_auth = FirebaseAuth.instance;
-  final GoogleSignIn google_sign_in = GoogleSignIn();
-  final authRepository = AuthRepositoryImpl(
-    firestore: firestore,
-    firebaseAuth: firebase_auth,
-    googleSignIn: google_sign_in,
-  );
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -56,11 +42,6 @@ GoRouter createRouter() {
         builder: (context, state) => SignupScreen(),
       ),
       GoRoute(
-        path: '/camera',
-        name: 'camera',
-        builder: (context, state) => ScanScreen(),
-      ),
-      GoRoute(
         path: '/dishes-detail',
         name: 'dishesDetail',
         builder: (context, state) => DishesDetailScreen(),
@@ -70,20 +51,28 @@ GoRouter createRouter() {
         name: 'dishesList',
         builder: (context, state) => DishesListScreen(),
       ),
+      GoRoute(
+        path: '/scan',
+        name: 'scan',
+        builder: (context, state) => ScanScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => WidgetTree(child: child),
         routes: [
           GoRoute(
             path: '/home',
             name: 'home',
-            builder: (context, state) {
-              return HomeScreen();
-            },
+            builder: (context, state) => HomeScreen(),
           ),
           GoRoute(
             path: '/analytics',
             name: 'analytics',
             builder: (context, state) => AnalyticsScreen(),
+          ),
+          GoRoute(
+            path: '/settings',
+            name: 'settings',
+            builder: (context, state) => SettingsScreen(),
           ),
         ],
       ),

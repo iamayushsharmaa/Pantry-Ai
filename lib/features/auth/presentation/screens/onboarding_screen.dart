@@ -16,7 +16,11 @@ class OnBoardingScreen extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           state.mapOrNull(
-            authenticated: (_) => context.go('/home'),
+            authenticated: (_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.go('/home');
+              });
+            },
             error: (err) => ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(err.message))),
@@ -34,8 +38,7 @@ class OnBoardingScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [Color(0xFF3F51B5), Colors.black],
-                  stops: [0.10, 0.7],
+                  colors: [Color(0xFF00A87D), Colors.black],
                 ),
               ),
               child: SafeArea(

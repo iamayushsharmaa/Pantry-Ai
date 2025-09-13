@@ -27,7 +27,9 @@ class _SignupScreenState extends State<SignupScreen> {
       listener: (context, state) {
         state.whenOrNull(
           authenticated: (user) {
-            context.goNamed('home');
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/home');
+            });
           },
           error: (message) {
             ScaffoldMessenger.of(

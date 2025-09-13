@@ -42,8 +42,10 @@ class _SplashState extends State<Splash> {
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Color(0xFF0FD656), Colors.black],
-              stops: [0.20, 0.7],
+              colors: [
+                Color(0xFF00A87D),
+                Colors.black,
+              ],
             ),
           ),
           child: const Center(

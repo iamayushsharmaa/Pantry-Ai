@@ -1,51 +1,49 @@
 import 'package:flutter/material.dart';
 
-final Color brandColor = Color(0xFF00BCD4); // Teal Blue
+final Color kBrandColor = Color(0xFF00A87D);
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: brandColor,
-  scaffoldBackgroundColor: Colors.white,
+  primaryColor: kBrandColor,
   colorScheme: ColorScheme.light(
-    primary: brandColor,
-    secondary: brandColor,
-    background: Colors.white,
-    surface: Color(0xFFF5F5F5), // light grey
-    onBackground: Colors.black,
-    onSurface: Colors.black,
+    primary: kBrandColor,
+    secondary: Colors.black, // secondary accent for text/icons
+    onPrimary: Colors.white, // text color on primary buttons
   ),
-  appBarTheme: AppBarTheme(
+  scaffoldBackgroundColor: Colors.white,
+  appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
-    titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
-    iconTheme: IconThemeData(color: Colors.black),
+    foregroundColor: Colors.black,
     elevation: 0,
   ),
-  textTheme: TextTheme(
-    bodyLarge: TextStyle(color: Colors.black),
-    bodyMedium: TextStyle(color: Color(0xFF4A4A4A)), // dark grey
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: kBrandColor,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
   ),
 );
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: brandColor,
-  scaffoldBackgroundColor: Color(0xFF121212), // almost black
+  primaryColor: kBrandColor,
   colorScheme: ColorScheme.dark(
-    primary: brandColor,
-    secondary: brandColor,
-    background: Color(0xFF121212),
-    surface: Color(0xFF1E1E1E), // dark grey
-    onBackground: Colors.white,
-    onSurface: Colors.white,
+    primary: kBrandColor,
+    secondary: Colors.white, // secondary accent for text/icons
+    onPrimary: Colors.black, // text color on primary buttons
   ),
+  scaffoldBackgroundColor: Colors.black,
   appBarTheme: AppBarTheme(
-    backgroundColor: Color(0xFF121212),
-    titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-    iconTheme: IconThemeData(color: Colors.white),
+    backgroundColor: Colors.black,
+    foregroundColor: Colors.white,
     elevation: 0,
   ),
-  textTheme: TextTheme(
-    bodyLarge: TextStyle(color: Colors.white),
-    bodyMedium: TextStyle(color: Color(0xFFB3B3B3)), // grey
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: kBrandColor,
+      foregroundColor: Colors.black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
   ),
 );

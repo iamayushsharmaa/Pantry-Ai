@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await authRepository.chechAuthStatus();
     result.fold(
       (failure) => emit(const AuthState.unauthenticated()),
-      (user) => emit(AuthState.authenticated(user)), // now pass UserEntity
+      (user) => emit(AuthState.authenticated(user)),
     );
   }
 

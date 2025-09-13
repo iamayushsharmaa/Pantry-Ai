@@ -22,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Hello Ayush',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          'Pantry AI',
+          style: TextStyle(fontSize: 34, fontWeight: FontWeight.w600),
         ),
         centerTitle: false,
       ),
@@ -48,4 +48,5 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
 }
