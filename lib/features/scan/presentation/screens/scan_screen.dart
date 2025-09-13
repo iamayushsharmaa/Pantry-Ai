@@ -85,7 +85,9 @@ class _ScanScreenState extends State<ScanScreen> {
     if (_controller == null || !_controller!.value.isInitialized) {
       return const Scaffold(
         backgroundColor: Colors.black,
-        body: Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFF00A87D)),
+        ),
       );
     }
 
@@ -93,7 +95,6 @@ class _ScanScreenState extends State<ScanScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // 1. full screen camera preview with correct aspect ratio
           Positioned.fill(
             child: FittedBox(
               fit: BoxFit.cover,
@@ -104,18 +105,15 @@ class _ScanScreenState extends State<ScanScreen> {
               ),
             ),
           ),
-
-          // 2. semi transparent overlay with scan box
           Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withOpacity(0.8),
               child: Stack(
                 children: [
-                  // The "cut out" scan area
                   Center(
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.width * 1.4,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.white, width: 2),
