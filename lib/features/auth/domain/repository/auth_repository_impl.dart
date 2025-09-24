@@ -118,19 +118,13 @@ class AuthRepositoryImpl implements AuthRepository {
       if (user == null) {
         return Left(Failure('No user logged in'));
       }
-
-      // delete from Firestore first
       await _firestore.collection('users').doc(user.uid).delete();
 
-      // then delete from Firebase Auth
       await user.delete();
-
-      // also sign out from Google if needed
       await _googleSignIn.signOut();
 
       return Right(null);
     } on fb.FirebaseAuthException catch (e) {
-      // Firebase requires recent login for deletion sometimes
       if (e.code == 'requires-recent-login') {
         return Left(
           Failure('Please reauthenticate before deleting your account.'),
