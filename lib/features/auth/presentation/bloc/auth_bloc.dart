@@ -21,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
-    final result = await authRepository.chechAuthStatus();
+    final result = await authRepository.checkAuthStatus();
     result.fold(
       (failure) => emit(const AuthState.unauthenticated()),
       (user) => emit(AuthState.authenticated(user)),

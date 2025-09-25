@@ -165,7 +165,7 @@ void main() {
         when(() => mockUser.uid).thenReturn('123');
         when(() => mockUser.email).thenReturn('test@test.com');
 
-        final result = await repository.chechAuthStatus();
+        final result = await repository.checkAuthStatus();
 
         expect(result.isRight(), true);
       });
@@ -173,7 +173,7 @@ void main() {
       test('returns Left(Failure) when no user logged in', () async {
         when(() => firebaseAuth.currentUser).thenReturn(null);
 
-        final result = await repository.chechAuthStatus();
+        final result = await repository.checkAuthStatus();
 
         expect(result.isLeft(), true);
       });

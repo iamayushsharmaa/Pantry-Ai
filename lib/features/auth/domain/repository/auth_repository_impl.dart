@@ -24,7 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   @override
-  FutureEither<UserEntity> chechAuthStatus() async {
+  FutureEither<UserEntity> checkAuthStatus() async {
     try {
       final user = _firebaseAuth.currentUser;
       if (user == null) {

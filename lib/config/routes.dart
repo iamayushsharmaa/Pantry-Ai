@@ -14,7 +14,7 @@ import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
 
 GoRouter createRouter() {
-  final initialLocation = '/splash';
+  final initialLocation = '/onboarding';
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -23,7 +23,7 @@ GoRouter createRouter() {
       GoRoute(
         path: '/splash',
         name: 'splash',
-        builder: (context, state) => Splash(),
+        builder: (context, state) => const Splash(),
       ),
       GoRoute(
         path: '/onboarding',

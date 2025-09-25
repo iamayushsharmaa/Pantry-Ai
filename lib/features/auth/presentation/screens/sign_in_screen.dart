@@ -108,6 +108,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             width: MediaQuery.of(context).size.width,
                             height: 50,
                             child: ElevatedButton(
+                              key: const Key('signInButton'),
                               onPressed: isLoading
                                   ? null
                                   : () {
@@ -142,6 +143,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   ),
                 ),
                 GestureDetector(
+                  key: const Key('signUpLink'),
                   onTap: () {
                     context.pushNamed('signUp');
                   },
@@ -151,11 +153,11 @@ class _SigninScreenState extends State<SigninScreen> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Don’t have an account? ",
+                            text: 'Don\'t have an account? ',
                             style: TextStyle(fontSize: 14, color: Colors.white),
                           ),
                           TextSpan(
-                            text: "Sign up",
+                            text: 'Sign up',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
