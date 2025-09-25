@@ -168,6 +168,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     GestureDetector(
+                      key: const Key('signUpLink'),
                       onTap: () => context.pop(),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
