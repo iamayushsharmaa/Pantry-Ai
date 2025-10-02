@@ -10,61 +10,61 @@ void main() async {
 
   runApp(const MyApp());
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const ListAnimation(),
-    );
-  }
-}
-
-// class MyApp extends StatefulWidget {
+//
+// class MyApp extends StatelessWidget {
 //   const MyApp({super.key});
 //
 //   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-//
-// class _MyAppState extends State<MyApp> {
-//   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-//   final FirebaseAuth firebase_auth = FirebaseAuth.instance;
-//   final GoogleSignIn google_sign_in = GoogleSignIn();
-//
-//   @override
 //   Widget build(BuildContext context) {
-//     return MultiBlocProvider(
-//       providers: [
-//         BlocProvider(
-//           create: (context) => AuthBloc(
-//             authRepository: AuthRepositoryImpl(
-//               firestore: firestore,
-//               firebaseAuth: firebase_auth,
-//               googleSignIn: google_sign_in,
-//             ),
-//           ),
-//         ),
-//       ],
-//       child: Builder(
-//         builder: (context) {
-//           return MaterialApp.router(
-//             routerConfig: createRouter(),
-//             theme: lightTheme,
-//             darkTheme: darkTheme,
-//             themeMode: ThemeMode.system,
-//             debugShowCheckedModeBanner: false,
-//           );
-//         },
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//         useMaterial3: true,
 //       ),
+//       home: const ListAnimation(),
 //     );
 //   }
 // }
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebase_auth = FirebaseAuth.instance;
+  final GoogleSignIn google_sign_in = GoogleSignIn();
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(
+            authRepository: AuthRepositoryImpl(
+              firestore: firestore,
+              firebaseAuth: firebase_auth,
+              googleSignIn: google_sign_in,
+            ),
+          ),
+        ),
+      ],
+      child: Builder(
+        builder: (context) {
+          return MaterialApp.router(
+            routerConfig: createRouter(),
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: ThemeMode.system,
+            debugShowCheckedModeBanner: false,
+          );
+        },
+      ),
+    );
+  }
+}
