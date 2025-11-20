@@ -1,6 +1,12 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class Constants{
-  static const String prompt = ''' 
+class Constants {
+  static final GEMINI_API_KEY = dotenv.env['GEMINI_API_KEY'];
+
+  static final GEMINI_API_URL =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY";
+
+  static const prompt = ''' 
   You are PantryAI, an intelligent cooking assistant.
 
 User will upload an image of groceries they currently have.  
