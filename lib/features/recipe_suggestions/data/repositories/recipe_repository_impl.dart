@@ -25,7 +25,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
       return models.map((m) => m.toEntity()).toList();
     } catch (_) {
       final cache = await local.getCachedRecipes();
-
       return cache.map((m) => m.toEntity()).toList();
     }
   }
