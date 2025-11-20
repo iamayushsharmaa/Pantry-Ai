@@ -8,8 +8,8 @@ import 'package:pantry_ai/splash.dart';
 import '../features/analytics/presentation/screens/analytics_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
-import '../features/recipes/presentation/screens/dishes_detail_screen.dart';
-import '../features/recipes/presentation/screens/dishes_list_screen.dart';
+import '../features/recipe_suggestions/presentation/screens/dishes_detail_screen.dart';
+import '../features/recipe_suggestions/presentation/screens/dishes_list_screen.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
 
@@ -42,12 +42,12 @@ GoRouter createRouter() {
         builder: (context, state) => SignupScreen(),
       ),
       GoRoute(
-        path: '/recipes-detail',
+        path: '/recipe_suggestions-detail',
         name: 'dishesDetail',
         builder: (context, state) => DishesDetailScreen(),
       ),
       GoRoute(
-        path: '/recipes-list',
+        path: '/recipe_suggestions-list',
         name: 'dishesList',
         builder: (context, state) => DishesListScreen(),
       ),
