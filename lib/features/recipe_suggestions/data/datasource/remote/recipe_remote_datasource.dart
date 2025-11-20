@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pantry_ai/core/constant/constants.dart';
 
-import '../../domain/enities/taste_preference_entity.dart';
-import '../models/recipe_model.dart';
-import '../utils/prompt_builder.dart';
+import '../../../domain/enities/taste_preference_entity.dart';
+import '../../models/recipe_model.dart';
+import '../../utils/prompt_builder.dart';
 
 abstract class RecipeRemoteDataSource {
   Future<List<RecipeModel>> generateRecipes(
