@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pantry_ai/core/theme/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 6),
 
-          Text(
+          const Text(
             'Tap to scan your pantry or \nupload a photo',
             style: TextStyle(
               fontSize: 13,

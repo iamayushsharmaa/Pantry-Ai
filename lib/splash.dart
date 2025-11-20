@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:pantry_ai/features/auth/presentation/bloc/auth_state.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_event.dart';
+import 'package:pantry_ai/features/auth/presentation/bloc/auth_state.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -37,27 +35,34 @@ class _SplashState extends State<Splash> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Color(0xFF00A87D),
-                Colors.black,
-              ],
-            ),
-          ),
-          child: const Center(
-            child: Text(
-              'Pantry AI.',
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+        body: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.center,
+                  radius: 1.4,
+                  colors: [Color(0xFF00A87D), Colors.black],
+                ),
               ),
             ),
-          ),
+
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+              child: Container(color: Colors.transparent),
+            ),
+
+            const Center(
+              child: Text(
+                'Pantry AI.',
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

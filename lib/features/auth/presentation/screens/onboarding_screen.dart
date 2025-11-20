@@ -61,7 +61,7 @@ class OnBoardingScreen extends StatelessWidget {
                       ),
                       const Spacer(flex: 2),
                       const Text(
-                        'Scan and make dishes with AI.',
+                        'Scan and make recipes with AI.',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

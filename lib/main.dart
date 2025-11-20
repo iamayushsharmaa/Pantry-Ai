@@ -1,7 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-import 'animation_explicit/list_animation.dart';
+import 'config/routes.dart';
+import 'core/theme/theme.dart';
+import 'features/auth/domain/repository/auth_repository_impl.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -11,22 +18,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
-//       ),
-//       home: const ListAnimation(),
-//     );
-//   }
-// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
