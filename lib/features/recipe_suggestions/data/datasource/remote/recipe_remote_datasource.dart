@@ -5,5 +5,6 @@ abstract class RecipeRemoteDataSource {
   Future<List<RecipeModel>> generateRecipes(
     String imagePath,
     TastePreferences prefs,
+    List<RecipeModel>? previouslySuggestedRecipes,
   );
 }

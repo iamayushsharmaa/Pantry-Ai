@@ -18,8 +18,9 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   Future<List<RecipeModel>> generateRecipes(
     String imagePath,
     TastePreferences prefs,
+    List<RecipeModel>? previouslySuggestedRecipes,
   ) async {
-    final prompt = buildPrompt(prefs);
+    final prompt = buildPrompt(prefs, oldRecipes: previouslySuggestedRecipes);
 
     final imageBytes = await File(imagePath).readAsBytes();
 

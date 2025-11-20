@@ -16,9 +16,14 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<List<Recipe>> generateRecipes(
     String imagePath,
     TastePreferences preferences,
+    List<RecipeModel>? previouslySuggestedRecipes,
   ) async {
     try {
-      final models = await remote.generateRecipes(imagePath, preferences);
+      final models = await remote.generateRecipes(
+        imagePath,
+        preferences,
+        previouslySuggestedRecipes,
+      );
 
       await local.cacheRecipes(models);
 
