@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../bloc/scan_bloc.dart';
@@ -70,7 +71,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
               // TOP BAR
               Positioned(
-                top: 40,
+                top: 48,
                 left: 16,
                 right: 16,
                 child: Row(
@@ -79,6 +80,15 @@ class _ScanScreenState extends State<ScanScreen> {
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
+                    ),
+                    const Text(
+                      "Scan your ingredients.\nGet instant recipes powered by AI.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     IconButton(
                       icon: Icon(
@@ -100,8 +110,10 @@ class _ScanScreenState extends State<ScanScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: const Icon(
-                        Icons.photo_library,
+                      icon: SvgPicture.asset(
+                        'assets/icons/gallery.svg',
+                        width: 28,
+                        height: 28,
                         color: Colors.white,
                       ),
                       onPressed: () =>
@@ -117,6 +129,7 @@ class _ScanScreenState extends State<ScanScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 4),
                         ),
+                        child: SvgPicture.asset(''),
                       ),
                     ),
 

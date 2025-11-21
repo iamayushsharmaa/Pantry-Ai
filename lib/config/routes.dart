@@ -4,15 +4,15 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
-import 'package:pantry_ai/features/preference/presentation/screens/taste_preference.dart';
+import 'package:pantry_ai/features/preference/presentation/screens/taste_preference_screen.dart';
 import 'package:pantry_ai/splash.dart';
 
 import '../features/analytics/presentation/screens/analytics_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/preference/presentation/bloc/taste_preference_bloc.dart';
-import '../features/recipe_suggestions/presentation/screens/dishes_detail_screen.dart';
-import '../features/recipe_suggestions/presentation/screens/dishes_list_screen.dart';
+import '../features/recipe_suggestions/presentation/screens/recipe_detail_screen.dart';
+import '../features/recipe_suggestions/presentation/screens/recipe_suggestion_screen.dart';
 import '../features/scan/presentation/bloc/scan_bloc.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
@@ -51,8 +51,8 @@ GoRouter createRouter() {
         builder: (context, state) => DishesDetailScreen(),
       ),
       GoRoute(
-        path: '/recipes',
-        name: 'recipes',
+        path: '/recipes-list',
+        name: 'recipesList',
         builder: (context, state) => DishesListScreen(),
       ),
       GoRoute(
@@ -72,7 +72,7 @@ GoRouter createRouter() {
           final imagePath = state.extra as String;
           return BlocProvider(
             create: (_) => TastePreferenceBloc(),
-            child: TastePreference(imagePath: imagePath),
+            child: TastePreferenceScreen(imagePath: imagePath),
           );
         },
       ),

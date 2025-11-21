@@ -12,11 +12,10 @@ class ScanCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       width: MediaQuery.of(context).size.width * 1,
-      height: MediaQuery.of(context).size.width * 0.58,
+      height: MediaQuery.of(context).size.width * 0.62,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white60, width: 2),
-        color: Colors.transparent,
+        color: AppColors.blackShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,7 +30,7 @@ class ScanCardWidget extends StatelessWidget {
               BlendMode.srcIn,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           Text(
             'Scan Ingredients',
             style: TextStyle(
@@ -43,10 +42,11 @@ class ScanCardWidget extends StatelessWidget {
           const SizedBox(height: 6),
 
           const Text(
-            'Tap to scan your pantry or upload a photo',
+            'Tap to scan your pantry or\nupload a photo',
+            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
               color: Colors.white54,
             ),
           ),
@@ -54,7 +54,7 @@ class ScanCardWidget extends StatelessWidget {
 
           SizedBox(
             height: 50,
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: ElevatedButton(
               onPressed: () {
                 context.pushNamed('scan');
