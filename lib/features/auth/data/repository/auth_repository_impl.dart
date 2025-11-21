@@ -8,7 +8,7 @@ import 'package:pantry_ai/features/auth/domain/mapper/user_mapper.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../data/models/user_model.dart';
-import '../../data/repository/auth_repository.dart';
+import '../../domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseFirestore _firestore;

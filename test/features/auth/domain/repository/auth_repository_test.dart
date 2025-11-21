@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pantry_ai/core/errors/failure.dart';
-import 'package:pantry_ai/features/auth/domain/repository/auth_repository_impl.dart';
+import 'package:pantry_ai/features/auth/data/repository/auth_repository_impl.dart';
 
 class MockFirestore extends Mock implements FirebaseFirestore {}
 

@@ -4,9 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
-import 'package:pantry_ai/features/auth/data/repository/auth_repository.dart';
-import 'package:pantry_ai/features/auth/domain/repository/auth_repository_impl.dart';
 
+import '../../features/auth/data/repository/auth_repository_impl.dart';
+import '../../features/auth/domain/repository/auth_repository.dart';
+import '../../features/auth/domain/usecases/check_auth_status_usecase.dart';
+import '../../features/auth/domain/usecases/delete_account_usecase.dart';
+import '../../features/auth/domain/usecases/register_usecase.dart';
+import '../../features/auth/domain/usecases/sign_in_google_usecase.dart';
+import '../../features/auth/domain/usecases/sign_in_usecase.dart';
+import '../../features/auth/domain/usecases/sign_out_usecase.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource_impl.dart';
 import '../../features/recipe_suggestions/data/datasource/remote/recipe_remote_datasource.dart';
@@ -25,6 +31,7 @@ Future<void> initDependencies() async {
   await _initHiveBoxes();
   _initDataSources();
   _initRepositories();
+  _initAuthUseCases();
   _initRecipeUseCases();
 }
 
@@ -71,6 +78,15 @@ void _initRepositories() {
   sl.registerLazySingleton<RecipeRepository>(
     () => RecipeRepositoryImpl(remote: sl(), local: sl()),
   );
+}
+
+void _initAuthUseCases() {
+  sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
+  sl.registerLazySingleton(() => ContinueWithGoogleUseCase(sl()));
+  sl.registerLazySingleton(() => SignInUseCase(sl()));
+  sl.registerLazySingleton(() => RegisterUseCase(sl()));
+  sl.registerLazySingleton(() => SignOutUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteAccountUseCase(sl()));
 }
 
 void _initRecipeUseCases() {

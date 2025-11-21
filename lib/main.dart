@@ -6,7 +6,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/routes.dart';
 import 'core/di/injections.dart';
 import 'core/theme/theme.dart';
-import 'features/auth/data/repository/auth_repository.dart';
+import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
+import 'features/auth/domain/usecases/delete_account_usecase.dart';
+import 'features/auth/domain/usecases/register_usecase.dart';
+import 'features/auth/domain/usecases/sign_in_google_usecase.dart';
+import 'features/auth/domain/usecases/sign_in_usecase.dart';
+import 'features/auth/domain/usecases/sign_out_usecase.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'firebase_options.dart';
 
@@ -33,7 +38,14 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc(authRepository: sl<AuthRepository>()),
+          create: (context) => AuthBloc(
+            checkAuthStatus: sl<CheckAuthStatusUseCase>(),
+            continueWithGoogle: sl<ContinueWithGoogleUseCase>(),
+            signIn: sl<SignInUseCase>(),
+            register: sl<RegisterUseCase>(),
+            signOut: sl<SignOutUseCase>(),
+            deleteAccount: sl<DeleteAccountUseCase>(),
+          ),
         ),
       ],
       child: Builder(
