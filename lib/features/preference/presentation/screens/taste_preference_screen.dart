@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/constant/preference_constant.dart';
+import 'package:pantry_ai/features/preference/presentation/models/taste_preference_ui_model.dart';
 
+import '../../../../core/common/recipe_list_args.dart';
 import '../bloc/taste_preference_bloc.dart';
 import '../widgets/question_widget.dart';
 
@@ -77,7 +79,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
 
               Expanded(
                 child: PageView(
@@ -92,7 +94,6 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                 ),
               ),
 
-              // NAVIGATION BUTTON
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: _buildBottomButton(context, state),
@@ -165,15 +166,19 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                 _nextPage(context, state.currentPage);
                 return;
               }
-              final prefs = {
-                "taste": state.taste,
-                "cuisine": state.cuisine,
-                "diet": state.diet,
-                "maxCookingTime": state.maxCookingTime,
-              };
+              final prefs = TastePreferencesUi(
+                taste: state.taste,
+                cuisine: state.cuisine,
+                diet: state.diet,
+                maxCookingTime: state.maxCookingTime,
+              );
+
               context.pushReplacementNamed(
                 'recipesList',
-                extra: {"imagePath": widget.imagePath, "preferences": prefs},
+                extra: RecipeListArgs(
+                  imagePath: widget.imagePath,
+                  preferences: prefs.toEntity(),
+                ),
               );
             },
       child: Text(isLast ? "Finish" : "Next"),

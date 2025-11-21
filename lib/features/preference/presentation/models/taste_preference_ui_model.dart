@@ -1,7 +1,9 @@
+import '../../../recipe_suggestions/domain/enities/taste_preference_entity.dart';
+
 class TastePreferencesUi {
   final String taste;
   final String cuisine;
-  final String diet; // veg vegan, non veg, any
+  final String diet;
   final int maxCookingTime;
 
   TastePreferencesUi({
@@ -17,4 +19,13 @@ class TastePreferencesUi {
     "diet": diet,
     "maxCookingTime": maxCookingTime,
   };
+
+  TastePreferences toEntity() {
+    return TastePreferences(
+      taste: taste,
+      cuisine: cuisine,
+      diet: diet,
+      maxCookingTime: maxCookingTime,
+    );
+  }
 }

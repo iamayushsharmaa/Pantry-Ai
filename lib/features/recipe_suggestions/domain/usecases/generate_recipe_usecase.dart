@@ -10,9 +10,9 @@ class GenerateRecipesUseCase {
 
   Future<List<Recipe>> call(
     String imagePath,
-    TastePreferences preferences, {
+    TastePreferences preferences,
     List<RecipeModel>? previouslySuggestedRecipes,
-  }) {
+      ) {
     return repository.generateRecipes(
       imagePath,
       preferences,

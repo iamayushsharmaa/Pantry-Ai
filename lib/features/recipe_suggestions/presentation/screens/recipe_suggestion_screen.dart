@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DishesListScreen extends StatelessWidget {
-  const DishesListScreen({super.key});
+class RecipeListScreen extends StatelessWidget {
+  const RecipeListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("heloo")));
+    return Scaffold(body: Center(child: Text("hello")));
   }
 }

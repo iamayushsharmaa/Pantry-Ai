@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../../preference/presentation/models/taste_preference_ui_model.dart';
 import '../../data/models/recipe_model.dart';
 import '../../domain/enities/recipe_entity.dart';
 import '../../domain/enities/taste_preference_entity.dart';
@@ -22,9 +23,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     required this.cacheRecipes,
   }) : super(RecipeState()) {
     on<GenerateRecipesRequested>(_onGenerateRecipes);
-
     on<FetchMoreRecipesRequested>(_onFetchMoreRecipes);
-
     on<LoadCachedRecipesRequested>(_onLoadCachedRecipes);
   }
 
@@ -32,18 +31,34 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     GenerateRecipesRequested event,
     Emitter<RecipeState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, error: null));
 
-    final recipes = await generateRecipes(event.imagePath, event.preferences);
+    try {
+      final recipes = await generateRecipes(
+        event.imagePath,
+        event.preferences,
+        null,
+      );
 
-    emit(
-      state.copyWith(
-        recipes: recipes,
-        imagePath: event.imagePath,
-        preferences: event.preferences,
-        isLoading: false,
-      ),
-    );
+      await cacheRecipes(recipes);
+
+      emit(
+        state.copyWith(
+          recipes: recipes,
+          imagePath: event.imagePath,
+          preferences: event.preferences,
+          isLoading: false,
+          error: null,
+        ),
+      );
+    } catch (e) {
+      // fallback to cached recipes
+      final cached = await getCachedRecipes();
+
+      emit(
+        state.copyWith(recipes: cached, isLoading: false, error: e.toString()),
+      );
+    }
   }
 
   Future<void> _onFetchMoreRecipes(
@@ -52,32 +67,41 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   ) async {
     if (state.imagePath == null || state.preferences == null) return;
 
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, error: null));
 
-    final oldModels = state.recipes
-        .map((e) => RecipeModel.fromEntity(e))
-        .toList();
+    try {
+      final oldModels = state.recipes
+          .map((e) => RecipeModel.fromEntity(e))
+          .toList();
 
-    final newRecipes = await generateRecipes(
-      state.imagePath!,
-      state.preferences!,
-      previouslySuggestedRecipes: oldModels,
-    );
+      final newRecipes = await generateRecipes(
+        state.imagePath!,
+        state.preferences!,
+        oldModels,
+      );
 
-    final updatedList = [...state.recipes, ...newRecipes];
+      final updatedList = [...state.recipes, ...newRecipes];
 
-    await cacheRecipes(updatedList);
-    emit(state.copyWith(recipes: updatedList, isLoading: false));
+      await cacheRecipes(updatedList);
+
+      emit(state.copyWith(recipes: updatedList, isLoading: false, error: null));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
   }
 
   Future<void> _onLoadCachedRecipes(
     LoadCachedRecipesRequested event,
     Emitter<RecipeState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, error: null));
 
-    final recipes = await getCachedRecipes();
+    try {
+      final recipes = await getCachedRecipes();
 
-    emit(state.copyWith(recipes: recipes, isLoading: false));
+      emit(state.copyWith(recipes: recipes, isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
   }
 }
