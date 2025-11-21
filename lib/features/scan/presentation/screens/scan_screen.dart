@@ -1,6 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../bloc/scan_bloc.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({Key? key}) : super(key: key);
@@ -10,106 +13,48 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  CameraController? _controller;
-  List<CameraDescription>? _cameras;
-  bool _isFlashOn = false;
-  final ImagePicker _picker = ImagePicker();
-
-  @override
-  void initState() {
-    super.initState();
-    _initCamera();
-  }
-
-  Future<void> _initCamera() async {
-    _cameras = await availableCameras();
-    final camera = _cameras!.firstWhere(
-      (c) => c.lensDirection == CameraLensDirection.back,
-    );
-    _controller = CameraController(camera, ResolutionPreset.high);
-    await _controller!.initialize();
-    if (mounted) setState(() {});
-  }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
-
-  Future<void> _toggleFlash() async {
-    if (_controller == null) return;
-    _isFlashOn = !_isFlashOn;
-    await _controller!.setFlashMode(
-      _isFlashOn ? FlashMode.torch : FlashMode.off,
-    );
-    setState(() {});
-  }
-
-  Future<void> _takePicture() async {
-    if (_controller == null) return;
-    _isFlashOn = !_isFlashOn;
-    await _controller!.setFlashMode(
-      _isFlashOn ? FlashMode.torch : FlashMode.off,
-    );
-    setState(() {});
-  }
-
-  Future<void> _pickFromGallery() async {
-    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      debugPrint("picked file from gallery  ${file.path}");
-      //do something
-    }
-  }
-
-  Future<void> _switchCamera() async {
-    if (_cameras!.length < 2) return;
-    final current = _controller!.description;
-    final newCamera = current.lensDirection == CameraLensDirection.back
-        ? _cameras!.firstWhere(
-            (c) => c.lensDirection == CameraLensDirection.front,
-          )
-        : _cameras!.firstWhere(
-            (c) => c.lensDirection == CameraLensDirection.back,
-          );
-    await _controller!.dispose();
-    _controller = CameraController(newCamera, ResolutionPreset.high);
-    await _controller!.initialize();
-    if (mounted) setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_controller == null || !_controller!.value.isInitialized) {
-      return const Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: CircularProgressIndicator(color: Color(0xFF00A87D)),
-        ),
-      );
-    }
-
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: _controller!.value.previewSize!.height,
-                height: _controller!.value.previewSize!.width,
-                child: CameraPreview(_controller!),
-              ),
+    return BlocConsumer<ScanBloc, ScanState>(
+      listener: (context, state) {
+        if (state.imagePath != null) {
+          context.pushReplacementNamed(
+            'tastePreference',
+            extra: state.imagePath,
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state.isLoading || state.controller == null) {
+          return const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: CircularProgressIndicator(color: Color(0xFF00A87D)),
             ),
-          ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.8),
-              child: Stack(
-                children: [
-                  Center(
+          );
+        }
+
+        final controller = state.controller!;
+
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: controller.value.previewSize!.height,
+                    height: controller.value.previewSize!.width,
+                    child: CameraPreview(controller),
+                  ),
+                ),
+              ),
+
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black.withOpacity(0.8),
+                  child: Center(
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.8,
                       height: MediaQuery.of(context).size.width * 1.4,
@@ -120,66 +65,73 @@ class _ScanScreenState extends State<ScanScreen> {
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
 
-          // 3. top bar
-          Positioned(
-            top: 40,
-            left: 16,
-            right: 16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                IconButton(
-                  icon: Icon(
-                    _isFlashOn ? Icons.flash_on : Icons.flash_off,
-                    color: Colors.white,
-                  ),
-                  onPressed: _toggleFlash,
-                ),
-              ],
-            ),
-          ),
-
-          // 4. bottom bar
-          Positioned(
-            bottom: 40,
-            left: 16,
-            right: 16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.photo_library, color: Colors.white),
-                  onPressed: _pickFromGallery,
-                ),
-                GestureDetector(
-                  onTap: _takePicture,
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 4),
+              // TOP BAR
+              Positioned(
+                top: 40,
+                left: 16,
+                right: 16,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                  ),
+                    IconButton(
+                      icon: Icon(
+                        state.isFlashOn ? Icons.flash_on : Icons.flash_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () =>
+                          context.read<ScanBloc>().add(ToggleFlash()),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: const Icon(Icons.cameraswitch, color: Colors.white),
-                  onPressed: _switchCamera,
+              ),
+
+              Positioned(
+                bottom: 40,
+                left: 16,
+                right: 16,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.photo_library,
+                        color: Colors.white,
+                      ),
+                      onPressed: () =>
+                          context.read<ScanBloc>().add(PickFromGallery()),
+                    ),
+
+                    GestureDetector(
+                      onTap: () => context.read<ScanBloc>().add(CaptureImage()),
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 4),
+                        ),
+                      ),
+                    ),
+
+                    IconButton(
+                      icon: const Icon(Icons.cameraswitch, color: Colors.white),
+                      onPressed: () =>
+                          context.read<ScanBloc>().add(SwitchCamera()),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

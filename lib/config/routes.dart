@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
@@ -9,8 +10,10 @@ import 'package:pantry_ai/splash.dart';
 import '../features/analytics/presentation/screens/analytics_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
+import '../features/preference/presentation/bloc/taste_preference_bloc.dart';
 import '../features/recipe_suggestions/presentation/screens/dishes_detail_screen.dart';
 import '../features/recipe_suggestions/presentation/screens/dishes_list_screen.dart';
+import '../features/scan/presentation/bloc/scan_bloc.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
 
@@ -43,24 +46,35 @@ GoRouter createRouter() {
         builder: (context, state) => SignupScreen(),
       ),
       GoRoute(
-        path: '/recipe-suggestions-detail',
-        name: 'dishesDetail',
+        path: '/recipe-details',
+        name: 'recipeDetails',
         builder: (context, state) => DishesDetailScreen(),
       ),
       GoRoute(
-        path: '/recipe-suggestions-list',
-        name: 'dishesList',
+        path: '/recipes',
+        name: 'recipes',
         builder: (context, state) => DishesListScreen(),
       ),
       GoRoute(
         path: '/scan',
         name: 'scan',
-        builder: (context, state) => ScanScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => ScanBloc()..add(InitializeCamera()),
+            child: const ScanScreen(),
+          );
+        },
       ),
       GoRoute(
-        path: '/preference',
-        name: 'preference',
-        builder: (context, state) => TastePreference(),
+        path: '/taste-preference',
+        name: 'tastePreference',
+        builder: (context, state) {
+          final imagePath = state.extra as String;
+          return BlocProvider(
+            create: (_) => TastePreferenceBloc(),
+            child: TastePreference(imagePath: imagePath),
+          );
+        },
       ),
       ShellRoute(
         builder: (context, state, child) => WidgetTree(child: child),

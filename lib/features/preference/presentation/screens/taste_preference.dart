@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class TastePreference extends StatelessWidget {
-  const TastePreference({super.key});
+  final String imagePath;
+
+  const TastePreference({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Taste Preference'), centerTitle: true),
+      body: const Column(children: [Text('helllo world')]),
+    );
   }
 }
