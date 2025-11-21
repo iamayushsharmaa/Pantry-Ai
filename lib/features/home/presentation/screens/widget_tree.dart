@@ -36,7 +36,6 @@ class WidgetTree extends StatelessWidget {
 
     return Scaffold(
       body: child,
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (index) => _onTabTapped(context, index),
@@ -48,12 +47,10 @@ class WidgetTree extends StatelessWidget {
         unselectedFontSize: 12,
         items: [
           BottomNavigationBarItem(
-            // normal (unselected)
             icon: SvgPicture.asset(
               'assets/icons/home.svg',
               colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
             ),
-            // selected
             activeIcon: SvgPicture.asset(
               'assets/icons/home.svg',
               colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),

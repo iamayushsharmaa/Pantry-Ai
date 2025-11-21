@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
+import 'package:pantry_ai/features/preference/presentation/screens/taste_preference.dart';
 import 'package:pantry_ai/splash.dart';
 
 import '../features/analytics/presentation/screens/analytics_screen.dart';
@@ -14,7 +15,7 @@ import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
 
 GoRouter createRouter() {
-  final initialLocation = '/onboarding';
+  final initialLocation = '/splash';
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -42,12 +43,12 @@ GoRouter createRouter() {
         builder: (context, state) => SignupScreen(),
       ),
       GoRoute(
-        path: '/recipe_suggestions-detail',
+        path: '/recipe-suggestions-detail',
         name: 'dishesDetail',
         builder: (context, state) => DishesDetailScreen(),
       ),
       GoRoute(
-        path: '/recipe_suggestions-list',
+        path: '/recipe-suggestions-list',
         name: 'dishesList',
         builder: (context, state) => DishesListScreen(),
       ),
@@ -55,6 +56,11 @@ GoRouter createRouter() {
         path: '/scan',
         name: 'scan',
         builder: (context, state) => ScanScreen(),
+      ),
+      GoRoute(
+        path: '/preference',
+        name: 'preference',
+        builder: (context, state) => TastePreference(),
       ),
       ShellRoute(
         builder: (context, state, child) => WidgetTree(child: child),

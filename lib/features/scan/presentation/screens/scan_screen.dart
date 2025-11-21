@@ -23,7 +23,6 @@ class _ScanScreenState extends State<ScanScreen> {
 
   Future<void> _initCamera() async {
     _cameras = await availableCameras();
-    // pick back camera
     final camera = _cameras!.firstWhere(
       (c) => c.lensDirection == CameraLensDirection.back,
     );
