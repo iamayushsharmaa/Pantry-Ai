@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantry_ai/core/utils/difficulty_level.dart';
 
 class RecipeDifficultyIndicator extends StatelessWidget {
   final int difficulty;
@@ -9,23 +10,6 @@ class RecipeDifficultyIndicator extends StatelessWidget {
     required this.difficulty,
     required this.colorScheme,
   });
-
-  String _getDifficultyLabel(int difficulty) {
-    switch (difficulty) {
-      case 1:
-        return "Easy";
-      case 2:
-        return "Moderate";
-      case 3:
-        return "Medium";
-      case 4:
-        return "Hard";
-      case 5:
-        return "Expert";
-      default:
-        return "Medium";
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +34,7 @@ class RecipeDifficultyIndicator extends StatelessWidget {
         }),
         const SizedBox(width: 8),
         Text(
-          _getDifficultyLabel(difficulty),
+          DifficultyUtils.getDifficultyLabel(difficulty),
           style: TextStyle(
             color: colorScheme.primary,
             fontSize: 14,

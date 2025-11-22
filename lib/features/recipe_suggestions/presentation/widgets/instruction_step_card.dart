@@ -20,11 +20,11 @@ class InstructionStepCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: colorScheme.shadow.withOpacity(0.05),
+            color: Color(0x22000000),
             blurRadius: 10,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -35,14 +35,7 @@ class InstructionStepCard extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  colorScheme.primary,
-                  colorScheme.primary.withOpacity(0.7),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: colorScheme.primary.withOpacity(0.7),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(

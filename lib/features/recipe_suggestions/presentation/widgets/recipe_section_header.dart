@@ -14,25 +14,25 @@ class RecipeSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onBackground,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onBackground,
           ),
-          Container(
+        ),
+
+        Container(
+          decoration: BoxDecoration(
+            color: colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(20),
-            ),
             child: Text(
               "$count items",
               style: TextStyle(
@@ -42,8 +42,8 @@ class RecipeSectionHeader extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
