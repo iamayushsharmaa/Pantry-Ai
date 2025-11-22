@@ -61,7 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 40),
               decoration: BoxDecoration(
-                color: cs.surface,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.grey.shade100
+                    : Theme.of(context).colorScheme.surfaceVariant,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(

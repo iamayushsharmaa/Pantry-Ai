@@ -8,6 +8,7 @@ class ScanState {
   final String? imagePath;
   final bool isLoading;
   final String? error;
+  final bool hasNavigated;
 
   ScanState({
     this.controller,
@@ -16,6 +17,7 @@ class ScanState {
     this.imagePath,
     this.isLoading = false,
     this.error,
+    this.hasNavigated = false,
   });
 
   ScanState copyWith({
@@ -25,6 +27,7 @@ class ScanState {
     String? imagePath,
     bool? isLoading,
     String? error,
+    bool? hasNavigated,
   }) {
     return ScanState(
       controller: controller ?? this.controller,
@@ -33,6 +36,7 @@ class ScanState {
       imagePath: imagePath ?? this.imagePath,
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      hasNavigated: hasNavigated ?? this.hasNavigated,
     );
   }
 }

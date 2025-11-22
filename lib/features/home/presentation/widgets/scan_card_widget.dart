@@ -13,7 +13,9 @@ class ScanCardWidget extends StatelessWidget {
       height: MediaQuery.of(context).size.width * 0.62,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.grey.shade100
+            : Theme.of(context).colorScheme.surfaceVariant,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

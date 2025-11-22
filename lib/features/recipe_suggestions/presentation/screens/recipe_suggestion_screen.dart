@@ -27,7 +27,7 @@ class RecipeListScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final recipes = fakeRecipes;
+          final recipes = dummyRecipes;
 
           return CustomScrollView(
             slivers: [
@@ -36,7 +36,6 @@ class RecipeListScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(12, 50, 12, 10),
                   child: Row(
                     children: [
-                      // Back Button
                       IconButton(
                         onPressed: () => context.pop(),
                         icon: Icon(
@@ -132,7 +131,7 @@ class RecipeListScreen extends StatelessWidget {
                       child: RecipeCard(
                         recipe: recipe,
                         onTap: () =>
-                            context.pushNamed('dishesDetail', extra: recipe),
+                            context.pushNamed('recipeDetails', extra: recipe),
                       ),
                     ),
                   );
@@ -141,7 +140,6 @@ class RecipeListScreen extends StatelessWidget {
 
               const SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-              // ⭐ LOAD MORE CTA
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(

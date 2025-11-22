@@ -10,6 +10,12 @@ class RecipeModel extends Recipe {
     required super.imageUrl,
     required super.cookingTime,
     required super.difficulty,
+    required super.rating,
+    required super.calories,
+    required super.servings,
+    super.description,
+    super.cuisine,
+    super.dietaryInfo,
     required this.ingredients,
     required super.missingIngredients,
     required super.instructions,
@@ -17,29 +23,45 @@ class RecipeModel extends Recipe {
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
     return RecipeModel(
-      title: json['title'],
-      imageUrl: json['imageUrl'],
-      cookingTime: json['cookingTime'],
-      difficulty: json['difficulty'],
+      title: json['title'] as String,
+      imageUrl: json['imageUrl'] as String,
+      cookingTime: json['cookingTime'] as int,
+      difficulty: json['difficulty'] as int,
+      rating: (json['rating'] as num).toDouble(),
+      calories: json['calories'] as int,
+      servings: json['servings'] as int,
+      description: json['description'] as String?,
+      cuisine: json['cuisine'] as String?,
+      dietaryInfo: json['dietaryInfo'] != null
+          ? List<String>.from(json['dietaryInfo'])
+          : null,
       ingredients: (json['ingredients'] as List)
-          .map((e) => IngredientModel.fromJson(e))
+          .map((i) => IngredientModel.fromJson(i))
           .toList(),
-      missingIngredients: List<String>.from(json['missingIngredients']),
+      missingIngredients: json['missingIngredients'] != null
+          ? List<String>.from(json['missingIngredients'])
+          : [],
       instructions: List<String>.from(json['instructions']),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'title': title,
-    'imageUrl': imageUrl,
-    'cookingTime': cookingTime,
-    'difficulty': difficulty,
-    'ingredients': ingredients
-        .map((e) => IngredientModel.fromEntity(e))
-        .toList(),
-    'missingIngredients': missingIngredients,
-    'instructions': instructions,
-  };
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'imageUrl': imageUrl,
+      'cookingTime': cookingTime,
+      'difficulty': difficulty,
+      'rating': rating,
+      'calories': calories,
+      'servings': servings,
+      'description': description,
+      'cuisine': cuisine,
+      'dietaryInfo': dietaryInfo,
+      'ingredients': ingredients.map((i) => i.toJson()).toList(),
+      'missingIngredients': missingIngredients,
+      'instructions': instructions,
+    };
+  }
 
   factory RecipeModel.fromEntity(Recipe entity) {
     return RecipeModel(
@@ -52,6 +74,12 @@ class RecipeModel extends Recipe {
           .toList(),
       missingIngredients: entity.missingIngredients,
       instructions: entity.instructions,
+      rating: entity.rating,
+      calories: entity.calories,
+      servings: entity.servings,
+      description: entity.description,
+      cuisine: entity.cuisine,
+      dietaryInfo: entity.dietaryInfo,
     );
   }
 
@@ -64,6 +92,12 @@ class RecipeModel extends Recipe {
       ingredients: ingredients.map((e) => e.toEntity()).toList(),
       missingIngredients: missingIngredients,
       instructions: instructions,
+      rating: rating,
+      calories: calories,
+      servings: servings,
+      description: description,
+      cuisine: cuisine,
+      dietaryInfo: dietaryInfo,
     );
   }
 }

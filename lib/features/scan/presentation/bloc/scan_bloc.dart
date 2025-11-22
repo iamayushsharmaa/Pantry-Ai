@@ -17,6 +17,9 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     on<SwitchCamera>(_onSwitchCamera);
     on<CaptureImage>(_onCaptureImage);
     on<PickFromGallery>(_onPickFromGallery);
+    on<DisposeCamera>(_onDisposeCamera);
+
+    on<MarkNavigationHandled>(_onMarkNavigationHandled);
   }
 
   FutureOr<void> _onInitCamera(
@@ -79,9 +82,9 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
         : state.cameras.firstWhere(
             (c) => c.lensDirection == CameraLensDirection.back,
           );
+    await state.controller?.dispose();
 
     final controller = CameraController(newCamera, ResolutionPreset.high);
-
     await controller.initialize();
 
     emit(state.copyWith(controller: controller, isLoading: false));
@@ -111,5 +114,29 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     if (file != null) {
       emit(state.copyWith(imagePath: file.path));
     }
+  }
+
+  FutureOr<void> _onDisposeCamera(
+    DisposeCamera event,
+    Emitter<ScanState> emit,
+  ) async {
+    try {
+      await state.controller?.dispose();
+    } catch (_) {}
+
+    emit(state.copyWith(controller: null, isFlashOn: false));
+  }
+
+  @override
+  Future<void> close() {
+    state.controller?.dispose();
+    return super.close();
+  }
+
+  FutureOr<void> _onMarkNavigationHandled(
+    MarkNavigationHandled event,
+    Emitter<ScanState> emit,
+  ) {
+    emit(state.copyWith(hasNavigated: true, imagePath: null));
   }
 }

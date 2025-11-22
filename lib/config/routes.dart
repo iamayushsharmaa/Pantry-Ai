@@ -13,6 +13,7 @@ import '../features/analytics/presentation/screens/analytics_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/preference/presentation/bloc/taste_preference_bloc.dart';
+import '../features/recipe_suggestions/domain/enities/recipe_entity.dart';
 import '../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dart';
 import '../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
@@ -54,7 +55,11 @@ GoRouter createRouter() {
       GoRoute(
         path: '/recipe-details',
         name: 'recipeDetails',
-        builder: (context, state) => DishesDetailScreen(),
+        builder: (context, state) {
+          final recipe = state.extra as Recipe;
+
+          return RecipeDetailScreen(recipe: recipe);
+        },
       ),
       GoRoute(
         path: '/recipes-list',

@@ -1,3 +1,4 @@
+
 class Ingredient {
   final String name;
   final double? quantity;

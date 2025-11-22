@@ -15,10 +15,18 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanScreenState extends State<ScanScreen> {
   @override
+  void dispose() {
+    context.read<ScanBloc>().add(DisposeCamera());
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ScanBloc, ScanState>(
       listener: (context, state) {
-        if (state.imagePath != null) {
+        if (state.imagePath != null && !state.hasNavigated) {
+          context.read<ScanBloc>().add(MarkNavigationHandled());
+
           context.pushReplacementNamed(
             'tastePreference',
             extra: state.imagePath,
@@ -69,7 +77,6 @@ class _ScanScreenState extends State<ScanScreen> {
                 ),
               ),
 
-              // TOP BAR
               Positioned(
                 top: 48,
                 left: 16,
