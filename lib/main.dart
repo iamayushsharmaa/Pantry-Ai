@@ -52,8 +52,8 @@ class _MyAppState extends State<MyApp> {
         builder: (context) {
           return MaterialApp.router(
             routerConfig: createRouter(),
-            theme: lightTheme,
-            darkTheme: darkTheme,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.system,
             debugShowCheckedModeBanner: false,
           );

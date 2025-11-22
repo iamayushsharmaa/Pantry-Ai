@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pantry_ai/core/constant/preference_constant.dart';
-import 'package:pantry_ai/features/preference/presentation/models/taste_preference_ui_model.dart';
 
 import '../../../../core/common/recipe_list_args.dart';
+import '../../../../core/constant/preference_constant.dart';
 import '../bloc/taste_preference_bloc.dart';
+import '../models/taste_preference_ui_model.dart';
 import '../widgets/question_widget.dart';
 
 class TastePreferenceScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
     _controller.animateToPage(
       currentPage + 1,
       duration: const Duration(milliseconds: 300),
-      curve: Curves.ease,
+      curve: Curves.easeOut,
     );
   }
 
@@ -37,34 +37,37 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
     _controller.animateToPage(
       currentPage - 1,
       duration: const Duration(milliseconds: 300),
-      curve: Curves.ease,
+      curve: Curves.easeOut,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return BlocBuilder<TastePreferenceBloc, TastePreferenceState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: cs.background,
           appBar: AppBar(
             elevation: 0,
-            backgroundColor: Colors.black,
+            backgroundColor: cs.background,
             title: Text(
-              'Taste Preference',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-                fontSize: 18,
+              'Taste Preferences',
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: cs.onBackground,
               ),
             ),
             leading: state.currentPage > 0
                 ? IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: cs.onBackground),
                     onPressed: () => _previousPage(context, state.currentPage),
                   )
                 : null,
           ),
-          backgroundColor: Colors.black,
+
           body: Column(
             children: [
               Padding(
@@ -79,7 +82,27 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 28),
+
+              const SizedBox(height: 18),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(4, (i) {
+                  final isActive = i == state.currentPage;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    height: 8,
+                    width: isActive ? 26 : 10,
+                    decoration: BoxDecoration(
+                      color: isActive ? cs.primary : cs.outlineVariant,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  );
+                }),
+              ),
+
+              const SizedBox(height: 22),
 
               Expanded(
                 child: PageView(
@@ -129,7 +152,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
 
   Widget _buildDietPage(BuildContext context, TastePreferenceState state) {
     return QuestionWidget(
-      title: "What's your diet preference?",
+      title: "What’s your diet preference?",
       options: PreferenceData.dietOptions,
       selected: state.diet,
       onSelected: (val) {
@@ -150,12 +173,15 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
   }
 
   Widget _buildBottomButton(BuildContext context, TastePreferenceState state) {
+    final cs = Theme.of(context).colorScheme;
+
     final enabled = state.isCurrentStepValid;
     final isLast = state.isLastPage;
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: enabled ? const Color(0xFF00A87D) : Colors.grey,
+        backgroundColor: enabled ? cs.primary : cs.surfaceVariant,
+        foregroundColor: enabled ? cs.onPrimary : cs.onSurface,
         padding: const EdgeInsets.symmetric(vertical: 16),
         minimumSize: const Size.fromHeight(50),
       ),
@@ -172,7 +198,6 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                 diet: state.diet,
                 maxCookingTime: state.maxCookingTime,
               );
-
               context.pushReplacementNamed(
                 'recipesList',
                 extra: RecipeListArgs(

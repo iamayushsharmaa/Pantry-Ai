@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/theme/colors.dart';
-
 class ScanCardWidget extends StatelessWidget {
   const ScanCardWidget({super.key});
 
@@ -15,7 +13,7 @@ class ScanCardWidget extends StatelessWidget {
       height: MediaQuery.of(context).size.width * 0.62,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: AppColors.blackShadow,
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,8 +23,8 @@ class ScanCardWidget extends StatelessWidget {
             'assets/icons/scan.svg',
             height: 50,
             width: 50,
-            colorFilter: const ColorFilter.mode(
-              AppColors.kBrandColor,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.primary,
               BlendMode.srcIn,
             ),
           ),
@@ -36,18 +34,18 @@ class ScanCardWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 6),
 
-          const Text(
+          Text(
             'Tap to scan your pantry or\nupload a photo',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Colors.white54,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
           ),
           const SizedBox(height: 10),
@@ -60,7 +58,7 @@ class ScanCardWidget extends StatelessWidget {
                 context.pushNamed('scan');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.kBrandColor,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -73,7 +71,7 @@ class ScanCardWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -81,8 +79,8 @@ class ScanCardWidget extends StatelessWidget {
                     'assets/icons/scan.svg',
                     height: 20,
                     width: 20,
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.onPrimary,
                       BlendMode.srcIn,
                     ),
                   ),
