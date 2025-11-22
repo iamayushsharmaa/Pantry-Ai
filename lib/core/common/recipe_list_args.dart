@@ -1,4 +1,3 @@
-
 import '../../features/recipe_suggestions/domain/enities/taste_preference_entity.dart';
 
 class RecipeListArgs {

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import '../../features/auth/data/repository/auth_repository_impl.dart';
 import '../../features/auth/domain/repository/auth_repository.dart';
@@ -26,9 +27,9 @@ import '../../features/recipe_suggestions/domain/usecases/get_cached_recipes_use
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
+  await _initHiveBoxes();
   _initFirebase();
   _initExternalServices();
-  await _initHiveBoxes();
   _initDataSources();
   _initRepositories();
   _initAuthUseCases();
@@ -52,6 +53,7 @@ void _initExternalServices() {
 }
 
 Future<void> _initHiveBoxes() async {
+  await Hive.initFlutter();
   final recipeBox = await Hive.openBox('recipesBox');
   sl.registerLazySingleton<Box>(() => recipeBox);
 }

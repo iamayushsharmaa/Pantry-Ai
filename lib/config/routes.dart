@@ -68,7 +68,7 @@ GoRouter createRouter() {
               getCachedRecipes: sl<GetCachedRecipesUseCase>(),
               cacheRecipes: sl<CacheRecipesUseCase>(),
             )..add(GenerateRecipesRequested(args.imagePath, args.preferences)),
-            child: const RecipeListScreen(),
+            child: RecipeListScreen(),
           );
         },
       ),
