@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/category_title_utils.dart';
+
 class RecipeGrid extends StatelessWidget {
   final ColorScheme colorScheme;
   final List<Map<String, dynamic>> recipes;
@@ -52,19 +54,6 @@ class GridRecipeCard extends StatelessWidget {
     required this.onTap,
   });
 
-  Color _getDifficultyColor() {
-    switch (difficulty.toLowerCase()) {
-      case 'easy':
-        return Colors.green;
-      case 'medium':
-        return Colors.orange;
-      case 'hard':
-        return Colors.red;
-      default:
-        return colorScheme.primary;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
@@ -110,7 +99,11 @@ class GridRecipeCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: _getDifficultyColor(),
+                            color: CategoryTitleScreenUtils.getDifficultyColor(
+                              difficulty,
+                              colorScheme,
+                            ),
+                            border: Border.all(),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
