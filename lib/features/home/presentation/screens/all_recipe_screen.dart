@@ -8,7 +8,7 @@ import '../widgets/recipe_grid.dart';
 import '../widgets/search_bar.dart';
 
 class AllRecipesScreen extends StatefulWidget {
-  final String category; // "recent", "quick", "saved", etc.
+  final String category;
 
   const AllRecipesScreen({super.key, required this.category});
 
@@ -30,15 +30,18 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final recipes = CategoryTitleScreenUtils.recipes;
 
     return Scaffold(
-      backgroundColor: cs.background,
+      backgroundColor: cs.surface,
       body: SafeArea(
         child: Column(
           children: [
-            AppBarSection(
+            // App Bar
+            _AppBarSection(
               colorScheme: cs,
               title: CategoryTitleScreenUtils.getCategoryTitle(widget.category),
+              recipeCount: recipes.length,
               onBack: () => context.pop(),
             ),
 
@@ -60,13 +63,11 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
               },
             ),
 
+            // Recipe Grid or Empty State
             Expanded(
-              child: CategoryTitleScreenUtils.recipes.isEmpty
+              child: recipes.isEmpty
                   ? EmptyState(colorScheme: cs)
-                  : RecipeGrid(
-                      colorScheme: cs,
-                      recipes: CategoryTitleScreenUtils.recipes,
-                    ),
+                  : RecipeGrid(colorScheme: cs, recipes: recipes),
             ),
           ],
         ),
@@ -75,14 +76,16 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
   }
 }
 
-class AppBarSection extends StatelessWidget {
+class _AppBarSection extends StatelessWidget {
   final ColorScheme colorScheme;
   final String title;
+  final int recipeCount;
   final VoidCallback onBack;
 
-  const AppBarSection({
+  const _AppBarSection({
     required this.colorScheme,
     required this.title,
+    required this.recipeCount,
     required this.onBack,
   });
 
@@ -102,7 +105,6 @@ class AppBarSection extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
           ),
-
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -118,7 +120,7 @@ class AppBarSection extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '24 recipes found',
+                  '$recipeCount ${recipeCount == 1 ? 'recipe' : 'recipes'} found',
                   style: TextStyle(
                     fontSize: 12,
                     color: colorScheme.onSurface.withOpacity(0.6),

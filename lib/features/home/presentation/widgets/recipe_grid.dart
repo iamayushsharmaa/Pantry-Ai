@@ -1,35 +1,48 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/category_title_utils.dart';
+import '../../../../core/utils/difficulty_level.dart';
 
 class RecipeGrid extends StatelessWidget {
   final ColorScheme colorScheme;
   final List<Map<String, dynamic>> recipes;
 
-  const RecipeGrid({required this.colorScheme, required this.recipes});
+  const RecipeGrid({
+    super.key,
+    required this.colorScheme,
+    required this.recipes,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
-      itemCount: recipes.length,
-      itemBuilder: (context, index) {
-        final recipe = recipes[index];
-        return GridRecipeCard(
-          colorScheme: colorScheme,
-          title: recipe['title'],
-          cookTime: recipe['cookTime'],
-          difficulty: recipe['difficulty'],
-          cuisine: recipe['cuisine'],
-          onTap: () {
-            // Navigate to recipe details
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return GridView.builder(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ),
+          itemCount: recipes.length,
+          cacheExtent: 500,
+          itemBuilder: (context, index) {
+            final recipe = recipes[index];
+
+            return GridRecipeCard(
+              key: ValueKey(recipe['id'] ?? 'recipe_$index'),
+              colorScheme: colorScheme,
+              title: recipe['title']?.toString() ?? 'Untitled Recipe',
+              cookTime: recipe['cookTime']?.toString() ?? 'N/A',
+              difficulty: recipe['difficulty']?.toString() ?? 'Medium',
+              cuisine: recipe['cuisine']?.toString() ?? 'General',
+              onTap: () {
+                debugPrint('Tapped on ${recipe['title']}');
+              },
+            );
           },
         );
       },
@@ -46,6 +59,7 @@ class GridRecipeCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const GridRecipeCard({
+    super.key,
     required this.colorScheme,
     required this.title,
     required this.cookTime,
@@ -61,32 +75,37 @@ class GridRecipeCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(17),
-          child: Container(
+          borderRadius: BorderRadius.circular(16),
+          child: Ink(
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(17),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(color: colorScheme.outline.withOpacity(0.1)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
+                SizedBox(
                   height: 140,
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer.withOpacity(0.3),
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                    ),
-                  ),
                   child: Stack(
                     children: [
-                      Center(
-                        child: Icon(
-                          Icons.restaurant_rounded,
-                          size: 48,
-                          color: colorScheme.onPrimaryContainer.withOpacity(
-                            0.4,
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer.withOpacity(
+                              0.3,
+                            ),
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(16),
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.restaurant_rounded,
+                            size: 48,
+                            color: colorScheme.onPrimaryContainer.withOpacity(
+                              0.4,
+                            ),
                           ),
                         ),
                       ),
@@ -99,7 +118,7 @@ class GridRecipeCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: CategoryTitleScreenUtils.getDifficultyColor(
+                            color: DifficultyUtils.getDifficultyColor(
                               difficulty,
                               colorScheme,
                             ),
@@ -119,22 +138,23 @@ class GridRecipeCard extends StatelessWidget {
                       Positioned(
                         top: 8,
                         left: 8,
-                        child: IconButton(
-                          onPressed: () {
-                            // Toggle bookmark
-                          },
-                          icon: const Icon(
-                            Icons.bookmark_border_rounded,
-                            color: Colors.white,
-                            size: 20,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.3),
+                            shape: BoxShape.circle,
                           ),
-                          padding: const EdgeInsets.all(6),
-                          constraints: const BoxConstraints(
-                            minWidth: 32,
-                            minHeight: 32,
-                          ),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.black.withOpacity(0.3),
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.bookmark_border_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            constraints: const BoxConstraints(
+                              minWidth: 32,
+                              minHeight: 32,
+                            ),
                           ),
                         ),
                       ),
@@ -142,12 +162,12 @@ class GridRecipeCard extends StatelessWidget {
                   ),
                 ),
 
-                // Content Section
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           title,
@@ -188,12 +208,16 @@ class GridRecipeCard extends StatelessWidget {
                               color: colorScheme.onSurface.withOpacity(0.6),
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              cookTime,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: colorScheme.onSurface.withOpacity(0.6),
+                            Flexible(
+                              child: Text(
+                                cookTime,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: colorScheme.onSurface.withOpacity(0.6),
+                                ),
                               ),
                             ),
                           ],
