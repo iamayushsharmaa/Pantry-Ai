@@ -25,7 +25,7 @@ import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
 
 GoRouter createRouter() {
-  final initialLocation = '/recipe-details';
+  final initialLocation = '/splash';
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -56,8 +56,8 @@ GoRouter createRouter() {
         path: '/recipe-details',
         name: 'recipeDetails',
         builder: (context, state) {
-         // final recipe = state.extra as Recipe;
-          return RecipeDetailScreen();
+          final recipe = state.extra as Recipe;
+          return RecipeDetailScreen(recipe: recipe);
         },
       ),
       GoRoute(

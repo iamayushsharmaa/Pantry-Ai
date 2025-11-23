@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/core/constant/constants.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/header.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/missing_ingredient_header.dart';
 
@@ -11,17 +10,15 @@ import '../widgets/missing_ingredient_card.dart';
 import '../widgets/recipe_section_header.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
-  // final Recipe recipe;
+  final Recipe recipe;
 
-  const RecipeDetailScreen({super.key});
+  const RecipeDetailScreen({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
-
-    final Recipe recipe = dummyRecipes.first;
 
     return Scaffold(
       backgroundColor: cs.background,

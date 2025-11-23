@@ -24,7 +24,6 @@ class RecipeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Smaller image height now
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Image.network(recipe.imageUrl, fit: BoxFit.cover),
@@ -78,7 +77,6 @@ class RecipeCard extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 10),
-
                     if (recipe.missingIngredients.isNotEmpty)
                       Text(
                         "Missing: ${recipe.missingIngredients.take(2).join(', ')}",

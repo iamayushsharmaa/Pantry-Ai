@@ -15,12 +15,27 @@ class RecipeListScreen extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: cs.background,
-
+      backgroundColor: cs.surface,
+      extendBodyBehindAppBar: true,
       body: BlocBuilder<RecipeBloc, RecipeState>(
         builder: (context, state) {
           if (state.isLoading && state.recipes.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(strokeWidth: 3, color: cs.primary),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Preparing your recipes...',
+                    style: TextStyle(
+                      color: cs.onSurface.withOpacity(0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
 
           if (state.imagePath == null || state.preferences == null) {
@@ -30,153 +45,234 @@ class RecipeListScreen extends StatelessWidget {
           final recipes = dummyRecipes;
 
           return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 50, 12, 10),
-                  child: Row(
+              SliverAppBar(
+                expandedHeight: 140,
+                floating: false,
+                pinned: true,
+                elevation: 0,
+                backgroundColor: cs.surface,
+                surfaceTintColor: Colors.transparent,
+                leading: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: Icon(
+                    Icons.arrow_back_rounded,
+                    color: cs.onSurface,
+                    size: 20,
+                  ),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  titlePadding: const EdgeInsets.only(bottom: 16),
+                  title: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        onPressed: () => context.pop(),
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: cs.onBackground,
-                          size: 26,
-                        ),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 40,
-                          minHeight: 40,
+                      Text(
+                        "Recommended Dishes",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: cs.onSurface,
+                          letterSpacing: -0.3,
                         ),
                       ),
+                      const SizedBox(height: 2),
+                      Text(
+                        "Smart recipes based on your scan",
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                          color: cs.onSurface.withOpacity(0.6),
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  background: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          cs.primaryContainer.withOpacity(0.3),
+                          cs.surface,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Recommended Dishes",
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      child: RepaintBoundary(
+                        child: PreferenceSummaryWidget(
+                          imagePath: state.imagePath!,
+                          preferences: state.preferences!,
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: cs.primaryContainer,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              "${recipes.length} recipes",
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: cs.onBackground,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: cs.onPrimaryContainer,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            "Suggested Recipes",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: cs.onSurface,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final recipe = recipes[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: RepaintBoundary(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: cs.shadow.withOpacity(0.06),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: RecipeCard(
+                            recipe: recipe,
+                            onTap: () => context.pushNamed(
+                              'recipeDetails',
+                              extra: recipe,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }, childCount: recipes.length),
+                ),
+              ),
+
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+
+                    // OPTIMIZED LOAD MORE BUTTON
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(
+                            colors: [cs.primary, cs.primary.withOpacity(0.85)],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: cs.primary.withOpacity(0.18),
+                              blurRadius: 8, // reduced from 12 → GPU cheaper
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              context.read<RecipeBloc>().add(
+                                FetchMoreRecipesRequested(),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.refresh_rounded,
+                                    color: cs.onPrimary,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "Load More Recipes",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: cs.onPrimary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    if (state.isLoading)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          children: [
+                            CircularProgressIndicator(
+                              strokeWidth: 2.8, // slightly lighter
+                              color: cs.primary,
+                            ),
+                            const SizedBox(height: 10),
                             Text(
-                              "Smart recipes based on your scan",
+                              "Loading more recipes...",
                               style: TextStyle(
-                                fontSize: 14,
-                                color: cs.onBackground.withOpacity(0.6),
+                                color: cs.onSurface.withOpacity(0.6),
+                                fontSize: 13,
                               ),
                             ),
                           ],
                         ),
                       ),
 
-                      const SizedBox(width: 40),
-                    ],
-                  ),
+                    const SizedBox(height: 28),
+                  ],
                 ),
               ),
-
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: PreferenceSummaryWidget(
-                    imagePath: state.imagePath!,
-                    preferences: state.preferences!,
-                  ),
-                ),
-              ),
-
-              const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  child: Text(
-                    "Suggested Recipes",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: cs.onBackground,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SliverToBoxAdapter(child: SizedBox(height: 8)),
-
-              // ⭐ RECIPE LIST
-              SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  final recipe = recipes[index];
-
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: TweenAnimationBuilder<double>(
-                      tween: Tween(begin: 0.95, end: 1),
-                      duration: Duration(milliseconds: 280 + (index * 70)),
-                      curve: Curves.easeOutCubic,
-                      builder: (context, value, child) {
-                        return Transform.scale(scale: value, child: child);
-                      },
-                      child: RecipeCard(
-                        recipe: recipe,
-                        onTap: () =>
-                            context.pushNamed('recipeDetails', extra: recipe),
-                      ),
-                    ),
-                  );
-                }, childCount: recipes.length),
-              ),
-
-              const SliverToBoxAdapter(child: SizedBox(height: 20)),
-
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: cs.primary,
-                      foregroundColor: cs.onPrimary,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () {
-                      context.read<RecipeBloc>().add(
-                        FetchMoreRecipesRequested(),
-                      );
-                    },
-                    child: const Text(
-                      "More Recipes",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ),
-              ),
-
-              if (state.isLoading)
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 24),
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                ),
-
-              const SliverToBoxAdapter(child: SizedBox(height: 40)),
             ],
           );
         },
