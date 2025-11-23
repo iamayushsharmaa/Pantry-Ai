@@ -10,7 +10,7 @@ class RecentRecipesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasRecipes = false; // Change to true when you have recipes
+    final hasRecipes = false;
 
     if (!hasRecipes) {
       return EmptyState(

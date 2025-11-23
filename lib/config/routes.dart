@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:pantry_ai/features/home/presentation/screens/all_recipe_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/features/preference/presentation/screens/taste_preference_screen.dart';
 import 'package:pantry_ai/splash.dart';
@@ -58,6 +59,14 @@ GoRouter createRouter() {
         builder: (context, state) {
           final recipe = state.extra as Recipe;
           return RecipeDetailScreen(recipe: recipe);
+        },
+      ),
+      GoRoute(
+        path: '/category-see-all',
+        name: 'categorySeeAll',
+        builder: (context, state) {
+          final category = state.extra as String;
+          return AllRecipesScreen(category: category);
         },
       ),
       GoRoute(

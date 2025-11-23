@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class CategorySearchBar extends StatelessWidget {
@@ -32,16 +31,16 @@ class CategorySearchBar extends StatelessWidget {
           ),
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(
-            icon: Icon(
-              Icons.clear_rounded,
-              color: colorScheme.onSurface.withOpacity(0.5),
-              size: 20,
-            ),
-            onPressed: () {
-              controller.clear();
-              onSearch('');
-            },
-          )
+                  icon: Icon(
+                    Icons.clear_rounded,
+                    color: colorScheme.onSurface.withOpacity(0.5),
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    controller.clear();
+                    onSearch('');
+                  },
+                )
               : null,
           filled: true,
           fillColor: colorScheme.surfaceContainerHighest,

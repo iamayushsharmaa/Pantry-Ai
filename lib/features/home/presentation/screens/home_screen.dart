@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/common/state_chip.dart';
 
 import '../widgets/quick_recipe_list.dart';
@@ -30,16 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: cs.background,
       body: SafeArea(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppBarSection(colorScheme: cs),
 
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: ScanCardWidget(),
-              ),
+              ScanCardWidget(),
 
               const SizedBox(height: 32),
 
@@ -47,29 +46,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 colorScheme: cs,
                 title: "Recently Generated",
                 subtitle: "Your latest recipe discoveries",
-                onSeeAll: () {},
+                onSeeAll: () =>
+                    context.pushNamed('categorySeeAll', extra: 'Recent'),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
 
               RecentRecipesList(colorScheme: cs),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 14),
 
               SectionHeader(
                 colorScheme: cs,
                 title: "Quick & Easy",
                 subtitle: "Recipes under 30 minutes",
                 onSeeAll: () {
-                  // Navigate to quick recipes
+                  context.pushNamed('categorySeeAll', extra: 'Recent');
                 },
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
 
               QuickRecipesList(colorScheme: cs),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
             ],
           ),
         ),

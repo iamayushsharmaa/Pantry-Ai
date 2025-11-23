@@ -32,7 +32,7 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
     final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: cs.surface,
+      backgroundColor: cs.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -92,23 +92,17 @@ class AppBarSection extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 12, 16, 12),
       child: Row(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: colorScheme.outline.withOpacity(0.15)),
+          IconButton(
+            onPressed: onBack,
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: colorScheme.onSurface,
+              size: 20,
             ),
-            child: IconButton(
-              onPressed: onBack,
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: colorScheme.onSurface,
-                size: 20,
-              ),
-              padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-            ),
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
           ),
+
           const SizedBox(width: 12),
           Expanded(
             child: Column(

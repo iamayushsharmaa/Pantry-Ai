@@ -1,14 +1,13 @@
 
-
 class CategoryTitleScreenUtils {
 
   static String getCategoryTitle(String category) {
     switch (category) {
-      case 'recent':
+      case 'Recent':
         return 'Recently Generated';
-      case 'quick':
+      case 'Quick':
         return 'Quick & Easy';
-      case 'saved':
+      case 'Saved':
         return 'Saved Recipes';
       default:
         return 'All Recipes';
@@ -16,7 +15,7 @@ class CategoryTitleScreenUtils {
   }
 
   static final recipes = List.generate(
-    12,
+    13,
         (index) => {
       'title': 'Recipe ${index + 1}',
       'cookTime': '${15 + index * 5} min',

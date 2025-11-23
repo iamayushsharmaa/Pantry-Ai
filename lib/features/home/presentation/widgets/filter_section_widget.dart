@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class FilterSection extends StatelessWidget {
@@ -72,7 +70,6 @@ class FilterSection extends StatelessWidget {
   }
 }
 
-
 class FilterChip extends StatelessWidget {
   final ColorScheme colorScheme;
   final String label;
@@ -92,10 +89,10 @@ class FilterChip extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
           decoration: BoxDecoration(
             color: isSelected
                 ? colorScheme.primaryContainer
@@ -123,7 +120,6 @@ class FilterChip extends StatelessWidget {
     );
   }
 }
-
 
 class SortDropdown extends StatelessWidget {
   final ColorScheme colorScheme;
