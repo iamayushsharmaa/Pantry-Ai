@@ -71,6 +71,72 @@ Return output **ONLY in strict JSON**, using this schema:
   ]
 }
 ''';
+
+  static final recentRecipes = [
+    {
+      'title': 'Pasta Carbonara',
+      'cookTime': '25 min',
+      'difficulty': 'Medium',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Chicken Stir Fry',
+      'cookTime': '20 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Beef Wellington',
+      'cookTime': '90 min',
+      'difficulty': 'Hard',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Margherita Pizza',
+      'cookTime': '30 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Thai Green Curry',
+      'cookTime': '35 min',
+      'difficulty': 'Medium',
+      'imageUrl': null,
+    },
+  ];
+
+  static final dummyQuickRecipes = [
+    {
+      'title': 'Avocado Toast',
+      'cookTime': '10 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Egg Fried Rice',
+      'cookTime': '15 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Caprese Salad',
+      'cookTime': '8 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Grilled Cheese',
+      'cookTime': '12 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+    {
+      'title': 'Veggie Wrap',
+      'cookTime': '10 min',
+      'difficulty': 'Easy',
+      'imageUrl': null,
+    },
+  ];
 }
 
 final List<Recipe> dummyRecipes = [

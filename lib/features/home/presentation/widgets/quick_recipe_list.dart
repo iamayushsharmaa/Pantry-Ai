@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pantry_ai/features/home/presentation/widgets/recipe_home_card.dart';
 
+import '../../../../core/constant/constants.dart';
 import 'empty_state.dart';
 
 class QuickRecipesList extends StatelessWidget {
@@ -10,7 +11,7 @@ class QuickRecipesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasRecipes = false;
+    final hasRecipes = true;
 
     if (!hasRecipes) {
       return EmptyState(
@@ -22,22 +23,27 @@ class QuickRecipesList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 240,
+      height: 204,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: 5,
+        padding: EdgeInsets.zero,
+        itemCount: Constants.dummyQuickRecipes.length,
         itemBuilder: (context, index) {
+          final recipe = Constants.dummyQuickRecipes[index];
           return Padding(
-            padding: EdgeInsets.only(right: index < 4 ? 12 : 0),
+            padding: EdgeInsets.only(
+              right: index < Constants.dummyQuickRecipes.length - 1 ? 12 : 0,
+            ),
             child: RecipeHomeCard(
               colorScheme: colorScheme,
-              title: "Quick Stir Fry",
-              cookTime: "15 min",
-              difficulty: "Easy",
-              imageUrl: null,
-              onTap: () {},
+              title: recipe['title'] as String,
+              cookTime: recipe['cookTime'] as String,
+              difficulty: recipe['difficulty'] as String,
+              imageUrl: recipe['imageUrl'] as String?,
+              onTap: () {
+                print('Tapped on ${recipe['title']}');
+              },
             ),
           );
         },

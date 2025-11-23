@@ -36,12 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 14),
               AppBarSection(colorScheme: cs),
-
+              const SizedBox(height: 18),
               ScanCardWidget(),
-
-              const SizedBox(height: 32),
-
+              const SizedBox(height: 25),
               SectionHeader(
                 colorScheme: cs,
                 title: "Recently Generated",
@@ -49,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 onSeeAll: () =>
                     context.pushNamed('categorySeeAll', extra: 'Recent'),
               ),
-
               const SizedBox(height: 14),
 
               RecentRecipesList(colorScheme: cs),
@@ -85,42 +83,39 @@ class AppBarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Pantry AI',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  color: colorScheme.onSurface,
-                  letterSpacing: -0.5,
-                ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Pantry AI',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+                color: colorScheme.onSurface,
+                letterSpacing: -0.5,
               ),
-              const SizedBox(height: 1),
-              Text(
-                'Cook smart with AI',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: colorScheme.onSurface.withOpacity(0.6),
-                ),
+            ),
+            const SizedBox(height: 1),
+            Text(
+              'Cook smart with AI',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                color: colorScheme.onSurface.withOpacity(0.6),
               ),
-            ],
-          ),
-          StatChip(
-            icon: Icons.local_fire_department_rounded,
-            label: "630 cal",
-            color: Colors.deepOrange,
-            colorScheme: colorScheme,
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+        StatChip(
+          icon: Icons.local_fire_department_rounded,
+          label: "630 cal",
+          color: Colors.deepOrange,
+          colorScheme: colorScheme,
+        ),
+      ],
     );
   }
 }
