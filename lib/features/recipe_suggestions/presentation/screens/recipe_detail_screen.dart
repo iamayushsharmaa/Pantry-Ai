@@ -29,7 +29,7 @@ class RecipeDetailScreen extends StatelessWidget {
       ),
       // bottomNavigationBar: StartCookingButton(colorScheme: cs),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

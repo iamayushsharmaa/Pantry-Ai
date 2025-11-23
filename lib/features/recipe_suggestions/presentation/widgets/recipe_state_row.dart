@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/state_chip.dart';
 
+import '../../../../core/common/state_chip.dart';
 import '../../domain/enities/recipe_entity.dart';
 
 class RecipeStatsRow extends StatelessWidget {
