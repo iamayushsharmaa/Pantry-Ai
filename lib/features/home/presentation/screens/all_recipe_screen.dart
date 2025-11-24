@@ -37,8 +37,7 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // App Bar
-            _AppBarSection(
+            AppBarSection(
               colorScheme: cs,
               title: CategoryTitleScreenUtils.getCategoryTitle(widget.category),
               recipeCount: recipes.length,
@@ -63,7 +62,6 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
               },
             ),
 
-            // Recipe Grid or Empty State
             Expanded(
               child: recipes.isEmpty
                   ? EmptyState(colorScheme: cs)
@@ -76,13 +74,13 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
   }
 }
 
-class _AppBarSection extends StatelessWidget {
+class AppBarSection extends StatelessWidget {
   final ColorScheme colorScheme;
   final String title;
   final int recipeCount;
   final VoidCallback onBack;
 
-  const _AppBarSection({
+  const AppBarSection({
     required this.colorScheme,
     required this.title,
     required this.recipeCount,
