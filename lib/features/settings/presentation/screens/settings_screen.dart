@@ -214,9 +214,6 @@ class _SettingsView extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------------------
-  // LANGUAGE DIALOG
-  // ----------------------------------------------------------------------
   void _showLanguageDialog(BuildContext context) {
     final bloc = context.read<SettingsBloc>();
     final state = bloc.state;
@@ -233,7 +230,10 @@ class _SettingsView extends StatelessWidget {
               value: lang,
               groupValue: state.selectedLanguage,
               onChanged: (v) {
-                Navigator.pop(context); // close instantly
+                Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).pop(); // close instantly
                 bloc.add(ChangeLanguage(v!));
               },
             );
@@ -243,9 +243,6 @@ class _SettingsView extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------------------
-  // LOGOUT DIALOG
-  // ----------------------------------------------------------------------
   void _showLogoutDialog(BuildContext context) {
     final bloc = context.read<SettingsBloc>();
 
@@ -257,14 +254,13 @@ class _SettingsView extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // close immediately
-              bloc.add(CloseLogoutDialog());
+              Navigator.of(context, rootNavigator: true).pop();
             },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // close first
+              Navigator.of(context, rootNavigator: true).pop();
               bloc.add(LogoutConfirmed());
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
@@ -275,9 +271,6 @@ class _SettingsView extends StatelessWidget {
     );
   }
 
-  // ----------------------------------------------------------------------
-  // DELETE ACCOUNT DIALOG
-  // ----------------------------------------------------------------------
   void _showDeleteAccountDialog(BuildContext context) {
     final bloc = context.read<SettingsBloc>();
 
@@ -291,14 +284,13 @@ class _SettingsView extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // close immediately
-              bloc.add(CloseDeleteDialog());
+              Navigator.of(context, rootNavigator: true).pop();
             },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // close first
+              Navigator.of(context, rootNavigator: true).pop();
               bloc.add(DeleteAccountConfirmed());
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
