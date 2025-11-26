@@ -6,6 +6,7 @@ import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart
 import 'package:pantry_ai/features/home/presentation/screens/all_recipe_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/features/preference/presentation/screens/taste_preference_screen.dart';
+import 'package:pantry_ai/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:pantry_ai/splash.dart';
 
 import '../core/common/recipe_list_args.dart';
@@ -123,7 +124,10 @@ GoRouter createRouter() {
           GoRoute(
             path: '/settings',
             name: 'settings',
-            builder: (context, state) => SettingsScreen(),
+            builder: (context, state) => BlocProvider(
+              create: (context) => SettingsBloc(),
+              child: SettingsScreen(),
+            ),
           ),
         ],
       ),
