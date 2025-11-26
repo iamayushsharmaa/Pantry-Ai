@@ -1,10 +1,10 @@
-import 'dart:ui';
+import 'package:pantry_ai/core/theme/colors.dart';
 
 class AnalyticConstants {
   static const rankColors = [
-    Color(0xFFFBBF24), // Gold
-    Color(0xFF9CA3AF), // Silver
-    Color(0xFFEA580C), // Bronze
+    AppColors.gold,
+    AppColors.silver,
+    AppColors.bronze,
   ];
 
   static const List<Map<String, dynamic>> weeklyData = [

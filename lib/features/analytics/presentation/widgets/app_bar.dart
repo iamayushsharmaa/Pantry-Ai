@@ -19,7 +19,7 @@ class AnalyticsAppBar extends StatelessWidget {
       expandedHeight: 160,
       floating: false,
       pinned: true,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
           padding: const EdgeInsets.fromLTRB(16, 60, 16, 6),

@@ -32,7 +32,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor: cs.surface,
+
       body: CustomScrollView(
         slivers: [
           AnalyticsAppBar(
@@ -54,7 +57,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 TopRecipesCard(topRecipes: _analyticsData.topRecipes),
                 const SizedBox(height: 24),
                 const InsightsSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
               ]),
             ),
           ),

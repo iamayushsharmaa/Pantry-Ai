@@ -7,15 +7,21 @@ class ScanCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.width * 0.62,
       decoration: BoxDecoration(
+        color: cs.background,
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).brightness == Brightness.light
-            ? Colors.grey.shade100
-            : Theme.of(context).colorScheme.surfaceVariant,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: 16,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
