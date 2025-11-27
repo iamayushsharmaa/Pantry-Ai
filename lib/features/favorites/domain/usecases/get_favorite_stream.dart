@@ -6,6 +6,7 @@ class GetFavoritesStream {
 
   GetFavoritesStream(this.repo);
 
-  Stream<List<FavoriteRecipe>> call() =>
-      repo.getFavoritesStream().map((e) => e.getOrElse(() => []));
+  Stream<List<FavoriteRecipe>> call() => repo.getFavoritesStream().map(
+    (either) => either.fold((failure) => [], (favorites) => favorites),
+  );
 }

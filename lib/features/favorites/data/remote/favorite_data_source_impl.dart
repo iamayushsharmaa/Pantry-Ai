@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../../shared/models/extensions/extensions.dart';
 import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../../../shared/models/recipe/recipe_snapshot_model.dart';
+import '../models/favorite_model.dart';
 import 'favorite_data_source.dart';
 
 class FavoriteRemoteDataSourceImpl implements FavoriteRemoteDataSource {
@@ -39,18 +39,18 @@ class FavoriteRemoteDataSourceImpl implements FavoriteRemoteDataSource {
   }
 
   @override
-  Stream<List<RecipeModel>> getFavoritesStream() {
-    return _favCol
+  Stream<List<FavoriteRecipeModel>> getFavoritesStream() {
+    final uid = auth.currentUser!.uid;
+    return firestore
+        .collection('users')
+        .doc(uid)
+        .collection('favorites')
         .orderBy('favoritedAt', descending: true)
         .snapshots()
         .map(
-          (querySnapshot) => querySnapshot.docs.map((doc) {
-            final favModel = doc.toFavoriteRecipeModel(); // from extension
-            return RecipeModel.fromSnapshot(
-              favModel.recipeSnapshot.toJson(),
-              favModel.recipeId,
-            );
-          }).toList(),
+          (snapshot) => snapshot.docs
+              .map((doc) => FavoriteRecipeModel.fromFirestore(doc))
+              .toList(),
         );
   }
 }

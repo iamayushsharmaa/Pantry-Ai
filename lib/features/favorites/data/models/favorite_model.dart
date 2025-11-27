@@ -15,7 +15,7 @@ class FavoriteRecipeModel extends FavoriteRecipe {
       'userId': userId,
       'recipeId': recipeId,
       'favoritedAt': Timestamp.fromDate(favoritedAt),
-      'recipeSnapshot': recipeSnapshot.toMap(),
+      'recipeSnapshot': recipeSnapshot.toJson(),
     };
   }
 

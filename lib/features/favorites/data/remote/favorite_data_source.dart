@@ -1,3 +1,5 @@
+import 'package:pantry_ai/features/favorites/data/models/favorite_model.dart';
+
 import '../../../../shared/models/recipe/recipe_model.dart';
 
 abstract class FavoriteRemoteDataSource {
@@ -7,5 +9,5 @@ abstract class FavoriteRemoteDataSource {
 
   Future<bool> isFavorite(String recipeId);
 
-  Stream<List<RecipeModel>> getFavoritesStream();
+  Stream<List<FavoriteRecipeModel>> getFavoritesStream();
 }

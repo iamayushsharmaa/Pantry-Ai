@@ -38,7 +38,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       final result = await remote.isFavorite(recipeId);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure(""));
     }
   }
 
@@ -46,22 +46,21 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   Stream<Either<Failure, List<FavoriteRecipe>>> getFavoritesStream() {
     return remote
         .getFavoritesStream()
-        .map((models) {
-          final entities = models
+        .map((favoriteModels) {
+          final entities = favoriteModels
               .map(
-                (m) => FavoriteRecipe(
-                  recipeId: m.id,
-                  favoritedAt: DateTime.now(),
-                  // you can store favoritedAt in snapshot if needed
-                  title: m.title,
-                  imageUrl: m.imageUrl,
+                (model) => FavoriteRecipe(
+                  userId: model.userId,
+                  recipeId: model.recipeId,
+                  favoritedAt: model.favoritedAt,
+                  recipeSnapshot: model.recipeSnapshot,
                 ),
               )
               .toList();
           return Right<Failure, List<FavoriteRecipe>>(entities);
         })
         .handleError(
-          (e) => Left<Failure, List<FavoriteRecipe>>(ServerFailure("server")),
+          (_) => Left<Failure, List<FavoriteRecipe>>(ServerFailure("")),
         );
   }
 }
