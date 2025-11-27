@@ -3,7 +3,6 @@ import 'package:pantry_ai/features/recipe_detail/presentation/widgets/recipe_sta
 import 'package:pantry_ai/features/recipe_detail/presentation/widgets/recipe_tag_row.dart';
 
 import '../../../../shared/models/recipe/recipe.dart';
-import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
 import 'difficulty_indicator.dart';
 
 class Header extends StatelessWidget {
