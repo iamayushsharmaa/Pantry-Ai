@@ -4,9 +4,9 @@ class DifficultyUtils {
   static String getDifficultyLabel(int difficulty) {
     switch (difficulty) {
       case 1:
-        return "Easy";
+        return "Very Easy";
       case 2:
-        return "Moderate";
+        return "Easy";
       case 3:
         return "Medium";
       case 4:

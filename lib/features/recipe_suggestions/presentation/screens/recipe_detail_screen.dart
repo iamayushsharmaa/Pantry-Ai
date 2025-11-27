@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/details/header.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/details/missing_ingredient_header.dart';
 
 import '../../domain/enities/recipe_entity.dart';
-import '../widgets/details/glass_icon_button.dart';
+import '../widgets/details/action_buttons.dart';
+import '../widgets/details/difficulty_indicator.dart';
 import '../widgets/details/ingredient_card.dart';
 import '../widgets/details/instruction_step_card.dart';
 import '../widgets/details/missing_ingredient_card.dart';
+import '../widgets/details/missing_ingredient_header.dart';
 import '../widgets/details/recipe_section_header.dart';
+import '../widgets/details/recipe_state_row.dart';
+import '../widgets/details/recipe_tag_row.dart';
 
-class RecipeDetailScreen extends StatelessWidget {
+class RecipeDetailScreen extends StatefulWidget {
   final Recipe recipe;
 
   const RecipeDetailScreen({super.key, required this.recipe});
+
+  @override
+  State<RecipeDetailScreen> createState() => _RecipeDetailScreenState();
+}
+
+class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
+  bool isFavorite = false;
+  bool isSaved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,104 +31,261 @@ class RecipeDetailScreen extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Scaffold(
-      backgroundColor: cs.background,
+      backgroundColor: cs.surface,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: cs.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: GlassIconButton(icon: Icons.arrow_back),
+        leading: IconButton(
+          icon: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: cs.surface.withOpacity(0.9),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.arrow_back_rounded,
+              color: cs.onSurface,
+              size: 22,
+            ),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: cs.surface.withOpacity(0.9),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : cs.onSurface,
+                size: 22,
+              ),
+            ),
+            onPressed: () {
+              setState(() => isFavorite = !isFavorite);
+              _showSnackBar(
+                context,
+                isFavorite ? 'Added to favorites ❤️' : 'Removed from favorites',
+                cs,
+              );
+            },
+          ),
+          IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: cs.surface.withOpacity(0.9),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isSaved ? Icons.bookmark : Icons.bookmark_border,
+                color: isSaved ? cs.primary : cs.onSurface,
+                size: 22,
+              ),
+            ),
+            onPressed: () {
+              setState(() => isSaved = !isSaved);
+              _showSnackBar(
+                context,
+                isSaved ? 'Recipe saved 📌' : 'Recipe unsaved',
+                cs,
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
-      // bottomNavigationBar: StartCookingButton(colorScheme: cs),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 6),
-
-            ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: AspectRatio(
-                aspectRatio: 16 / 10,
-                child: FadeInImage(
-                  placeholder: const AssetImage(
-                    'assets/images/placeholder.jpg',
+      bottomNavigationBar: ActionButtons(
+        colorScheme: cs,
+        onStartCooking: () {
+          _showSnackBar(context, 'Starting cooking mode! 👨‍🍳', cs);
+        },
+        onMarkAsCooked: () {
+          _showSnackBar(context, 'Marked as cooked! ✅', cs);
+        },
+      ),
+      body: CustomScrollView(
+        slivers: [
+          // Hero Image
+          SliverToBoxAdapter(
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(32),
+                    bottomRight: Radius.circular(32),
                   ),
-                  image: NetworkImage(recipe.imageUrl),
-                  fit: BoxFit.cover,
-                  fadeInDuration: const Duration(milliseconds: 250),
-                  fadeInCurve: Curves.easeOut,
-                  imageErrorBuilder: (_, __, ___) => Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.error, size: 40),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 10,
+                    child: Image.network(
+                      widget.recipe.imageUrl,
+                      fit: BoxFit.cover,
+                      cacheWidth: 800,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          color: cs.surfaceContainerHighest,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: cs.primary,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (_, __, ___) => Container(
+                        color: cs.surfaceContainerHighest,
+                        child: Icon(
+                          Icons.restaurant,
+                          size: 64,
+                          color: cs.onSurface.withOpacity(0.3),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 6),
-
-            Header(recipe: recipe, cs: cs, textTheme: textTheme),
-            const SizedBox(height: 10),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0),
-              child: Text(
-                recipe.description!,
-                style: textTheme.titleMedium!.copyWith(
-                  fontSize: 15,
-                  height: 1.5,
+                // Gradient Overlay
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          cs.surface.withOpacity(0.9),
+                        ],
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(32),
+                        bottomRight: Radius.circular(32),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 15),
+          ),
 
-            RecipeSectionHeader(
-              title: "Ingredients",
-              count: recipe.ingredients.length,
-              colorScheme: cs,
-            ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                const SizedBox(height: 20),
 
-            const SizedBox(height: 12),
+                Text(
+                  widget.recipe.title,
+                  style: textTheme.headlineMedium?.copyWith(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: cs.onSurface,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 16),
 
-            ...recipe.ingredients.map(
-              (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
-            ),
+                RecipeStatsRow(recipe: widget.recipe, colorScheme: cs),
+                const SizedBox(height: 16),
 
-            const SizedBox(height: 15),
+                RecipeDifficultyIndicator(
+                  difficulty: widget.recipe.difficulty,
+                  colorScheme: cs,
+                ),
 
-            if (recipe.missingIngredients.isNotEmpty)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                if (widget.recipe.cuisine != null ||
+                    widget.recipe.dietaryInfo != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: RecipeTagsRow(
+                      cuisine: widget.recipe.cuisine,
+                      dietaryInfo: widget.recipe.dietaryInfo,
+                      colorScheme: cs,
+                    ),
+                  ),
+
+                const SizedBox(height: 20),
+
+                if (widget.recipe.description != null)
+                  Text(
+                    widget.recipe.description!,
+                    style: textTheme.bodyLarge?.copyWith(
+                      fontSize: 15,
+                      height: 1.6,
+                      color: cs.onSurface.withOpacity(0.8),
+                    ),
+                  ),
+
+                const SizedBox(height: 24),
+
+                RecipeSectionHeader(
+                  title: "Ingredients",
+                  count: widget.recipe.ingredients.length,
+                  colorScheme: cs,
+                ),
+                const SizedBox(height: 12),
+
+                ...widget.recipe.ingredients.map(
+                  (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
+                ),
+
+                const SizedBox(height: 20),
+
+                if (widget.recipe.missingIngredients.isNotEmpty) ...[
                   MissingIngredientsHeader(colorScheme: cs),
-                  const SizedBox(height: 7),
-                  ...recipe.missingIngredients.map(
+                  const SizedBox(height: 8),
+                  ...widget.recipe.missingIngredients.map(
                     (m) => MissingIngredientCard(name: m, colorScheme: cs),
                   ),
+                  const SizedBox(height: 20),
                 ],
-              ),
 
-            const SizedBox(height: 15),
+                Text(
+                  "Cooking Instructions",
+                  style: textTheme.titleLarge?.copyWith(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: cs.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 12),
 
-            Text(
-              "Cooking Instructions",
-              style: textTheme.titleLarge?.copyWith(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: cs.onBackground,
-              ),
+                ...List.generate(widget.recipe.instructions.length, (i) {
+                  return InstructionStepCard(
+                    step: i + 1,
+                    text: widget.recipe.instructions[i],
+                    colorScheme: cs,
+                  );
+                }),
+
+                const SizedBox(height: 20),
+              ]),
             ),
+          ),
+        ],
+      ),
+    );
+  }
 
-            const SizedBox(height: 12),
-
-            ...List.generate(recipe.instructions.length, (i) {
-              return InstructionStepCard(
-                step: i + 1,
-                text: recipe.instructions[i],
-                colorScheme: cs,
-              );
-            }),
-          ],
-        ),
+  void _showSnackBar(BuildContext context, String message, ColorScheme cs) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: cs.inverseSurface,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

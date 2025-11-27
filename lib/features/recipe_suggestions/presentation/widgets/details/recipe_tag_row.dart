@@ -16,6 +16,7 @@ class RecipeTagsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,
+      runSpacing: 8,
       children: [
         if (cuisine != null)
           RecipeTag(text: cuisine!, colorScheme: colorScheme),

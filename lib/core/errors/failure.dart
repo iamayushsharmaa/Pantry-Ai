@@ -11,3 +11,7 @@ class ServerFailure extends Failure {
 class AuthFailure extends Failure {
   AuthFailure(String message) : super(message);
 }
+
+class NoUserFailure extends Failure {
+  NoUserFailure(String message) : super(message);
+}

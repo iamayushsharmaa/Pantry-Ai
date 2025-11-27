@@ -1,10 +1,9 @@
-import 'package:pantry_ai/features/recipe_suggestions/domain/enities/recipe_entity.dart';
-import 'package:pantry_ai/features/recipe_suggestions/domain/enities/taste_preference_entity.dart';
-
+import '../../domain/enities/recipe_entity.dart';
+import '../../domain/enities/taste_preference_entity.dart';
 import '../../domain/repository/recipe_repository.dart';
 import '../datasource/local/recipe_local_datasource.dart';
 import '../datasource/remote/recipe_remote_datasource.dart';
-import '../models/recipe_model.dart';
+import '../../../../shared/models/recipe/recipe_model.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeRemoteDataSource remote;
@@ -27,17 +26,17 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
       await local.cacheRecipes(models);
 
-      return models.map((m) => m.toEntity()).toList();
+      return models.toList();
     } catch (_) {
       final cache = await local.getCachedRecipes();
-      return cache.map((m) => m.toEntity()).toList();
+      return cache.toList();
     }
   }
 
   @override
   Future<void> cacheRecipes(List<Recipe> recipes) async {
     try {
-      final models = recipes.map((e) => RecipeModel.fromEntity(e)).toList();
+      final models = recipes.toList() as List<RecipeModel>;
       await local.cacheRecipes(models);
     } catch (e) {
       print('Error: \$e');
@@ -47,6 +46,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
   @override
   Future<List<Recipe>> getCachedRecipes() async {
     final models = await local.getCachedRecipes();
-    return models.map((e) => e.toEntity()).toList();
+    return models.toList();
   }
 }

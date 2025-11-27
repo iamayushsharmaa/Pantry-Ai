@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class SuggestionAppBar extends StatelessWidget {
-  const SuggestionAppBar({super.key});
+  final ColorScheme colorScheme;
+
+  const SuggestionAppBar({super.key, required this.colorScheme});
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return SliverAppBar(
       expandedHeight: 140,
       floating: false,
       pinned: true,
       elevation: 0,
-      backgroundColor: cs.surface,
+      backgroundColor: colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       leading: IconButton(
         onPressed: () => context.pop(),
-        icon: Icon(Icons.arrow_back_rounded, color: cs.onSurface, size: 20),
+        icon: Icon(
+          Icons.arrow_back_rounded,
+          color: colorScheme.onSurface,
+          size: 20,
+        ),
       ),
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
@@ -30,7 +34,7 @@ class SuggestionAppBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: cs.onSurface,
+                color: colorScheme.onSurface,
                 letterSpacing: -0.3,
               ),
             ),
@@ -40,7 +44,7 @@ class SuggestionAppBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
-                color: cs.onSurface.withOpacity(0.6),
+                color: colorScheme.onSurface.withOpacity(0.6),
                 letterSpacing: 0,
               ),
             ),
@@ -51,7 +55,10 @@ class SuggestionAppBar extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [cs.primaryContainer.withOpacity(0.3), cs.surface],
+              colors: [
+                colorScheme.primaryContainer.withOpacity(0.3),
+                colorScheme.surface,
+              ],
             ),
           ),
         ),

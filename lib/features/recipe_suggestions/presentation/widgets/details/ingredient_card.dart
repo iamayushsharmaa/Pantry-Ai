@@ -16,14 +16,14 @@ class IngredientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: colorScheme.surface,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: ingredient.isAvailable
               ? Colors.green.withOpacity(0.3)
-              : colorScheme.outline.withOpacity(0.2),
+              : colorScheme.outline.withOpacity(0.15),
           width: 1.5,
         ),
       ),
@@ -34,7 +34,7 @@ class IngredientCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: ingredient.isAvailable
                   ? Colors.green.withOpacity(0.15)
-                  : colorScheme.surfaceVariant,
+                  : colorScheme.surfaceContainerHigh,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -43,8 +43,8 @@ class IngredientCard extends StatelessWidget {
                   : Icons.circle_outlined,
               color: ingredient.isAvailable
                   ? Colors.green
-                  : colorScheme.onSurfaceVariant,
-              size: 20,
+                  : colorScheme.onSurface.withOpacity(0.5),
+              size: 18,
             ),
           ),
           const SizedBox(width: 14),
@@ -56,7 +56,7 @@ class IngredientCard extends StatelessWidget {
                   ingredient.name,
                   style: TextStyle(
                     color: colorScheme.onSurface,
-                    fontSize: 15.5,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

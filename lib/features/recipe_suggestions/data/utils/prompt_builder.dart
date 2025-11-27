@@ -1,9 +1,10 @@
-import '../../../../core/constant/constants.dart';
+import 'package:pantry_ai/core/constant/ai_prompt.dart';
+
 import '../../domain/enities/recipe_entity.dart';
 import '../../domain/enities/taste_preference_entity.dart';
 
 String buildPrompt(TastePreferences prefs, {List<Recipe>? oldRecipes}) {
-  final basePrompt = Constants.prompt
+  final basePrompt = AIPrompts.recipeGenerationPrompt
       .replaceAll('{{taste}}', prefs.taste)
       .replaceAll('{{cuisine}}', prefs.cuisine)
       .replaceAll('{{diet}}', prefs.diet)

@@ -18,18 +18,21 @@ class RecipeDifficultyIndicator extends StatelessWidget {
         Text(
           "Difficulty: ",
           style: TextStyle(
-            color: colorScheme.onBackground.withOpacity(0.7),
+            color: colorScheme.onSurface.withOpacity(0.7),
             fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
         ),
         ...List.generate(5, (index) {
-          return Icon(
-            index < difficulty ? Icons.circle : Icons.circle_outlined,
-            size: 12,
-            color: index < difficulty
-                ? colorScheme.primary
-                : colorScheme.onBackground.withOpacity(0.3),
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 1),
+            child: Icon(
+              index < difficulty ? Icons.circle : Icons.circle_outlined,
+              size: 12,
+              color: index < difficulty
+                  ? colorScheme.primary
+                  : colorScheme.onSurface.withOpacity(0.3),
+            ),
           );
         }),
         const SizedBox(width: 8),

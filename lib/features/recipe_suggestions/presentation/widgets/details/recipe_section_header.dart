@@ -22,24 +22,21 @@ class RecipeSectionHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: colorScheme.onBackground,
+            color: colorScheme.onSurface,
           ),
         ),
-
         Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             color: colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: Text(
-              "$count items",
-              style: TextStyle(
-                color: colorScheme.onPrimaryContainer,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
+          child: Text(
+            "$count items",
+            style: TextStyle(
+              color: colorScheme.onPrimaryContainer,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:pantry_ai/features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 
-import '../../models/recipe_model.dart';
+import '../../../../../shared/models/recipe/recipe_model.dart';
 
 class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
   final Box box;
@@ -10,7 +10,7 @@ class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
 
   @override
   Future<void> cacheRecipes(List<RecipeModel> recipes) async {
-    await box.put("recipes", recipes.map((e) => e.toJson()).toList());
+    await box.put("recipes", recipes.toList());
   }
 
   @override

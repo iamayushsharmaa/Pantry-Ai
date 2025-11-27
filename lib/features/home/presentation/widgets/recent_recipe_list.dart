@@ -11,7 +11,7 @@ class RecentRecipesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const hasRecipes = true;
+    const hasRecipes = false;
 
     if (!hasRecipes) {
       return EmptyState(
@@ -22,32 +22,32 @@ class RecentRecipesList extends StatelessWidget {
       );
     }
 
-    return SizedBox(
-      height: 204,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.zero,
-        itemCount: Constants.recentRecipes.length,
-        itemBuilder: (context, index) {
-          final recipe = Constants.recentRecipes[index];
-          return Padding(
-            padding: EdgeInsets.only(
-              right: index < dummyRecipes.length - 1 ? 12 : 0,
-            ),
-            child: RecipeHomeCard(
-              colorScheme: colorScheme,
-              title: recipe['title'] as String,
-              cookTime: recipe['cookTime'] as String,
-              difficulty: recipe['difficulty'] as String,
-              imageUrl: recipe['imageUrl'] as String?,
-              onTap: () {
-                print('Tapped on ${recipe['title']}');
-              },
-            ),
-          );
-        },
-      ),
-    );
+    // return SizedBox(
+    //   height: 204,
+    //   child: ListView.builder(
+    //     scrollDirection: Axis.horizontal,
+    //     physics: const BouncingScrollPhysics(),
+    //     padding: EdgeInsets.zero,
+    //     itemCount: Constants.recentRecipes.length,
+    //     itemBuilder: (context, index) {
+    //       final recipe = Constants.recentRecipes[index];
+    //       return Padding(
+    //         padding: EdgeInsets.only(
+    //           right: index < dummyRecipes.length - 1 ? 12 : 0,
+    //         ),
+    //         child: RecipeHomeCard(
+    //           colorScheme: colorScheme,
+    //           title: recipe['title'] as String,
+    //           cookTime: recipe['cookTime'] as String,
+    //           difficulty: recipe['difficulty'] as String,
+    //           imageUrl: recipe['imageUrl'] as String?,
+    //           onTap: () {
+    //             print('Tapped on ${recipe['title']}');
+    //           },
+    //         ),
+    //       );
+    //     },
+    //   ),
+    // );
   }
 }

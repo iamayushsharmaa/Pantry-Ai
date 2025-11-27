@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class MissingIngredientCard extends StatelessWidget {
@@ -14,38 +13,24 @@ class MissingIngredientCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.redAccent.withOpacity(0.3),
-          width: 1.5,
-        ),
+        color: colorScheme.errorContainer.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.error.withOpacity(0.3), width: 1),
       ),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.add_shopping_cart_rounded,
-              color: Colors.redAccent,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 14),
+          Icon(Icons.remove_circle_outline, color: colorScheme.error, size: 18),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               name,
-              style: const TextStyle(
-                color: Colors.redAccent,
-                fontSize: 15.5,
-                fontWeight: FontWeight.w600,
+              style: TextStyle(
+                color: colorScheme.onErrorContainer,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

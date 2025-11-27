@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../preference/presentation/models/taste_preference_ui_model.dart';
-import '../../data/models/recipe_model.dart';
+import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../domain/enities/recipe_entity.dart';
 import '../../domain/enities/taste_preference_entity.dart';
 import '../../domain/usecases/cache_reccipe_usecase.dart';
@@ -70,9 +69,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     emit(state.copyWith(isLoading: true, error: null));
 
     try {
-      final oldModels = state.recipes
-          .map((e) => RecipeModel.fromEntity(e))
-          .toList();
+      final oldModels = state.recipes.toList() as List<RecipeModel>;
 
       final newRecipes = await generateRecipes(
         state.imagePath!,

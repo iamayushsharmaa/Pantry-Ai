@@ -1,14 +1,13 @@
-
 class Ingredient {
   final String name;
-  final double? quantity;
-  final String? unit;
+  final double quantity;
+  final String unit;
   final bool isAvailable;
 
-  const Ingredient({
+  Ingredient({
     required this.name,
-    this.quantity,
-    this.unit,
+    required this.quantity,
+    required this.unit,
     required this.isAvailable,
   });
 }

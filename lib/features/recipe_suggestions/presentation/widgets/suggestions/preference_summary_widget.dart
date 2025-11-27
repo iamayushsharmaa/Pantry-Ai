@@ -19,46 +19,49 @@ class PreferenceSummaryWidget extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: cs.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: cs.outline.withOpacity(0.1), width: 1),
+        // Reduced shadow complexity
         boxShadow: [
           BoxShadow(
-            color: cs.shadow.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: cs.shadow.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: Image.file(
-                File(imagePath),
-                width: 90,
-                height: 90,
-                fit: BoxFit.cover,
-              ),
+          // Image with caching
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.file(
+              File(imagePath),
+              width: 90,
+              height: 90,
+              fit: BoxFit.cover,
+              cacheWidth: 180,
+              // Cache at 2x for retina displays
+              cacheHeight: 180,
             ),
           ),
 
           const SizedBox(width: 14),
 
+          // Chips
           Expanded(
             child: Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                PreferenceChip(label: preferences.taste, cs: cs),
-                PreferenceChip(label: preferences.cuisine, cs: cs),
-                PreferenceChip(label: preferences.diet, cs: cs),
-                PreferenceChip(
+                _PreferenceChip(label: preferences.taste, cs: cs),
+                _PreferenceChip(label: preferences.cuisine, cs: cs),
+                _PreferenceChip(label: preferences.diet, cs: cs),
+                _PreferenceChip(
                   label: "${preferences.maxCookingTime} min",
                   cs: cs,
                 ),
@@ -71,18 +74,28 @@ class PreferenceSummaryWidget extends StatelessWidget {
   }
 }
 
-class PreferenceChip extends StatelessWidget {
+class _PreferenceChip extends StatelessWidget {
   final String label;
   final ColorScheme cs;
 
-  const PreferenceChip({super.key, required this.label, required this.cs});
+  const _PreferenceChip({required this.label, required this.cs});
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      label: Text(label),
-      backgroundColor: cs.surfaceContainerHighest.withOpacity(0.1),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: cs.primaryContainer.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: cs.onPrimaryContainer,
+        ),
+      ),
     );
   }
 }

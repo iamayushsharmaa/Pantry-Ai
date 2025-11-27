@@ -1,4 +1,4 @@
-import '../../data/models/recipe_model.dart';
+import '../../../../shared/models/recipe/recipe_model.dart';
 import '../enities/recipe_entity.dart';
 import '../enities/taste_preference_entity.dart';
 

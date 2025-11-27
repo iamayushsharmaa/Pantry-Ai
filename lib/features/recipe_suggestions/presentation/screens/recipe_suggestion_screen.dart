@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/suggestions/app_bar.dart';
 
-import '../../../../core/constant/constants.dart';
 import '../widgets/suggestions/preference_summary_widget.dart';
 import '../widgets/suggestions/recipe_card_widget.dart';
 
@@ -47,12 +46,12 @@ class RecipeListScreen extends StatelessWidget {
             );
           }
 
-          final recipes = dummyRecipes;
+          final recipes = [];
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              const SuggestionAppBar(),
+              SuggestionAppBar(colorScheme: cs),
 
               SliverPadding(
                 padding: const EdgeInsets.symmetric(
@@ -107,6 +106,7 @@ class RecipeListScreen extends StatelessWidget {
                       ),
                     ),
 
+                    // Recipe Cards
                     ...List.generate(recipes.length, (index) {
                       final recipe = recipes[index];
                       return Padding(
@@ -114,6 +114,7 @@ class RecipeListScreen extends StatelessWidget {
                         child: RepaintBoundary(
                           child: RecipeCard(
                             recipe: recipe,
+                            colorScheme: cs,
                             onTap: () => context.pushNamed(
                               'recipeDetails',
                               extra: recipe,
@@ -125,6 +126,7 @@ class RecipeListScreen extends StatelessWidget {
 
                     const SizedBox(height: 8),
 
+                    // Load More Button
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -174,6 +176,7 @@ class RecipeListScreen extends StatelessWidget {
                       ),
                     ),
 
+                    // Loading Indicator
                     if (state.isLoading)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
