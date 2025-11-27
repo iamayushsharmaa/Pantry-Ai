@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/enities/ingredient_entity.dart';
+import '../../../domain/enities/ingredient_entity.dart';
 
 class IngredientCard extends StatelessWidget {
   final Ingredient ingredient;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/header.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/missing_ingredient_header.dart';
+import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/details/header.dart';
+import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/details/missing_ingredient_header.dart';
 
 import '../../domain/enities/recipe_entity.dart';
-import '../widgets/glass_icon_button.dart';
-import '../widgets/ingredient_card.dart';
-import '../widgets/instruction_step_card.dart';
-import '../widgets/missing_ingredient_card.dart';
-import '../widgets/recipe_section_header.dart';
+import '../widgets/details/glass_icon_button.dart';
+import '../widgets/details/ingredient_card.dart';
+import '../widgets/details/instruction_step_card.dart';
+import '../widgets/details/missing_ingredient_card.dart';
+import '../widgets/details/recipe_section_header.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
   final Recipe recipe;

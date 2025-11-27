@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/common/state_chip.dart';
-import '../../domain/enities/recipe_entity.dart';
+import '../../../../../core/common/state_chip.dart';
+import '../../../domain/enities/recipe_entity.dart';
 
 class RecipeStatsRow extends StatelessWidget {
   final Recipe recipe;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/recipe_state_row.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/recipe_tag_row.dart';
+import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/details/recipe_state_row.dart';
+import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/details/recipe_tag_row.dart';
 
-import '../../domain/enities/recipe_entity.dart';
+import '../../../domain/enities/recipe_entity.dart';
 import 'difficulty_indicator.dart';
 
 class Header extends StatelessWidget {

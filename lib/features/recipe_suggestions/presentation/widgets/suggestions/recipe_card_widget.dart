@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/enities/recipe_entity.dart';
+import '../../../domain/enities/recipe_entity.dart';
 
 class RecipeCard extends StatelessWidget {
   final Recipe recipe;
