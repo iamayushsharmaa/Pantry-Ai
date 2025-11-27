@@ -27,7 +27,7 @@ class CookedRecipe {
       'userId': userId,
       'recipeId': recipeId,
       'cookedAt': Timestamp.fromDate(cookedAt),
-      'recipeSnapshot': recipeSnapshot.toMap(),
+      'recipeSnapshot': recipeSnapshot.toJson(),
       'actualCookingTime': actualCookingTime,
       'userRating': userRating,
       'feedback': feedback,

@@ -1,4 +1,4 @@
-import '../../../domain/enities/taste_preference_entity.dart';
+import '../../../../../shared/models/recipe/taste_preference.dart';
 import '../../../../../shared/models/recipe/recipe_model.dart';
 
 abstract class RecipeRemoteDataSource {

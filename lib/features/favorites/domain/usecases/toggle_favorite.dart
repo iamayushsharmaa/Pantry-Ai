@@ -1,3 +1,4 @@
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
 import '../repository/favorite_repository.dart';
 

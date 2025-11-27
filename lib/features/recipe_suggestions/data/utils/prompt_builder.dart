@@ -1,7 +1,8 @@
 import 'package:pantry_ai/core/constant/ai_prompt.dart';
 
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../domain/enities/recipe_entity.dart';
-import '../../domain/enities/taste_preference_entity.dart';
+import '../../../../shared/models/recipe/taste_preference.dart';
 
 String buildPrompt(TastePreferences prefs, {List<Recipe>? oldRecipes}) {
   final basePrompt = AIPrompts.recipeGenerationPrompt

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/utils/show_snackbar.dart';
 import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
-import '../../features/recipe_suggestions/domain/enities/recipe_entity.dart';
+import '../models/recipe/recipe.dart';
 
 class FavoriteButton extends StatefulWidget {
   final Recipe recipe;

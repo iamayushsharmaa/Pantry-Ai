@@ -1,3 +1,4 @@
+import '../../../../shared/models/recipe/recipe.dart';
 import '../enities/recipe_entity.dart';
 import '../repository/recipe_repository.dart';
 

@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
+import '../../../../shared/models/recipe/recipe.dart';
 import '../entities/favorite_recipe_entity.dart';
 
 abstract class FavoriteRepository {

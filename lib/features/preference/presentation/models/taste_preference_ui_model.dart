@@ -1,4 +1,4 @@
-import '../../../recipe_suggestions/domain/enities/taste_preference_entity.dart';
+import '../../../../shared/models/recipe/taste_preference.dart';
 
 class TastePreferencesUi {
   final String taste;

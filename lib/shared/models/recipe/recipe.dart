@@ -1,6 +1,3 @@
-import 'ingredient_entity.dart';
-import 'nutrition_info.dart';
-
 class Recipe {
   final String id;
   final String title;
@@ -38,5 +35,33 @@ class Recipe {
     required this.missingIngredients,
     required this.instructions,
     required this.tags,
+  });
+}
+
+class Ingredient {
+  final String name;
+  final double quantity;
+  final String unit;
+  final bool isAvailable;
+
+  Ingredient({
+    required this.name,
+    required this.quantity,
+    required this.unit,
+    required this.isAvailable,
+  });
+}
+
+class NutritionInfo {
+  final double protein;
+  final double carbs;
+  final double fat;
+  final double fiber;
+
+  NutritionInfo({
+    required this.protein,
+    required this.carbs,
+    required this.fat,
+    required this.fiber,
   });
 }

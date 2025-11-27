@@ -28,7 +28,7 @@ class CookingSession {
       'recipeId': recipeId,
       'startedAt': Timestamp.fromDate(startedAt),
       'completedAt': completedAt != null ? Timestamp.fromDate(completedAt!) : null,
-      'recipeSnapshot': recipeSnapshot.toMap(),
+      'recipeSnapshot': recipeSnapshot.toJson(),
       'currentStep': currentStep,
       'isActive': isActive,
     };

@@ -1,4 +1,5 @@
-import '../../../features/recipe_suggestions/domain/enities/ingredient_entity.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe.dart';
+
 
 class IngredientModel extends Ingredient {
   IngredientModel({

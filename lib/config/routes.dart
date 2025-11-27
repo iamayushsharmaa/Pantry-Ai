@@ -15,16 +15,16 @@ import '../features/analytics/presentation/screens/analytics_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/preference/presentation/bloc/taste_preference_bloc.dart';
-import '../features/recipe_suggestions/domain/enities/recipe_entity.dart';
+import '../features/recipe_detail/presentation/screens/recipe_detail_screen.dart';
 import '../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dart';
 import '../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
 import '../features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
-import '../features/recipe_detail/presentation/screens/recipe_detail_screen.dart';
 import '../features/recipe_suggestions/presentation/screens/recipe_suggestion_screen.dart';
 import '../features/scan/presentation/bloc/scan_bloc.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
+import '../shared/models/recipe/recipe.dart';
 
 GoRouter createRouter() {
   final initialLocation = '/splash';

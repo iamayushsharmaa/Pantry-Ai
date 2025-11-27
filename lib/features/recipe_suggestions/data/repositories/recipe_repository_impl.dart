@@ -1,5 +1,6 @@
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../domain/enities/recipe_entity.dart';
-import '../../domain/enities/taste_preference_entity.dart';
+import '../../../../shared/models/recipe/taste_preference.dart';
 import '../../domain/repository/recipe_repository.dart';
 import '../datasource/local/recipe_local_datasource.dart';
 import '../datasource/remote/recipe_remote_datasource.dart';

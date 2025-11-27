@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe.dart';
 
-import '../../../features/recipe_suggestions/domain/enities/recipe_entity.dart';
 
 class RecipeSnapshot {
   final String title;

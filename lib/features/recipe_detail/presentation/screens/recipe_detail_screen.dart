@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pantry_ai/core/utils/show_snackbar.dart';
 import 'package:pantry_ai/shared/widgets/favorite_button.dart';
 
-import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/action_buttons.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/difficulty_indicator.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/ingredient_card.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/instruction_step_card.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/missing_ingredient_card.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/missing_ingredient_header.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/recipe_section_header.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/recipe_state_row.dart';
-import '../../../recipe_suggestions/presentation/widgets/widgets/recipe_tag_row.dart';
+import '../../../../shared/models/recipe/recipe.dart';
+import '../widgets/action_buttons.dart';
+import '../widgets/difficulty_indicator.dart';
+import '../widgets/ingredient_card.dart';
+import '../widgets/instruction_step_card.dart';
+import '../widgets/missing_ingredient_card.dart';
+import '../widgets/missing_ingredient_header.dart';
+import '../widgets/recipe_section_header.dart';
+import '../widgets/recipe_state_row.dart';
+import '../widgets/recipe_tag_row.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
   final Recipe recipe;
@@ -116,21 +116,20 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                               color: cs.primary,
                               value: loadingProgress.expectedTotalBytes != null
                                   ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
+                                        loadingProgress.expectedTotalBytes!
                                   : null,
                             ),
                           ),
                         );
                       },
-                      errorBuilder: (_, __, ___) =>
-                          Container(
-                            color: cs.surfaceContainerHighest,
-                            child: Icon(
-                              Icons.restaurant,
-                              size: 64,
-                              color: cs.onSurface.withOpacity(0.3),
-                            ),
-                          ),
+                      errorBuilder: (_, __, ___) => Container(
+                        color: cs.surfaceContainerHighest,
+                        child: Icon(
+                          Icons.restaurant,
+                          size: 64,
+                          color: cs.onSurface.withOpacity(0.3),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -219,7 +218,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 const SizedBox(height: 12),
 
                 ...widget.recipe.ingredients.map(
-                      (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
+                  (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
                 ),
 
                 const SizedBox(height: 20),
@@ -228,7 +227,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   MissingIngredientsHeader(colorScheme: cs),
                   const SizedBox(height: 8),
                   ...widget.recipe.missingIngredients.map(
-                        (m) => MissingIngredientCard(name: m, colorScheme: cs),
+                    (m) => MissingIngredientCard(name: m, colorScheme: cs),
                   ),
                   const SizedBox(height: 20),
                 ],

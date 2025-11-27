@@ -1,6 +1,6 @@
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../../../shared/models/recipe/recipe_model.dart';
-import '../enities/recipe_entity.dart';
-import '../enities/taste_preference_entity.dart';
+import '../../../../shared/models/recipe/taste_preference.dart';
 
 abstract interface class RecipeRepository {
   Future<List<Recipe>> generateRecipes(

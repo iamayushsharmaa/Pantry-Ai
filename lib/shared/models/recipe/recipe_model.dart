@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe.dart';
 
-import '../../../features/recipe_suggestions/domain/enities/nutrition_info.dart';
-import '../../../features/recipe_suggestions/domain/enities/recipe_entity.dart';
 import 'ingredients_model.dart';
 import 'nutrition_info_model.dart';
 

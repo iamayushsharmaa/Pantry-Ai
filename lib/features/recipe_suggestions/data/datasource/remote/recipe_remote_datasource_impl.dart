@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:pantry_ai/core/constant/constants.dart';
 import 'package:pantry_ai/features/recipe_suggestions/data/datasource/remote/recipe_remote_datasource.dart';
 
-import '../../../domain/enities/taste_preference_entity.dart';
+import '../../../../../shared/models/recipe/taste_preference.dart';
 import '../../../../../shared/models/recipe/recipe_model.dart';
 import '../../utils/prompt_builder.dart';
 

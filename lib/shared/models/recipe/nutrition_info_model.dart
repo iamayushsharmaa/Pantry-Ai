@@ -1,4 +1,5 @@
-import '../../../features/recipe_suggestions/domain/enities/nutrition_info.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe.dart';
+
 
 class NutritionInfoModel extends NutritionInfo {
   NutritionInfoModel({

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
 import '../../domain/entities/favorite_recipe_entity.dart';
 import '../../domain/usecases/get_favorite_stream.dart';

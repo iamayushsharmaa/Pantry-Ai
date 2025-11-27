@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
 import '../../domain/entities/favorite_recipe_entity.dart';
