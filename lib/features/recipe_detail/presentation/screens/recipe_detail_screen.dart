@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pantry_ai/core/utils/show_snackbar.dart';
+import 'package:pantry_ai/shared/widgets/favorite_button.dart';
 
-import '../../domain/enities/recipe_entity.dart';
-import '../widgets/details/action_buttons.dart';
-import '../widgets/details/difficulty_indicator.dart';
-import '../widgets/details/ingredient_card.dart';
-import '../widgets/details/instruction_step_card.dart';
-import '../widgets/details/missing_ingredient_card.dart';
-import '../widgets/details/missing_ingredient_header.dart';
-import '../widgets/details/recipe_section_header.dart';
-import '../widgets/details/recipe_state_row.dart';
-import '../widgets/details/recipe_tag_row.dart';
+import '../../../recipe_suggestions/domain/enities/recipe_entity.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/action_buttons.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/difficulty_indicator.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/ingredient_card.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/instruction_step_card.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/missing_ingredient_card.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/missing_ingredient_header.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/recipe_section_header.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/recipe_state_row.dart';
+import '../../../recipe_suggestions/presentation/widgets/widgets/recipe_tag_row.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
   final Recipe recipe;
@@ -52,28 +54,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          IconButton(
-            icon: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: cs.surface.withOpacity(0.9),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite ? Colors.red : cs.onSurface,
-                size: 22,
-              ),
-            ),
-            onPressed: () {
-              setState(() => isFavorite = !isFavorite);
-              _showSnackBar(
-                context,
-                isFavorite ? 'Added to favorites ❤️' : 'Removed from favorites',
-                cs,
-              );
-            },
-          ),
+          FavoriteButton(recipe: widget.recipe),
           IconButton(
             icon: Container(
               padding: const EdgeInsets.all(10),
@@ -89,7 +70,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             ),
             onPressed: () {
               setState(() => isSaved = !isSaved);
-              _showSnackBar(
+              showSnackBar(
                 context,
                 isSaved ? 'Recipe saved 📌' : 'Recipe unsaved',
                 cs,
@@ -102,10 +83,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       bottomNavigationBar: ActionButtons(
         colorScheme: cs,
         onStartCooking: () {
-          _showSnackBar(context, 'Starting cooking mode! 👨‍🍳', cs);
+          showSnackBar(context, 'Starting cooking mode! 👨‍🍳', cs);
         },
         onMarkAsCooked: () {
-          _showSnackBar(context, 'Marked as cooked! ✅', cs);
+          showSnackBar(context, 'Marked as cooked! ✅', cs);
         },
       ),
       body: CustomScrollView(
@@ -135,20 +116,21 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                               color: cs.primary,
                               value: loadingProgress.expectedTotalBytes != null
                                   ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
+                                  loadingProgress.expectedTotalBytes!
                                   : null,
                             ),
                           ),
                         );
                       },
-                      errorBuilder: (_, __, ___) => Container(
-                        color: cs.surfaceContainerHighest,
-                        child: Icon(
-                          Icons.restaurant,
-                          size: 64,
-                          color: cs.onSurface.withOpacity(0.3),
-                        ),
-                      ),
+                      errorBuilder: (_, __, ___) =>
+                          Container(
+                            color: cs.surfaceContainerHighest,
+                            child: Icon(
+                              Icons.restaurant,
+                              size: 64,
+                              color: cs.onSurface.withOpacity(0.3),
+                            ),
+                          ),
                     ),
                   ),
                 ),
@@ -237,7 +219,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 const SizedBox(height: 12),
 
                 ...widget.recipe.ingredients.map(
-                  (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
+                      (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
                 ),
 
                 const SizedBox(height: 20),
@@ -246,7 +228,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   MissingIngredientsHeader(colorScheme: cs),
                   const SizedBox(height: 8),
                   ...widget.recipe.missingIngredients.map(
-                    (m) => MissingIngredientCard(name: m, colorScheme: cs),
+                        (m) => MissingIngredientCard(name: m, colorScheme: cs),
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -274,18 +256,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String message, ColorScheme cs) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: cs.inverseSurface,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: const Duration(seconds: 2),
       ),
     );
   }

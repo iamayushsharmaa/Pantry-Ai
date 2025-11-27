@@ -21,7 +21,7 @@ class SavedRecipe {
       'userId': userId,
       'recipeId': recipeId,
       'savedAt': Timestamp.fromDate(savedAt),
-      'recipeSnapshot': recipeSnapshot.toMap(),
+      'recipeSnapshot': recipeSnapshot.toJson(),
       'notes': notes,
     };
   }

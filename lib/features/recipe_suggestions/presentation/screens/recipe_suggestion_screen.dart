@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
-import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/suggestions/app_bar.dart';
+import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/app_bar.dart';
 
-import '../widgets/suggestions/preference_summary_widget.dart';
-import '../widgets/suggestions/recipe_card_widget.dart';
+import '../widgets/preference_summary_widget.dart';
+import '../widgets/recipe_card_widget.dart';
 
 class RecipeListScreen extends StatelessWidget {
   const RecipeListScreen({super.key});

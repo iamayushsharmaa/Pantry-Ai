@@ -20,7 +20,7 @@ import '../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dar
 import '../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
 import '../features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
-import '../features/recipe_suggestions/presentation/screens/recipe_detail_screen.dart';
+import '../features/recipe_detail/presentation/screens/recipe_detail_screen.dart';
 import '../features/recipe_suggestions/presentation/screens/recipe_suggestion_screen.dart';
 import '../features/scan/presentation/bloc/scan_bloc.dart';
 import '../features/scan/presentation/screens/scan_screen.dart';
@@ -55,7 +55,7 @@ GoRouter createRouter() {
         builder: (context, state) => SignupScreen(),
       ),
       GoRoute(
-        path: '/recipe-details',
+        path: '/recipe-widgets',
         name: 'recipeDetails',
         builder: (context, state) {
           final recipe = state.extra as Recipe;

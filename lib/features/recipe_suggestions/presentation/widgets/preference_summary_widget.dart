@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../domain/enities/taste_preference_entity.dart';
+import '../../domain/enities/taste_preference_entity.dart';
 
 class PreferenceSummaryWidget extends StatelessWidget {
   final String imagePath;
