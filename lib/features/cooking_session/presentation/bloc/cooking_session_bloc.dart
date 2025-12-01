@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../domain/entities/cooking_session_entity.dart';
 import '../../domain/usecases/complete_cooking.dart';
 import '../../domain/usecases/get_active_session.dart';
@@ -180,4 +183,5 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
       (_) => emit(CookingCompleted(currentSession.recipeName)),
     );
   }
+
 }

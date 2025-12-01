@@ -107,4 +107,19 @@ class CookingRemoteDataSourceImpl implements CookingRemoteDataSource {
         .map((doc) => CookingSessionModel.fromFirestore(doc))
         .toList();
   }
+
+  @override
+  Stream<List<CookingSessionModel>> getCookingHistoryStream(String userId) {
+    return firestore
+        .collection('users')
+        .doc(userId)
+        .collection('cooking_sessions')
+        .orderBy('startedAt', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => CookingSessionModel.fromFirestore(doc))
+              .toList(),
+        );
+  }
 }

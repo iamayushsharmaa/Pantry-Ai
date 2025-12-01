@@ -16,7 +16,7 @@ class RecipeDetailRepositoryImpl implements RecipeDetailRepository {
       final model = await remote.getRecipeById(recipeId);
       return Right(model);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 }

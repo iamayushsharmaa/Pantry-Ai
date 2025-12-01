@@ -129,4 +129,9 @@ class CookingRepositoryImpl implements CookingRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Stream<List<CookingSession>> getCookingHistoryStream(String userId) {
+    return remoteDataSource.getCookingHistoryStream(userId);
+  }
 }

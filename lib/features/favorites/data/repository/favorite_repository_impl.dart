@@ -18,7 +18,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       await remote.addToFavorites(recipe as RecipeModel);
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -28,7 +28,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       await remote.removeFromFavorites(recipeId);
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -38,7 +38,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       final result = await remote.isFavorite(recipeId);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(""));
+      return Left(ServerFailure());
     }
   }
 
@@ -60,7 +60,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
           return Right<Failure, List<FavoriteRecipe>>(entities);
         })
         .handleError(
-          (_) => Left<Failure, List<FavoriteRecipe>>(ServerFailure("")),
+          (_) => Left<Failure, List<FavoriteRecipe>>(ServerFailure()),
         );
   }
 }

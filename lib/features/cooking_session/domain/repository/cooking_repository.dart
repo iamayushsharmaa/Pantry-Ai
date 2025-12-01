@@ -25,4 +25,6 @@ abstract class CookingRepository {
   Future<Either<Failure, List<CookingSession>>> getCookingHistory({
     int limit = 20,
   });
+
+  Stream<List<CookingSession>> getCookingHistoryStream(String userId);
 }

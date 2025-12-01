@@ -9,6 +9,26 @@ class CookingInitial extends CookingState {}
 
 class CookingLoading extends CookingState {}
 
+class CookingLoaded extends CookingState {
+  final CookingSession session;
+  final Recipe recipe;
+  final Duration? remainingTimer;
+  CookingLoaded({
+    required this.session,
+    required this.recipe,
+    this.remainingTimer,
+  });
+
+  @override
+  List<Object?> get props => [session, recipe, remainingTimer];
+
+  CookingLoaded copyWith({Duration? remainingTimer}) => CookingLoaded(
+    session: session,
+    recipe: recipe,
+    remainingTimer: remainingTimer ?? this.remainingTimer,
+  );
+}
+
 class CookingInProgress extends CookingState {
   final CookingSession session;
 

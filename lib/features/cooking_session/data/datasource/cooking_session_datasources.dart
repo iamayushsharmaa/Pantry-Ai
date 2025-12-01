@@ -26,4 +26,6 @@ abstract class CookingRemoteDataSource {
     String userId, {
     int limit = 20,
   });
+
+  Stream<List<CookingSessionModel>> getCookingHistoryStream(String userId);
 }

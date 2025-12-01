@@ -21,7 +21,7 @@ class SavedRepositoryImpl implements SavedRepository {
       await remote.saveRecipe(recipe as RecipeModel, notes: notes);
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure(""));
+      return Left(ServerFailure());
     }
   }
 
@@ -31,7 +31,7 @@ class SavedRepositoryImpl implements SavedRepository {
       await remote.unsaveRecipe(recipeId);
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure(""));
+      return Left(ServerFailure());
     }
   }
 
@@ -40,7 +40,7 @@ class SavedRepositoryImpl implements SavedRepository {
     try {
       return Right(await remote.isSaved(recipeId));
     } catch (e) {
-      return Left(ServerFailure(""));
+      return Left(ServerFailure());
     }
   }
 
@@ -49,9 +49,7 @@ class SavedRepositoryImpl implements SavedRepository {
     return remote
         .getSavedStream()
         .map((list) => Right<Failure, List<SavedRecipe>>(list))
-        .handleError(
-          (_) => Left<Failure, List<SavedRecipe>>(ServerFailure("")),
-        );
+        .handleError((_) => Left<Failure, List<SavedRecipe>>(ServerFailure()));
   }
 
   @override
