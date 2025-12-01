@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:pantry_ai/features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'package:pantry_ai/features/auth/domain/usecases/delete_account_usecase.dart';
 
+import '../../../../core/errors/failure.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../../domain/usecases/sign_in_google_usecase.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
@@ -52,7 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     final result = await continueWithGoogle();
     result.fold(
-      (failure) => emit(AuthState.error(failure.message)),
+      (failure) => emit(AuthState.error(mapFailureToMessage(failure))),
       (user) => emit(AuthState.authenticated(user)),
     );
   }
@@ -61,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     final result = await signIn(event.email, event.password);
     result.fold(
-      (failure) => emit(AuthState.error(failure.message)),
+      (failure) => emit(AuthState.error(mapFailureToMessage(failure))),
       (user) => emit(AuthState.authenticated(user)),
     );
   }
@@ -70,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     final result = await register(event.name, event.email, event.password);
     result.fold(
-      (failure) => emit(AuthState.error(failure.message)),
+      (failure) => emit(AuthState.error(mapFailureToMessage(failure))),
       (user) => emit(AuthState.authenticated(user)),
     );
   }
@@ -79,7 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     final result = await signOut();
     result.fold(
-      (failure) => emit(AuthState.error(failure.message)),
+      (failure) => emit(AuthState.error(mapFailureToMessage(failure))),
       (_) => emit(const AuthState.unauthenticated()),
     );
   }
@@ -91,7 +92,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     final result = await deleteAccount();
     result.fold(
-      (failure) => emit(AuthState.error(failure.message)),
+      (failure) => emit(AuthState.error(mapFailureToMessage(failure))),
       (_) => emit(const AuthState.unauthenticated()),
     );
   }

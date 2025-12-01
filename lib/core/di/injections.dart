@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../features/auth/data/repository/auth_repository_impl.dart';
@@ -14,6 +13,16 @@ import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_google_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_usecase.dart';
 import '../../features/auth/domain/usecases/sign_out_usecase.dart';
+import '../../features/cooking_session/data/datasource/cooking_session_datasource_impl.dart';
+import '../../features/cooking_session/data/datasource/cooking_session_datasources.dart';
+import '../../features/cooking_session/data/repository/cooking_session_repository_impl.dart';
+import '../../features/cooking_session/domain/repository/cooking_repository.dart';
+import '../../features/cooking_session/domain/usecases/complete_cooking.dart';
+import '../../features/cooking_session/domain/usecases/get_active_session.dart';
+import '../../features/cooking_session/domain/usecases/start_cooking.dart';
+import '../../features/cooking_session/domain/usecases/toogle_ingredient.dart';
+import '../../features/cooking_session/domain/usecases/update_cooking_step.dart';
+import '../../features/cooking_session/presentation/bloc/cooking_session_bloc.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource_impl.dart';
 import '../../features/recipe_suggestions/data/datasource/remote/recipe_remote_datasource.dart';
@@ -71,6 +80,7 @@ void _initDataSources() {
 void _initRepositories() {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
+      networkInfo: sl(),
       firestore: sl(),
       firebaseAuth: sl(),
       googleSignIn: sl(),
@@ -95,4 +105,35 @@ void _initRecipeUseCases() {
   sl.registerLazySingleton(() => GenerateRecipesUseCase(sl()));
   sl.registerLazySingleton(() => GetCachedRecipesUseCase(sl()));
   sl.registerLazySingleton(() => CacheRecipesUseCase(sl()));
+}
+
+Future<void> initCookingFeature() async {
+  sl.registerFactory(
+    () => CookingBloc(
+      startCooking: sl(),
+      updateCookingStep: sl(),
+      toggleIngredient: sl(),
+      completeCooking: sl(),
+      getActiveSession: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(() => StartCooking(sl()));
+  sl.registerLazySingleton(() => UpdateCookingStep(sl()));
+  sl.registerLazySingleton(() => ToggleIngredient(sl()));
+  sl.registerLazySingleton(() => CompleteCooking(sl()));
+  sl.registerLazySingleton(() => GetActiveSession(sl()));
+
+  sl.registerLazySingleton<CookingRepository>(
+    () => CookingRepositoryImpl(
+      remoteDataSource: sl(),
+      networkInfo: sl(),
+      userId: sl<AuthService>().currentUserId,
+    ),
+  );
+
+  // Data Sources
+  sl.registerLazySingleton<CookingRemoteDataSource>(
+    () => CookingRemoteDataSourceImpl(firestore: sl<FirebaseFirestore>()),
+  );
 }

@@ -1,17 +1,23 @@
-class Failure {
-  final String message;
+import 'package:equatable/equatable.dart';
 
-  Failure(this.message);
+abstract class Failure extends Equatable {
+  @override
+  List<Object?> get props => [];
 }
 
-class ServerFailure extends Failure {
-  ServerFailure(String message) : super(message);
-}
+class ServerFailure extends Failure {}
 
-class AuthFailure extends Failure {
-  AuthFailure(String message) : super(message);
-}
+class NetworkFailure extends Failure {}
 
-class NoUserFailure extends Failure {
-  NoUserFailure(String message) : super(message);
+class CacheFailure extends Failure {}
+
+String mapFailureToMessage(Failure failure) {
+  if (failure is ServerFailure) {
+    return "Server error occurred. Please try again later.";
+  } else if (failure is NetworkFailure) {
+    return "No internet connection. Check your network.";
+  } else if (failure is CacheFailure) {
+    return "Cache error. Please restart the app.";
+  }
+  return "Unexpected error occurred.";
 }

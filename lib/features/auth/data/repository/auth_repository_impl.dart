@@ -7,33 +7,40 @@ import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
 import 'package:pantry_ai/features/auth/domain/mapper/user_mapper.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../core/network/network_info.dart';
 import '../../data/models/user_model.dart';
 import '../../domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseFirestore _firestore;
   final fb.FirebaseAuth _firebaseAuth;
+  final NetworkInfo networkInfo;
+
   final GoogleSignIn _googleSignIn;
 
   AuthRepositoryImpl({
     required FirebaseFirestore firestore,
     fb.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    required this.networkInfo,
   }) : _firebaseAuth = firebaseAuth ?? fb.FirebaseAuth.instance,
        _firestore = firestore,
        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   @override
   FutureEither<UserEntity> checkAuthStatus() async {
+    if (!await networkInfo.isConnected) {
+      return Left(NetworkFailure());
+    }
     try {
       final user = _firebaseAuth.currentUser;
       if (user == null) {
-        return Left(Failure('No user logged in'));
+        return Left(ServerFailure());
       }
       final model = UserModel.fromFirebaseUser(user);
       return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -55,7 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await _firestore.collection('users').doc(model.uid).set(model.toJson());
       return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -70,7 +77,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final model = UserModel.fromFirebaseUser(cred.user!);
       return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -78,7 +85,7 @@ class AuthRepositoryImpl implements AuthRepository {
   FutureEither<UserEntity> continueWithGoogle() async {
     try {
       final googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return Left(Failure('Cancelled by user'));
+      if (googleUser == null) return Left(ServerFailure());
 
       final googleAuth = await googleUser.authentication;
 
@@ -97,7 +104,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(UserMapper.toEntity(model));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -107,7 +114,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
       return Right(null);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 
@@ -116,7 +123,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final user = _firebaseAuth.currentUser;
       if (user == null) {
-        return Left(Failure('No user logged in'));
+        return Left(ServerFailure());
       }
       await _firestore.collection('users').doc(user.uid).delete();
 
@@ -126,13 +133,11 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(null);
     } on fb.FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
-        return Left(
-          Failure('Please reauthenticate before deleting your account.'),
-        );
+        return Left(ServerFailure());
       }
-      return Left(Failure(e.message ?? 'Unknown error'));
+      return Left(ServerFailure());
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(ServerFailure());
     }
   }
 }
