@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../../core/utils/firebase_auth_service.dart';
 import '../../domain/entities/cooking_session_entity.dart';
 import '../../domain/repository/cooking_repository.dart';
 import '../datasource/cooking_session_datasources.dart';
@@ -11,12 +12,12 @@ import '../models/cooking_session_model.dart';
 class CookingRepositoryImpl implements CookingRepository {
   final CookingRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
-  final String userId;
+  final AuthService authService;
 
   CookingRepositoryImpl({
     required this.remoteDataSource,
     required this.networkInfo,
-    required this.userId,
+    required this.authService,
   });
 
   @override
@@ -30,6 +31,9 @@ class CookingRepositoryImpl implements CookingRepository {
     if (!await networkInfo.isConnected) {
       return Left(NetworkFailure());
     }
+
+    final userId = authService.currentUserId;
+    if (userId == null) return Left(ServerFailure());
 
     try {
       final session = await remoteDataSource.startCookingSession(
@@ -55,6 +59,8 @@ class CookingRepositoryImpl implements CookingRepository {
     }
 
     try {
+      final userId = authService.currentUserId;
+      if (userId == null) return Left(ServerFailure());
       final model = CookingSessionModel.fromEntity(session);
       final updated = await remoteDataSource.updateCookingSession(
         userId,
@@ -73,6 +79,8 @@ class CookingRepositoryImpl implements CookingRepository {
     }
 
     try {
+      final userId = authService.currentUserId;
+      if (userId == null) return Left(ServerFailure());
       await remoteDataSource.completeCookingSession(userId, sessionId);
       return const Right(null);
     } on ServerException {
@@ -89,6 +97,8 @@ class CookingRepositoryImpl implements CookingRepository {
     }
 
     try {
+      final userId = authService.currentUserId;
+      if (userId == null) return Left(ServerFailure());
       final session = await remoteDataSource.getActiveCookingSession(
         userId,
         recipeId,
@@ -108,6 +118,8 @@ class CookingRepositoryImpl implements CookingRepository {
     }
 
     try {
+      final userId = authService.currentUserId;
+      if (userId == null) return Left(ServerFailure());
       final sessions = await remoteDataSource.getCookingHistory(
         userId,
         limit: limit,

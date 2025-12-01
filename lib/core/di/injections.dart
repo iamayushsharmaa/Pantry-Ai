@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource.dart';
+import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.dart';
 
 import '../../features/auth/data/repository/auth_repository_impl.dart';
 import '../../features/auth/domain/repository/auth_repository.dart';
@@ -32,6 +34,7 @@ import '../../features/recipe_suggestions/domain/repository/recipe_repository.da
 import '../../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
+import '../utils/firebase_auth_service.dart';
 
 final sl = GetIt.instance;
 
@@ -59,6 +62,10 @@ void _initExternalServices() {
     dio.options.connectTimeout = const Duration(seconds: 10);
     return dio;
   });
+
+  sl.registerLazySingleton<AuthService>(
+    () => FirebaseAuthService(firebaseAuth: fb.FirebaseAuth.instance),
+  );
 }
 
 Future<void> _initHiveBoxes() async {
@@ -68,6 +75,14 @@ Future<void> _initHiveBoxes() async {
 }
 
 void _initDataSources() {
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(
+      firebaseAuth: sl(),
+      firestore: sl(),
+      googleSignIn: sl(),
+    ),
+  );
+
   sl.registerLazySingleton<RecipeRemoteDataSource>(
     () => RecipeRemoteDataSourceImpl(sl<Dio>()),
   );
@@ -79,12 +94,7 @@ void _initDataSources() {
 
 void _initRepositories() {
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
-      networkInfo: sl(),
-      firestore: sl(),
-      firebaseAuth: sl(),
-      googleSignIn: sl(),
-    ),
+    () => AuthRepositoryImpl(networkInfo: sl(), remoteDataSource: sl()),
   );
 
   sl.registerLazySingleton<RecipeRepository>(
@@ -128,7 +138,7 @@ Future<void> initCookingFeature() async {
     () => CookingRepositoryImpl(
       remoteDataSource: sl(),
       networkInfo: sl(),
-      userId: sl<AuthService>().currentUserId,
+      authService: sl(),
     ),
   );
 
