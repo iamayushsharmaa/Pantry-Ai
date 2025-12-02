@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/app_bar.dart';
 
+import '../../../../core/constant/constants.dart';
 import '../widgets/preference_summary_widget.dart';
 import '../widgets/recipe_card_widget.dart';
 
@@ -46,7 +47,7 @@ class RecipeListScreen extends StatelessWidget {
             );
           }
 
-          final recipes = [];
+          final recipes = Constants.dummyRecipeList;
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -106,7 +107,6 @@ class RecipeListScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Recipe Cards
                     ...List.generate(recipes.length, (index) {
                       final recipe = recipes[index];
                       return Padding(

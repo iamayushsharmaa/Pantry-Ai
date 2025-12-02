@@ -7,6 +7,9 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.dart';
+import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
+import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
+import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
 
 import '../../features/auth/data/repository/auth_repository_impl.dart';
@@ -27,6 +30,10 @@ import '../../features/cooking_session/domain/usecases/start_cooking.dart';
 import '../../features/cooking_session/domain/usecases/toogle_ingredient.dart';
 import '../../features/cooking_session/domain/usecases/update_cooking_step.dart';
 import '../../features/cooking_session/presentation/bloc/cooking_session_bloc.dart';
+import '../../features/favorites/data/remote/favorite_data_source.dart';
+import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
+import '../../features/favorites/domain/repository/favorite_repository.dart';
+import '../../features/favorites/domain/usecases/get_favorite_stream.dart';
 import '../../features/recipe_detail/data/repository/recipe_detail_repository_impl.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource_impl.dart';
@@ -127,6 +134,20 @@ void _initRecipeUseCases() {
   sl.registerLazySingleton(() => GenerateRecipesUseCase(sl()));
   sl.registerLazySingleton(() => GetCachedRecipesUseCase(sl()));
   sl.registerLazySingleton(() => CacheRecipesUseCase(sl()));
+}
+
+Future<void> initFavouriteFeature() async {
+  sl.registerLazySingleton<FavoriteRemoteDataSource>(
+    () => FavoriteRemoteDataSourceImpl(firestore: sl(), auth: sl()),
+  );
+  sl.registerLazySingleton<FavoriteRepository>(
+    () => FavoriteRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton(() => ToggleFavorite(sl()));
+  sl.registerLazySingleton(() => GetFavoritesStream(sl()));
+  sl.registerFactory(
+    () => FavoritesBloc(toggleFavorite: sl(), getFavoritesStream: sl()),
+  );
 }
 
 Future<void> initCookingFeature() async {
