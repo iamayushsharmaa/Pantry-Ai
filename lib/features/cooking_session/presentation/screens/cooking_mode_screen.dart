@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantry_ai/features/cooking_session/domain/entities/cooking_session_entity.dart';
 
 import '../../../../shared/models/recipe/recipe.dart';
 import '../bloc/cooking_session_bloc.dart';
@@ -229,7 +230,7 @@ class _CookingModeScreenState extends State<CookingModeScreen>
             return _buildLoadingState();
           }
 
-          if (state is CookingInProgress) {
+          if (state is CookingLoaded) {
             return _buildCookingInterface(state.session);
           }
 
@@ -380,7 +381,7 @@ class _CookingModeScreenState extends State<CookingModeScreen>
                     const SizedBox(height: 24),
                     _buildIngredientsList(),
                     const SizedBox(height: 24),
-                    _buildEquipmentSection(),
+                    // _buildEquipmentSection(),
                   ],
                 ),
               ),
@@ -698,84 +699,84 @@ class _CookingModeScreenState extends State<CookingModeScreen>
     );
   }
 
-  Widget _buildEquipmentSection() {
-    final equipment = widget.recipe.steps
-        .expand((step) => step.requiredEquipment)
-        .toSet()
-        .toList();
+  // Widget _buildEquipmentSection() {
+  //   // final equipment = session.cookingSteps
+  //   //     .expand((step) => step.description)
+  //   //     .toSet()
+  //   //     .toList();
+  //   //
+  //   // if (equipment.isEmpty) return const SizedBox.shrink();
+  //
+  //   return Container(
+  //     padding: const EdgeInsets.all(20),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(20),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black.withOpacity(0.05),
+  //           blurRadius: 10,
+  //           offset: const Offset(0, 5),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           children: [
+  //             Container(
+  //               padding: const EdgeInsets.all(8),
+  //               decoration: BoxDecoration(
+  //                 color: Colors.blue.shade50,
+  //                 borderRadius: BorderRadius.circular(10),
+  //               ),
+  //               child: Icon(
+  //                 Icons.kitchen,
+  //                 color: Colors.blue.shade600,
+  //                 size: 20,
+  //               ),
+  //             ),
+  //             const SizedBox(width: 12),
+  //             const Text(
+  //               'Equipment Needed',
+  //               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 16),
+  //         Wrap(
+  //           spacing: 8,
+  //           runSpacing: 8,
+  //           children: equipment.map((item) {
+  //             return Container(
+  //               padding: const EdgeInsets.symmetric(
+  //                 horizontal: 14,
+  //                 vertical: 8,
+  //               ),
+  //               decoration: BoxDecoration(
+  //                 color: Colors.blue.shade50,
+  //                 borderRadius: BorderRadius.circular(12),
+  //                 border: Border.all(color: Colors.blue.shade200),
+  //               ),
+  //               child: Text(
+  //                 item,
+  //                 style: TextStyle(
+  //                   fontSize: 13,
+  //                   fontWeight: FontWeight.w500,
+  //                   color: Colors.blue.shade900,
+  //                 ),
+  //               ),
+  //             );
+  //           }).toList(),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-    if (equipment.isEmpty) return const SizedBox.shrink();
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.kitchen,
-                  color: Colors.blue.shade600,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                'Equipment Needed',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: equipment.map((item) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.shade200),
-                ),
-                child: Text(
-                  item,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blue.shade900,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCookingInterface(session) {
-    final currentStepData = widget.recipe.steps[session.currentStep];
+  Widget _buildCookingInterface(CookingSession session) {
+    final currentStepData = session;
     final progress = (session.currentStep + 1) / session.totalSteps;
 
     _progressController.animateTo(progress);
@@ -906,27 +907,27 @@ class _CookingModeScreenState extends State<CookingModeScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (currentStepData.imageUrl != null) ...[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.network(
-                              currentStepData.imageUrl!,
-                              height: 200,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-                        Text(
-                          currentStepData.instruction,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            height: 1.6,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.3,
-                          ),
-                        ),
+                        // if (currentStepData != null) ...[
+                        //   ClipRRect(
+                        //     borderRadius: BorderRadius.circular(16),
+                        //     child: Image.network(
+                        //       currentStepData!,
+                        //       height: 200,
+                        //       width: double.infinity,
+                        //       fit: BoxFit.cover,
+                        //     ),
+                        //   ),
+                        //   const SizedBox(height: 20),
+                        // ],
+                        // Text(
+                        //   currentStepData,
+                        //   style: const TextStyle(
+                        //     fontSize: 20,
+                        //     height: 1.6,
+                        //     fontWeight: FontWeight.w500,
+                        //     letterSpacing: 0.3,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -934,9 +935,8 @@ class _CookingModeScreenState extends State<CookingModeScreen>
                   const SizedBox(height: 24),
 
                   // Timer Section
-                  if (currentStepData.estimatedMinutes != null)
-                    _buildModernTimerSection(currentStepData.estimatedMinutes!),
-
+                  // if (currentStepData != null)
+                  //   _buildModernTimerSection(currentStepData.!),
                   const SizedBox(height: 24),
 
                   // Ingredients Checklist
@@ -1175,7 +1175,9 @@ class _CookingModeScreenState extends State<CookingModeScreen>
           const SizedBox(height: 20),
           ...widget.recipe.ingredients.map((ingredient) {
             final isChecked = checklist[ingredient.id] ?? false;
-            final scaledQuantity = _scaleQuantity(ingredient.quantity);
+            final scaledQuantity = _scaleQuantity(
+              ingredient.quantity as String,
+            );
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -1577,7 +1579,7 @@ class _CookingModeScreenState extends State<CookingModeScreen>
               ),
               const SizedBox(height: 12),
               Text(
-                'Great job cooking ${widget.recipe.name}!',
+                'Great job cooking ${widget.recipe.title}!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,

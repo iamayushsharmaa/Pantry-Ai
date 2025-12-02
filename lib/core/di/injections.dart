@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.dart';
+import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
 
 import '../../features/auth/data/repository/auth_repository_impl.dart';
 import '../../features/auth/domain/repository/auth_repository.dart';
@@ -25,6 +27,7 @@ import '../../features/cooking_session/domain/usecases/start_cooking.dart';
 import '../../features/cooking_session/domain/usecases/toogle_ingredient.dart';
 import '../../features/cooking_session/domain/usecases/update_cooking_step.dart';
 import '../../features/cooking_session/presentation/bloc/cooking_session_bloc.dart';
+import '../../features/recipe_detail/data/repository/recipe_detail_repository_impl.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource_impl.dart';
 import '../../features/recipe_suggestions/data/datasource/remote/recipe_remote_datasource.dart';
@@ -34,6 +37,7 @@ import '../../features/recipe_suggestions/domain/repository/recipe_repository.da
 import '../../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
+import '../network/network_info.dart';
 import '../utils/firebase_auth_service.dart';
 
 final sl = GetIt.instance;
@@ -66,6 +70,10 @@ void _initExternalServices() {
   sl.registerLazySingleton<AuthService>(
     () => FirebaseAuthService(firebaseAuth: fb.FirebaseAuth.instance),
   );
+
+  sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
+
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 }
 
 Future<void> _initHiveBoxes() async {
@@ -99,6 +107,10 @@ void _initRepositories() {
 
   sl.registerLazySingleton<RecipeRepository>(
     () => RecipeRepositoryImpl(remote: sl(), local: sl()),
+  );
+
+  sl.registerLazySingleton<RecipeDetailRepository>(
+    () => RecipeDetailRepositoryImpl(sl()),
   );
 }
 
@@ -139,6 +151,7 @@ Future<void> initCookingFeature() async {
       remoteDataSource: sl(),
       networkInfo: sl(),
       authService: sl(),
+      recipeDetailRepository: sl(),
     ),
   );
 

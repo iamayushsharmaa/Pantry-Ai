@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/utils/show_snackbar.dart';
 import 'package:pantry_ai/shared/widgets/favorite_button.dart';
 
@@ -83,7 +84,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       bottomNavigationBar: ActionButtons(
         colorScheme: cs,
         onStartCooking: () {
-          showSnackBar(context, 'Starting cooking mode! 👨‍🍳', cs);
+          context.pushNamed("cookingSession", extra: widget.recipe);
         },
         onMarkAsCooked: () {
           showSnackBar(context, 'Marked as cooked! ✅', cs);

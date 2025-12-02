@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:pantry_ai/features/cooking_session/presentation/screens/cooking_mode_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/all_recipe_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/features/preference/presentation/screens/taste_preference_screen.dart';
@@ -13,6 +14,7 @@ import '../core/common/recipe_list_args.dart';
 import '../core/di/injections.dart';
 import '../features/analytics/presentation/screens/analytics_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
+import '../features/cooking_session/presentation/bloc/cooking_session_bloc.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/preference/presentation/bloc/taste_preference_bloc.dart';
 import '../features/recipe_detail/presentation/screens/recipe_detail_screen.dart';
@@ -105,6 +107,22 @@ GoRouter createRouter() {
           return BlocProvider(
             create: (_) => TastePreferenceBloc(),
             child: TastePreferenceScreen(imagePath: imagePath),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/cooking-session',
+        name: 'cookingSession',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => CookingBloc(
+              startCooking: sl(),
+              updateCookingStep: sl(),
+              toggleIngredient: sl(),
+              completeCooking: sl(),
+              getActiveSession: sl(),
+            ),
+            child: CookingModeScreen(recipe: state.extra as Recipe),
           );
         },
       ),
