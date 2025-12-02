@@ -15,6 +15,7 @@ class CookingSessionModel extends CookingSession {
     required super.completedSteps,
     required super.ingredientChecklist,
     required super.status,
+    required super.cookingSteps,
   });
 
   factory CookingSessionModel.fromEntity(CookingSession session) {
@@ -30,6 +31,7 @@ class CookingSessionModel extends CookingSession {
       completedSteps: session.completedSteps,
       ingredientChecklist: session.ingredientChecklist,
       status: session.status,
+      cookingSteps: session.cookingSteps,
     );
   }
 
@@ -54,6 +56,7 @@ class CookingSessionModel extends CookingSession {
         (e) => e.name == data['status'],
         orElse: () => CookingStatus.inProgress,
       ),
+      cookingSteps: [],
     );
   }
 

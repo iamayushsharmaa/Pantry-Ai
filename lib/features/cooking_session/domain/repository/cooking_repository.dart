@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:pantry_ai/features/cooking_session/domain/entities/active_cooking_data.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../entities/cooking_session_entity.dart';
@@ -10,6 +11,7 @@ abstract class CookingRepository {
     required int totalSteps,
     required List<String> ingredientIds,
     required int servings,
+    required List<String> instructions,
   });
 
   Future<Either<Failure, CookingSession>> updateCookingSession(
@@ -18,7 +20,7 @@ abstract class CookingRepository {
 
   Future<Either<Failure, void>> completeCookingSession(String sessionId);
 
-  Future<Either<Failure, CookingSession?>> getActiveCookingSession(
+  Future<Either<Failure, ActiveCookingData?>> getActiveCookingSession(
     String recipeId,
   );
 

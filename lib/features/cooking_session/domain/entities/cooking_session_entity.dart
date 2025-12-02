@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pantry_ai/features/cooking_session/domain/entities/cooking_step.dart';
 
 class CookingSession extends Equatable {
   final String id;
@@ -10,6 +11,7 @@ class CookingSession extends Equatable {
   final DateTime startedAt;
   final DateTime? completedAt;
   final List<int> completedSteps;
+  final List<CookingStep> cookingSteps;
   final Map<String, bool> ingredientChecklist;
   final CookingStatus status;
 
@@ -22,6 +24,7 @@ class CookingSession extends Equatable {
     required this.servings,
     required this.startedAt,
     this.completedAt,
+    required this.cookingSteps,
     required this.completedSteps,
     required this.ingredientChecklist,
     required this.status,
@@ -49,6 +52,7 @@ class CookingSession extends Equatable {
       servings: servings ?? this.servings,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
+      cookingSteps: cookingSteps ?? this.cookingSteps,
       completedSteps: completedSteps ?? this.completedSteps,
       ingredientChecklist: ingredientChecklist ?? this.ingredientChecklist,
       status: status ?? this.status,

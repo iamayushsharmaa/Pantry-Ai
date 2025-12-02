@@ -1,6 +1,15 @@
-class Step {
-  final String instruction;
-  final int estimatedMinutes;
+class CookingStep {
+  final int index;
+  final String title;
+  final String description;
+  final int? estimatedMinutes;
+  final String? imageUrl;
 
-  Step({required this.instruction, this.estimatedMinutes = 0});
+  const CookingStep({
+    required this.index,
+    required this.title,
+    required this.description,
+    this.estimatedMinutes,
+    this.imageUrl,
+  });
 }

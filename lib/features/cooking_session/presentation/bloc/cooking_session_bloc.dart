@@ -45,17 +45,18 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
 
     final result = await startCooking(
       StartCookingParams(
-        recipeId: event.recipeId,
-        recipeName: event.recipeName,
-        totalSteps: event.totalSteps,
-        ingredientIds: event.ingredientIds,
+        recipeId: event.recipe.id,
+        recipeName: event.recipe.title,
+        totalSteps: event.recipe.instructions.length,
+        ingredientIds: event.recipe.ingredients.map((e) => e.name).toList(),
+        instructions: event.recipe.instructions,
         servings: event.servings,
       ),
     );
 
     result.fold(
-      (failure) => emit(CookingError('Failed to start cooking session')),
-      (session) => emit(CookingInProgress(session)),
+      (failure) => emit(CookingError("Failed to start session")),
+      (session) => emit(CookingLoaded(session: session, recipe: event.recipe)),
     );
   }
 
@@ -67,13 +68,13 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
 
     final result = await getActiveSession(event.recipeId);
 
-    result.fold((failure) => emit(CookingError('Failed to load session')), (
-      session,
+    result.fold((failure) => emit(CookingError("Failed to load session")), (
+      loaded,
     ) {
-      if (session != null) {
-        emit(CookingInProgress(session));
-      } else {
+      if (loaded == null) {
         emit(CookingInitial());
+      } else {
+        emit(CookingLoaded(session: loaded.session, recipe: loaded.recipe));
       }
     });
   }
@@ -82,22 +83,24 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
     NextStepEvent event,
     Emitter<CookingState> emit,
   ) async {
-    if (state is! CookingInProgress) return;
+    if (state is! CookingLoaded) return;
 
-    final currentSession = (state as CookingInProgress).session;
-    if (currentSession.currentStep >= currentSession.totalSteps - 1) return;
+    final current = state as CookingLoaded;
+    final session = current.session;
+
+    if (session.currentStep >= session.totalSteps - 1) return;
 
     final result = await updateCookingStep(
       UpdateStepParams(
-        session: currentSession,
-        newStep: currentSession.currentStep + 1,
+        session: session,
+        newStep: session.currentStep + 1,
         markComplete: true,
       ),
     );
 
     result.fold(
-      (failure) => emit(CookingError('Failed to update step')),
-      (session) => emit(CookingInProgress(session)),
+      (_) => emit(CookingError("Failed to update step")),
+      (newSession) => emit(current.copyWith(session: newSession)),
     );
   }
 
@@ -105,22 +108,24 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
     PreviousStepEvent event,
     Emitter<CookingState> emit,
   ) async {
-    if (state is! CookingInProgress) return;
+    if (state is! CookingLoaded) return;
 
-    final currentSession = (state as CookingInProgress).session;
-    if (currentSession.currentStep <= 0) return;
+    final current = state as CookingLoaded;
+    final session = current.session;
+
+    if (session.currentStep <= 0) return;
 
     final result = await updateCookingStep(
       UpdateStepParams(
-        session: currentSession,
-        newStep: currentSession.currentStep - 1,
+        session: session,
+        newStep: session.currentStep - 1,
         markComplete: false,
       ),
     );
 
     result.fold(
-      (failure) => emit(CookingError('Failed to update step')),
-      (session) => emit(CookingInProgress(session)),
+      (_) => emit(CookingError("Failed to update step")),
+      (newSession) => emit(current.copyWith(session: newSession)),
     );
   }
 
@@ -128,21 +133,22 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
     JumpToStepEvent event,
     Emitter<CookingState> emit,
   ) async {
-    if (state is! CookingInProgress) return;
+    if (state is! CookingLoaded) return;
 
-    final currentSession = (state as CookingInProgress).session;
+    final current = state as CookingLoaded;
+    final session = current.session;
 
     final result = await updateCookingStep(
       UpdateStepParams(
-        session: currentSession,
+        session: session,
         newStep: event.stepIndex,
         markComplete: false,
       ),
     );
 
     result.fold(
-      (failure) => emit(CookingError('Failed to jump to step')),
-      (session) => emit(CookingInProgress(session)),
+      (_) => emit(CookingError("Failed to jump to step")),
+      (newSession) => emit(current.copyWith(session: newSession)),
     );
   }
 
@@ -150,21 +156,22 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
     ToggleIngredientEvent event,
     Emitter<CookingState> emit,
   ) async {
-    if (state is! CookingInProgress) return;
+    if (state is! CookingLoaded) return;
 
-    final currentSession = (state as CookingInProgress).session;
+    final current = state as CookingLoaded;
+    final session = current.session;
 
     final result = await toggleIngredient(
       ToggleIngredientParams(
-        session: currentSession,
+        session: session,
         ingredientId: event.ingredientId,
         isChecked: event.isChecked,
       ),
     );
 
     result.fold(
-      (failure) => emit(CookingError('Failed to update ingredient')),
-      (session) => emit(CookingInProgress(session)),
+      (_) => emit(CookingError("Failed to update ingredient")),
+      (newSession) => emit(current.copyWith(session: newSession)),
     );
   }
 
@@ -172,16 +179,16 @@ class CookingBloc extends Bloc<CookingEvent, CookingState> {
     CompleteCookingEvent event,
     Emitter<CookingState> emit,
   ) async {
-    if (state is! CookingInProgress) return;
+    if (state is! CookingLoaded) return;
 
-    final currentSession = (state as CookingInProgress).session;
+    final current = state as CookingLoaded;
+    final session = current.session;
 
-    final result = await completeCooking(currentSession.id);
+    final result = await completeCooking(session.id);
 
     result.fold(
-      (failure) => emit(CookingError('Failed to complete cooking')),
-      (_) => emit(CookingCompleted(currentSession.recipeName)),
+      (_) => emit(CookingError("Failed to complete cooking")),
+      (_) => emit(CookingCompleted(current.recipe.title)),
     );
   }
-
 }

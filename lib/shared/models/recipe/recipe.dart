@@ -39,12 +39,14 @@ class Recipe {
 }
 
 class Ingredient {
+  final String id;
   final String name;
   final double quantity;
   final String unit;
   final bool isAvailable;
 
   Ingredient({
+    required this.id,
     required this.name,
     required this.quantity,
     required this.unit,

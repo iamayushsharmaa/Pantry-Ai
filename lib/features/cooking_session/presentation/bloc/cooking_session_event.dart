@@ -6,28 +6,16 @@ abstract class CookingEvent extends Equatable {
 }
 
 class StartCookingEvent extends CookingEvent {
-  final String recipeId;
-  final String recipeName;
-  final int totalSteps;
-  final List<String> ingredientIds;
+  final Recipe recipe;
   final int servings;
 
   StartCookingEvent({
-    required this.recipeId,
-    required this.recipeName,
-    required this.totalSteps,
-    required this.ingredientIds,
+    required this.recipe,
     required this.servings,
   });
 
   @override
-  List<Object?> get props => [
-    recipeId,
-    recipeName,
-    totalSteps,
-    ingredientIds,
-    servings,
-  ];
+  List<Object?> get props => [recipe, servings];
 }
 
 class LoadActiveSessionEvent extends CookingEvent {
@@ -56,7 +44,10 @@ class ToggleIngredientEvent extends CookingEvent {
   final String ingredientId;
   final bool isChecked;
 
-  ToggleIngredientEvent({required this.ingredientId, required this.isChecked});
+  ToggleIngredientEvent({
+    required this.ingredientId,
+    required this.isChecked,
+  });
 
   @override
   List<Object?> get props => [ingredientId, isChecked];

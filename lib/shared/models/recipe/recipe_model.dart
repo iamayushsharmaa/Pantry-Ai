@@ -103,7 +103,6 @@ class RecipeModel extends Recipe {
     calories: snapshot['calories'] ?? 0,
     cuisine: snapshot['cuisine'] ?? '',
     tags: List<String>.from(snapshot['tags'] ?? []),
-    // all other fields can stay empty or default
     description: '',
     prepTime: 0,
     servings: 1,

@@ -1,3 +1,5 @@
+import 'package:pantry_ai/features/cooking_session/data/models/cooking_step_model.dart';
+
 import '../models/cooking_session_model.dart';
 
 abstract class CookingRemoteDataSource {
@@ -8,6 +10,7 @@ abstract class CookingRemoteDataSource {
     required int totalSteps,
     required List<String> ingredientIds,
     required int servings,
+    required List<CookingStepModel> steps,
   });
 
   Future<CookingSessionModel> updateCookingSession(

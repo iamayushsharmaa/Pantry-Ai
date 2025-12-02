@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/entities/cooking_session_entity.dart';
 import '../models/cooking_session_model.dart';
+import '../models/cooking_step_model.dart';
 import 'cooking_session_datasources.dart';
 
 class CookingRemoteDataSourceImpl implements CookingRemoteDataSource {
@@ -17,6 +18,7 @@ class CookingRemoteDataSourceImpl implements CookingRemoteDataSource {
     required int totalSteps,
     required List<String> ingredientIds,
     required int servings,
+    required List<CookingStepModel> steps,
   }) async {
     final docRef = firestore
         .collection('users')
@@ -37,6 +39,7 @@ class CookingRemoteDataSourceImpl implements CookingRemoteDataSource {
       completedSteps: [],
       ingredientChecklist: ingredientChecklist,
       status: CookingStatus.inProgress,
+      cookingSteps: steps,
     );
 
     await docRef.set(session.toFirestore());
