@@ -11,11 +11,14 @@ import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.
 import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
 import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource.dart';
 import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource_impl.dart';
 import 'package:pantry_ai/features/save_recipe/domain/repository/saved_repository.dart';
 import 'package:pantry_ai/features/save_recipe/presentation/bloc/saved_bloc.dart';
+import 'package:pantry_ai/features/scan/presentation/bloc/scan_bloc.dart';
+import 'package:pantry_ai/features/settings/presentation/bloc/settings_bloc.dart';
 
 import '../../features/auth/data/remote/auth_local_data_source.dart';
 import '../../features/auth/data/repository/auth_repository_impl.dart';
@@ -26,16 +29,6 @@ import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_google_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_usecase.dart';
 import '../../features/auth/domain/usecases/sign_out_usecase.dart';
-import '../../features/cooking_session/data/datasource/cooking_session_datasource_impl.dart';
-import '../../features/cooking_session/data/datasource/cooking_session_datasources.dart';
-import '../../features/cooking_session/data/repository/cooking_session_repository_impl.dart';
-import '../../features/cooking_session/domain/repository/cooking_repository.dart';
-import '../../features/cooking_session/domain/usecases/complete_cooking.dart';
-import '../../features/cooking_session/domain/usecases/get_active_session.dart';
-import '../../features/cooking_session/domain/usecases/start_cooking.dart';
-import '../../features/cooking_session/domain/usecases/toogle_ingredient.dart';
-import '../../features/cooking_session/domain/usecases/update_cooking_step.dart';
-import '../../features/cooking_session/presentation/bloc/cooking_session_bloc.dart';
 import '../../features/favorites/data/remote/favorite_data_source.dart';
 import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
 import '../../features/favorites/domain/repository/favorite_repository.dart';
@@ -62,12 +55,13 @@ Future<void> initDependencies() async {
   await _initHiveBoxes();
   _initFirebase();
   _initExternalServices();
-  _initDataSources();
-  _initRepositories();
-  _initAuthUseCases();
-  _initRecipeUseCases();
+  _initPreferenceFeature();
+  _initAuthFeature();
+  _initRecipeFeature();
   _initFavoriteFeature();
   _initSavedFeature();
+  _initScanFeature();
+  _initSettingsFeature();
 }
 
 void _initFirebase() {
@@ -103,7 +97,36 @@ Future<void> _initHiveBoxes() async {
   sl.registerLazySingleton<Box>(() => recipeBox);
 }
 
-void _initDataSources() {
+Future<void> _initRecipeFeature() async {
+  sl.registerLazySingleton<RecipeRemoteDataSource>(
+    () => RecipeRemoteDataSourceImpl(sl<Dio>()),
+  );
+
+  sl.registerLazySingleton<RecipeLocalDataSource>(
+    () => RecipeLocalDataSourceImpl(sl<Box>()),
+  );
+  sl.registerLazySingleton<RecipeRepository>(
+    () => RecipeRepositoryImpl(remote: sl(), local: sl()),
+  );
+
+  sl.registerLazySingleton<RecipeDetailRepository>(
+    () => RecipeDetailRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton(() => GenerateRecipesUseCase(sl()));
+  sl.registerLazySingleton(() => GetCachedRecipesUseCase(sl()));
+  sl.registerLazySingleton(() => CacheRecipesUseCase(sl()));
+}
+
+Future<void> _initScanFeature() async {
+  sl.registerLazySingleton<ScanBloc>(() => ScanBloc());
+}
+
+Future<void> _initPreferenceFeature() async {
+  sl.registerLazySingleton<TastePreferenceBloc>(() => TastePreferenceBloc());
+}
+
+Future<void> _initAuthFeature() async {
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
       firebaseAuth: sl(),
@@ -112,88 +135,16 @@ void _initDataSources() {
     ),
   );
 
-  sl.registerLazySingleton<RecipeRemoteDataSource>(
-    () => RecipeRemoteDataSourceImpl(sl<Dio>()),
-  );
-
-  sl.registerLazySingleton<RecipeLocalDataSource>(
-    () => RecipeLocalDataSourceImpl(sl<Box>()),
-  );
-}
-
-void _initRepositories() {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(networkInfo: sl(), remoteDataSource: sl()),
   );
 
-  sl.registerLazySingleton<RecipeRepository>(
-    () => RecipeRepositoryImpl(remote: sl(), local: sl()),
-  );
-
-  sl.registerLazySingleton<RecipeDetailRepository>(
-    () => RecipeDetailRepositoryImpl(sl()),
-  );
-}
-
-void _initAuthUseCases() {
   sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
   sl.registerLazySingleton(() => ContinueWithGoogleUseCase(sl()));
   sl.registerLazySingleton(() => SignInUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
   sl.registerLazySingleton(() => DeleteAccountUseCase(sl()));
-}
-
-void _initRecipeUseCases() {
-  sl.registerLazySingleton(() => GenerateRecipesUseCase(sl()));
-  sl.registerLazySingleton(() => GetCachedRecipesUseCase(sl()));
-  sl.registerLazySingleton(() => CacheRecipesUseCase(sl()));
-}
-
-Future<void> initFavouriteFeature() async {
-  sl.registerLazySingleton<FavoriteRemoteDataSource>(
-    () => FavoriteRemoteDataSourceImpl(firestore: sl(), auth: sl()),
-  );
-  sl.registerLazySingleton<FavoriteRepository>(
-    () => FavoriteRepositoryImpl(sl()),
-  );
-  sl.registerLazySingleton(() => ToggleFavorite(sl()));
-  sl.registerLazySingleton(() => GetFavoritesStream(sl()));
-  sl.registerFactory(
-    () => FavoritesBloc(toggleFavorite: sl(), getFavoritesStream: sl()),
-  );
-}
-
-Future<void> initCookingFeature() async {
-  sl.registerFactory(
-    () => CookingBloc(
-      startCooking: sl(),
-      updateCookingStep: sl(),
-      toggleIngredient: sl(),
-      completeCooking: sl(),
-      getActiveSession: sl(),
-    ),
-  );
-
-  sl.registerLazySingleton(() => StartCooking(sl()));
-  sl.registerLazySingleton(() => UpdateCookingStep(sl()));
-  sl.registerLazySingleton(() => ToggleIngredient(sl()));
-  sl.registerLazySingleton(() => CompleteCooking(sl()));
-  sl.registerLazySingleton(() => GetActiveSession(sl()));
-
-  sl.registerLazySingleton<CookingRepository>(
-    () => CookingRepositoryImpl(
-      remoteDataSource: sl(),
-      networkInfo: sl(),
-      authService: sl(),
-      recipeDetailRepository: sl(),
-    ),
-  );
-
-  // Data Sources
-  sl.registerLazySingleton<CookingRemoteDataSource>(
-    () => CookingRemoteDataSourceImpl(firestore: sl<FirebaseFirestore>()),
-  );
 }
 
 Future<void> _initFavoriteFeature() async {
@@ -226,4 +177,8 @@ Future<void> _initSavedFeature() async {
   sl.registerLazySingleton(() => GetSavedStream(sl()));
 
   sl.registerFactory(() => SavedBloc(toggleSaved: sl(), getSavedStream: sl()));
+}
+
+Future<void> _initSettingsFeature() async {
+  sl.registerLazySingleton<SettingsBloc>(() => SettingsBloc());
 }
