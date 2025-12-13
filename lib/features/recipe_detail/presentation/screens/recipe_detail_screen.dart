@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pantry_ai/core/utils/show_snackbar.dart';
 import 'package:pantry_ai/shared/widgets/favorite_button.dart';
 
 import '../../../../shared/models/recipe/recipe.dart';
-import '../widgets/action_buttons.dart';
+import '../../../../shared/widgets/add_to_cooking_button.dart';
 import '../widgets/difficulty_indicator.dart';
 import '../widgets/ingredient_card.dart';
 import '../widgets/instruction_step_card.dart';
@@ -14,18 +12,10 @@ import '../widgets/recipe_section_header.dart';
 import '../widgets/recipe_state_row.dart';
 import '../widgets/recipe_tag_row.dart';
 
-class RecipeDetailScreen extends StatefulWidget {
+class RecipeDetailScreen extends StatelessWidget {
   final Recipe recipe;
 
   const RecipeDetailScreen({super.key, required this.recipe});
-
-  @override
-  State<RecipeDetailScreen> createState() => _RecipeDetailScreenState();
-}
-
-class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
-  bool isFavorite = false;
-  bool isSaved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,44 +45,13 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          FavoriteButton(recipe: widget.recipe),
-          IconButton(
-            icon: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: cs.surface.withOpacity(0.9),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                isSaved ? Icons.bookmark : Icons.bookmark_border,
-                color: isSaved ? cs.primary : cs.onSurface,
-                size: 22,
-              ),
-            ),
-            onPressed: () {
-              setState(() => isSaved = !isSaved);
-              showSnackBar(
-                context,
-                isSaved ? 'Recipe saved 📌' : 'Recipe unsaved',
-                cs,
-              );
-            },
-          ),
+          FavoriteButton(recipe: recipe),
           const SizedBox(width: 8),
         ],
       ),
-      bottomNavigationBar: ActionButtons(
-        colorScheme: cs,
-        onStartCooking: () {
-          context.pushNamed("cookingSession", extra: widget.recipe);
-        },
-        onMarkAsCooked: () {
-          showSnackBar(context, 'Marked as cooked! ✅', cs);
-        },
-      ),
+      bottomNavigationBar: AddToCookingAction(recipe: recipe),
       body: CustomScrollView(
         slivers: [
-          // Hero Image
           SliverToBoxAdapter(
             child: Stack(
               children: [
@@ -104,7 +63,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   child: AspectRatio(
                     aspectRatio: 16 / 10,
                     child: Image.network(
-                      widget.recipe.imageUrl,
+                      recipe.imageUrl,
                       fit: BoxFit.cover,
                       cacheWidth: 800,
                       loadingBuilder: (context, child, loadingProgress) {
@@ -134,7 +93,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                     ),
                   ),
                 ),
-                // Gradient Overlay
+
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -168,7 +127,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 const SizedBox(height: 20),
 
                 Text(
-                  widget.recipe.title,
+                  recipe.title,
                   style: textTheme.headlineMedium?.copyWith(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -178,30 +137,29 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                RecipeStatsRow(recipe: widget.recipe, colorScheme: cs),
+                RecipeStatsRow(recipe: recipe, colorScheme: cs),
                 const SizedBox(height: 16),
 
                 RecipeDifficultyIndicator(
-                  difficulty: widget.recipe.difficulty,
+                  difficulty: recipe.difficulty,
                   colorScheme: cs,
                 ),
 
-                if (widget.recipe.cuisine != null ||
-                    widget.recipe.dietaryInfo != null)
+                if (recipe.cuisine != null || recipe.dietaryInfo != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: RecipeTagsRow(
-                      cuisine: widget.recipe.cuisine,
-                      dietaryInfo: widget.recipe.dietaryInfo,
+                      cuisine: recipe.cuisine,
+                      dietaryInfo: recipe.dietaryInfo,
                       colorScheme: cs,
                     ),
                   ),
 
                 const SizedBox(height: 20),
 
-                if (widget.recipe.description != null)
+                if (recipe.description != null)
                   Text(
-                    widget.recipe.description!,
+                    recipe.description!,
                     style: textTheme.bodyLarge?.copyWith(
                       fontSize: 15,
                       height: 1.6,
@@ -213,21 +171,21 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
                 RecipeSectionHeader(
                   title: "Ingredients",
-                  count: widget.recipe.ingredients.length,
+                  count: recipe.ingredients.length,
                   colorScheme: cs,
                 ),
                 const SizedBox(height: 12),
 
-                ...widget.recipe.ingredients.map(
+                ...recipe.ingredients.map(
                   (ing) => IngredientCard(ingredient: ing, colorScheme: cs),
                 ),
 
                 const SizedBox(height: 20),
 
-                if (widget.recipe.missingIngredients.isNotEmpty) ...[
+                if (recipe.missingIngredients.isNotEmpty) ...[
                   MissingIngredientsHeader(colorScheme: cs),
                   const SizedBox(height: 8),
-                  ...widget.recipe.missingIngredients.map(
+                  ...recipe.missingIngredients.map(
                     (m) => MissingIngredientCard(name: m, colorScheme: cs),
                   ),
                   const SizedBox(height: 20),
@@ -243,10 +201,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                ...List.generate(widget.recipe.instructions.length, (i) {
+                ...List.generate(recipe.instructions.length, (i) {
                   return InstructionStepCard(
                     step: i + 1,
-                    text: widget.recipe.instructions[i],
+                    text: recipe.instructions[i],
                     colorScheme: cs,
                   );
                 }),

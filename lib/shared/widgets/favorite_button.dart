@@ -5,22 +5,18 @@ import '../../core/utils/show_snackbar.dart';
 import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
 import '../models/recipe/recipe.dart';
 
-class FavoriteButton extends StatefulWidget {
+class FavoriteButton extends StatelessWidget {
   final Recipe recipe;
 
-  const FavoriteButton({required this.recipe, super.key});
+  const FavoriteButton({super.key, required this.recipe});
 
-  @override
-  State<FavoriteButton> createState() => _FavoriteButtonState();
-}
-
-class _FavoriteButtonState extends State<FavoriteButton> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavoritesBloc, FavoritesState>(
-      builder: (context, state) {
-        bool isFavorite = state.favoriteIds.contains(widget.recipe.id);
-        final cs = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
+
+    return BlocSelector<FavoritesBloc, FavoritesState, bool>(
+      selector: (state) => state.favoriteIds.contains(recipe.id),
+      builder: (context, isFavorite) {
         return IconButton(
           icon: Container(
             padding: const EdgeInsets.all(10),
@@ -29,16 +25,19 @@ class _FavoriteButtonState extends State<FavoriteButton> {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
+              isFavorite
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
               color: isFavorite ? Colors.red : cs.onSurface,
               size: 22,
             ),
           ),
           onPressed: () {
-            setState(() => isFavorite = !isFavorite);
+            context.read<FavoritesBloc>().add(ToggleFavoriteEvent(recipe));
+
             showSnackBar(
               context,
-              isFavorite ? 'Added to favorites ❤️' : 'Removed from favorites',
+              isFavorite ? 'Removed from favorites' : 'Added to favorites ❤',
               cs,
             );
           },
