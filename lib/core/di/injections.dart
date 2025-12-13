@@ -5,13 +5,19 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:pantry_ai/features/auth/data/remote/auth_local_data_source_impl.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.dart';
 import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
+import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource.dart';
+import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource_impl.dart';
+import 'package:pantry_ai/features/save_recipe/domain/repository/saved_repository.dart';
+import 'package:pantry_ai/features/save_recipe/presentation/bloc/saved_bloc.dart';
 
+import '../../features/auth/data/remote/auth_local_data_source.dart';
 import '../../features/auth/data/repository/auth_repository_impl.dart';
 import '../../features/auth/domain/repository/auth_repository.dart';
 import '../../features/auth/domain/usecases/check_auth_status_usecase.dart';
@@ -44,6 +50,9 @@ import '../../features/recipe_suggestions/domain/repository/recipe_repository.da
 import '../../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
+import '../../features/save_recipe/data/repository/saved_repository_impl.dart';
+import '../../features/save_recipe/domain/usecases/get_saved_stream.dart';
+import '../../features/save_recipe/domain/usecases/toogle_saved.dart';
 import '../network/network_info.dart';
 import '../utils/firebase_auth_service.dart';
 
@@ -57,6 +66,8 @@ Future<void> initDependencies() async {
   _initRepositories();
   _initAuthUseCases();
   _initRecipeUseCases();
+  _initFavoriteFeature();
+  _initSavedFeature();
 }
 
 void _initFirebase() {
@@ -81,6 +92,9 @@ void _initExternalServices() {
   sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(sl()),
+  );
 }
 
 Future<void> _initHiveBoxes() async {
@@ -180,4 +194,36 @@ Future<void> initCookingFeature() async {
   sl.registerLazySingleton<CookingRemoteDataSource>(
     () => CookingRemoteDataSourceImpl(firestore: sl<FirebaseFirestore>()),
   );
+}
+
+Future<void> _initFavoriteFeature() async {
+  sl.registerLazySingleton<FavoriteRemoteDataSource>(
+    () => FavoriteRemoteDataSourceImpl(firestore: sl(), auth: sl()),
+  );
+
+  sl.registerLazySingleton<FavoriteRepository>(
+    () => FavoriteRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton(() => ToggleFavorite(sl()));
+  sl.registerLazySingleton(() => GetFavoritesStream(sl()));
+
+  sl.registerFactory(
+    () => FavoritesBloc(toggleFavorite: sl(), getFavoritesStream: sl()),
+  );
+}
+
+Future<void> _initSavedFeature() async {
+  sl.registerLazySingleton<SavedRemoteDataSource>(
+    () => SavedRemoteDataSourceImpl(sl()),
+  );
+
+  sl.registerLazySingleton<SavedRepository>(
+    () => SavedRepositoryImpl(remote: sl(), auth: sl()),
+  );
+
+  sl.registerLazySingleton(() => ToggleSaved(sl()));
+  sl.registerLazySingleton(() => GetSavedStream(sl()));
+
+  sl.registerFactory(() => SavedBloc(toggleSaved: sl(), getSavedStream: sl()));
 }

@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:pantry_ai/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:pantry_ai/features/favorites/presentation/screens/favorite_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/all_recipe_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 import 'package:pantry_ai/features/preference/presentation/screens/taste_preference_screen.dart';
+import 'package:pantry_ai/features/save_recipe/presentation/screens/saved_recipe_screen.dart';
 import 'package:pantry_ai/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:pantry_ai/splash.dart';
 
@@ -55,7 +57,7 @@ GoRouter createRouter() {
         builder: (context, state) => SignupScreen(),
       ),
       GoRoute(
-        path: '/recipe-widgets',
+        path: '/recipe-detail',
         name: 'recipeDetails',
         builder: (context, state) {
           final recipe = state.extra as Recipe;
@@ -106,6 +108,21 @@ GoRouter createRouter() {
             create: (_) => TastePreferenceBloc(),
             child: TastePreferenceScreen(imagePath: imagePath),
           );
+        },
+      ),
+      GoRoute(
+        path: '/favorite-recipe',
+        name: 'favoriteRecipe',
+        builder: (context, state) {
+          return FavoriteScreen();
+        },
+      ),
+
+      GoRoute(
+        path: '/saved-recipe',
+        name: 'savedRecipe',
+        builder: (context, state) {
+          return SavedRecipesScreen();
         },
       ),
       ShellRoute(

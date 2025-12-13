@@ -13,6 +13,8 @@ import 'features/auth/domain/usecases/sign_in_google_usecase.dart';
 import 'features/auth/domain/usecases/sign_in_usecase.dart';
 import 'features/auth/domain/usecases/sign_out_usecase.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -47,6 +49,8 @@ class _MyAppState extends State<MyApp> {
             deleteAccount: sl<DeleteAccountUseCase>(),
           ),
         ),
+        BlocProvider<FavoritesBloc>(create: (context) => sl<FavoritesBloc>()),
+        BlocProvider<SavedBloc>(create: (context) => sl<SavedBloc>()),
       ],
       child: Builder(
         builder: (context) {
