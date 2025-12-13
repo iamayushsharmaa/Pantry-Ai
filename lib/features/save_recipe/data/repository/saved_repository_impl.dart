@@ -1,16 +1,18 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:pantry_ai/features/auth/data/remote/auth_local_data_source.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/models/recipe/recipe.dart';
-import '../../../../shared/models/recipe/recipe_model.dart';
-import '../../../../shared/models/recipe/saved_recipe_model.dart';
+import '../../domain/entities/save_recipe_entity.dart';
 import '../../domain/repository/saved_repository.dart';
 import '../datasource/saved_datasource.dart';
+import '../model/saved_recipe_model.dart';
 
 class SavedRepositoryImpl implements SavedRepository {
   final SavedRemoteDataSource remote;
+  final AuthLocalDataSource auth;
 
-  SavedRepositoryImpl(this.remote);
+  SavedRepositoryImpl({required this.remote, required this.auth});
 
   @override
   Future<Either<Failure, void>> saveRecipe(
@@ -18,9 +20,14 @@ class SavedRepositoryImpl implements SavedRepository {
     String? notes,
   }) async {
     try {
-      await remote.saveRecipe(recipe as RecipeModel, notes: notes);
+      final uid = auth.currentUserId;
+
+      final model = SavedRecipeModel.fromRecipe(recipe: recipe, notes: notes);
+
+      await remote.saveRecipe(uid: uid, recipe: model);
+
       return const Right(null);
-    } catch (e) {
+    } catch (_) {
       return Left(ServerFailure());
     }
   }
@@ -28,9 +35,10 @@ class SavedRepositoryImpl implements SavedRepository {
   @override
   Future<Either<Failure, void>> unsaveRecipe(String recipeId) async {
     try {
-      await remote.unsaveRecipe(recipeId);
+      final uid = auth.currentUserId;
+      await remote.unsaveRecipe(uid: uid, recipeId: recipeId);
       return const Right(null);
-    } catch (e) {
+    } catch (_) {
       return Left(ServerFailure());
     }
   }
@@ -38,18 +46,26 @@ class SavedRepositoryImpl implements SavedRepository {
   @override
   Future<Either<Failure, bool>> isSaved(String recipeId) async {
     try {
-      return Right(await remote.isSaved(recipeId));
-    } catch (e) {
+      final uid = auth.currentUserId;
+      final saved = await remote.isSaved(uid: uid, recipeId: recipeId);
+      return Right(saved);
+    } catch (_) {
       return Left(ServerFailure());
     }
   }
 
   @override
   Stream<Either<Failure, List<SavedRecipe>>> getSavedStream() {
+    final uid = auth.currentUserId;
+
     return remote
-        .getSavedStream()
-        .map((list) => Right<Failure, List<SavedRecipe>>(list))
-        .handleError((_) => Left<Failure, List<SavedRecipe>>(ServerFailure()));
+        .getSavedStream(uid)
+        .map(
+          (models) => Right<Failure, List<SavedRecipe>>(
+            models.map((m) => m.toEntity()).toList(),
+          ),
+        )
+        .handleError((_) => Left(ServerFailure()));
   }
 
   @override
@@ -57,8 +73,9 @@ class SavedRepositoryImpl implements SavedRepository {
     Recipe recipe, {
     String? notes,
   }) async {
-    final currentlySaved = await isSaved(recipe.id);
-    return currentlySaved.fold(
+    final result = await isSaved(recipe.id);
+
+    return result.fold(
       (failure) => Left(failure),
       (isSaved) =>
           isSaved ? unsaveRecipe(recipe.id) : saveRecipe(recipe, notes: notes),

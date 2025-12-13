@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
-class SavedRecipe {
-  final String userId;
+import '../../../../shared/models/recipe/recipe.dart';
+import '../../domain/entities/save_recipe_entity.dart';
+
+class SavedRecipeModel {
   final String recipeId;
   final DateTime savedAt;
   final RecipeSnapshot recipeSnapshot;
   final String? notes;
 
-  SavedRecipe({
-    required this.userId,
+  SavedRecipeModel({
     required this.recipeId,
     required this.savedAt,
     required this.recipeSnapshot,
@@ -18,7 +19,6 @@ class SavedRecipe {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'userId': userId,
       'recipeId': recipeId,
       'savedAt': Timestamp.fromDate(savedAt),
       'recipeSnapshot': recipeSnapshot.toJson(),
@@ -26,14 +26,31 @@ class SavedRecipe {
     };
   }
 
-  factory SavedRecipe.fromFirestore(DocumentSnapshot doc) {
+  factory SavedRecipeModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return SavedRecipe(
-      userId: data['userId'],
+    return SavedRecipeModel(
       recipeId: data['recipeId'],
       savedAt: (data['savedAt'] as Timestamp).toDate(),
       recipeSnapshot: RecipeSnapshot.fromJson(data['recipeSnapshot']),
       notes: data['notes'],
+    );
+  }
+
+  SavedRecipe toEntity() {
+    return SavedRecipe(
+      recipeId: recipeId,
+      savedAt: savedAt,
+      recipe: recipeSnapshot.toEntity(),
+      notes: notes,
+    );
+  }
+
+  factory SavedRecipeModel.fromRecipe({required Recipe recipe, String? notes}) {
+    return SavedRecipeModel(
+      recipeId: recipe.id,
+      savedAt: DateTime.now(),
+      recipeSnapshot: RecipeSnapshot.fromRecipe(recipe),
+      notes: notes,
     );
   }
 }

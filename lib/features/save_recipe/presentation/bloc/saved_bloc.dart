@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 
 import '../../../../shared/models/recipe/recipe.dart';
-import '../../../../shared/models/recipe/saved_recipe_model.dart';
+import '../../data/model/saved_recipe_model.dart';
+import '../../domain/entities/save_recipe_entity.dart';
 import '../../domain/usecases/get_saved_stream.dart';
 import '../../domain/usecases/toogle_saved.dart';
 

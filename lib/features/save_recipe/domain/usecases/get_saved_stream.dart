@@ -1,4 +1,5 @@
-import '../../../../shared/models/recipe/saved_recipe_model.dart';
+import '../../data/model/saved_recipe_model.dart';
+import '../entities/save_recipe_entity.dart';
 import '../repository/saved_repository.dart';
 
 class GetSavedStream {

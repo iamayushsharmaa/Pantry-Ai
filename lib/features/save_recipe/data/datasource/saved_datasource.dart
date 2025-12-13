@@ -1,12 +1,14 @@
-import '../../../../shared/models/recipe/recipe_model.dart';
-import '../../../../shared/models/recipe/saved_recipe_model.dart';
+import '../model/saved_recipe_model.dart';
 
 abstract class SavedRemoteDataSource {
-  Future<void> saveRecipe(RecipeModel recipe, {String? notes});
+  Future<void> saveRecipe({
+    required String uid,
+    required SavedRecipeModel recipe,
+  });
 
-  Future<void> unsaveRecipe(String recipeId);
+  Future<void> unsaveRecipe({required String uid, required String recipeId});
 
-  Future<bool> isSaved(String recipeId);
+  Future<bool> isSaved({required String uid, required String recipeId});
 
-  Stream<List<SavedRecipe>> getSavedStream();
+  Stream<List<SavedRecipeModel>> getSavedStream(String uid);
 }

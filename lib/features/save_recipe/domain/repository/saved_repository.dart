@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/models/recipe/recipe.dart';
-import '../../../../shared/models/recipe/saved_recipe_model.dart';
+import '../entities/save_recipe_entity.dart';
 
 abstract class SavedRepository {
   Future<Either<Failure, void>> saveRecipe(Recipe recipe, {String? notes});
