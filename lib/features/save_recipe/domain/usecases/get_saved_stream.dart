@@ -1,4 +1,6 @@
-import '../../data/model/saved_recipe_model.dart';
+import 'package:fpdart/fpdart.dart';
+
+import '../../../../core/errors/failure.dart';
 import '../entities/save_recipe_entity.dart';
 import '../repository/saved_repository.dart';
 
@@ -7,9 +9,7 @@ class GetSavedStream {
 
   GetSavedStream(this.repo);
 
-  Stream<List<SavedRecipe>> call() {
-    return repo.getSavedStream().map(
-      (either) => either.fold((_) => <SavedRecipe>[], (list) => list),
-    );
+  Stream<Either<Failure, List<SavedRecipe>>> call() {
+    return repo.getSavedStream();
   }
 }

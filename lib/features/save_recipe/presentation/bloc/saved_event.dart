@@ -10,3 +10,10 @@ class ToggleSavedEvent extends SavedEvent {
 }
 
 class LoadSavedEvent extends SavedEvent {}
+
+class _SavedStreamUpdated extends SavedEvent {
+  final List<SavedRecipe> recipes;
+
+  _SavedStreamUpdated(this.recipes);
+}
+

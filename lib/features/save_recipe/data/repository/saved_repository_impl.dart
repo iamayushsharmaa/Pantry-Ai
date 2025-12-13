@@ -12,6 +12,8 @@ class SavedRepositoryImpl implements SavedRepository {
   final SavedRemoteDataSource remote;
   final AuthLocalDataSource auth;
 
+  List<SavedRecipe>? _cache;
+
   SavedRepositoryImpl({required this.remote, required this.auth});
 
   @override
@@ -60,13 +62,17 @@ class SavedRepositoryImpl implements SavedRepository {
 
     return remote
         .getSavedStream(uid)
-        .map(
-          (models) => Right<Failure, List<SavedRecipe>>(
-            models.map((m) => m.toEntity()).toList(),
-          ),
-        )
-        .handleError((_) => Left(ServerFailure()));
+        .map((models) {
+          final entities = models.map((m) => m.toEntity()).toList();
+
+          _cache = entities;
+
+          return Right<Failure, List<SavedRecipe>>(entities);
+        })
+        .handleError((_) => Left<Failure, List<SavedRecipe>>(ServerFailure()));
   }
+
+  List<SavedRecipe>? getCachedSavedRecipes() => _cache;
 
   @override
   Future<Either<Failure, void>> toggleSaved(
