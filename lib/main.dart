@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/app_settings/app_settings_bloc.dart';
 import 'core/di/injections.dart';
@@ -17,6 +18,7 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
 import 'firebase_options.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
