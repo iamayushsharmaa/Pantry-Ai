@@ -69,18 +69,9 @@ class _SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // -------------------- App Settings --------------------
                 SettingsSection(
                   title: 'App Settings',
                   children: [
-                    SettingsTile.switchTile(
-                      icon: Icons.notifications_outlined,
-                      title: 'Notifications',
-                      subtitle: 'Receive cooking reminders',
-                      value: state.notificationsEnabled,
-                      onChanged: (value) =>
-                          bloc.add(ToggleNotifications(value)),
-                    ),
                     SettingsTile.switchTile(
                       icon: Icons.dark_mode_outlined,
                       title: 'Dark Mode',
@@ -104,7 +95,6 @@ class _SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // -------------------- Recipe Preferences --------------------
                 SettingsSection(
                   title: 'Recipe Preferences',
                   children: [
@@ -133,7 +123,6 @@ class _SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // -------------------- Data & Privacy --------------------
                 SettingsSection(
                   title: 'Data & Privacy',
                   children: [
@@ -178,7 +167,6 @@ class _SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // -------------------- Account --------------------
                 SettingsSection(
                   title: 'Account',
                   children: [
@@ -215,17 +203,16 @@ class _SettingsView extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _langTile(context, 'English', const Locale('en')),
-            _langTile(context, 'Spanish', const Locale('es')),
-            _langTile(context, 'Hindi', const Locale('hi')),
-            _langTile(context, 'German', const Locale('de')),
+            _languageTile(context, 'English', const Locale('en')),
+            _languageTile(context, 'Hindi', const Locale('hi')),
+            _languageTile(context, 'Spanish', const Locale('es')),
           ],
         ),
       ),
     );
   }
 
-  Widget _langTile(BuildContext context, String label, Locale locale) {
+  Widget _languageTile(BuildContext context, String label, Locale locale) {
     return ListTile(
       title: Text(label),
       onTap: () {

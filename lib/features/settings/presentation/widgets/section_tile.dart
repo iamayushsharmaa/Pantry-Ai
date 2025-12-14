@@ -62,7 +62,6 @@ class SettingsTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          // Icon
           Container(
             width: 40,
             height: 40,
@@ -74,7 +73,6 @@ class SettingsTile extends StatelessWidget {
           ),
           const SizedBox(width: 16),
 
-          // Title and Subtitle
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +101,6 @@ class SettingsTile extends StatelessWidget {
             ),
           ),
 
-          // Trailing Widget
           if (trailing != null) trailing!,
         ],
       ),

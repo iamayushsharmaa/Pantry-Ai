@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "settings": "Settings",
+  "darkMode": "Dark Mode",
+  "language": "Language",
+  "logout": "Logout",
+  "deleteAccount": "Delete Account",
+  "addedToCooking": "Added to cooking",
+  "favorites": "Favorites",
+  "savedRecipes": "Saved Recipes"
+}

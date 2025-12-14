@@ -62,6 +62,17 @@ class _MyAppState extends State<MyApp> {
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
             locale: state.locale,
+            supportedLocales: const [
+              Locale('en'),
+              Locale('hi'),
+              Locale('es'),
+            ],
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             debugShowCheckedModeBanner: false,
           );
         },
