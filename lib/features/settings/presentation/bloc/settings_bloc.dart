@@ -25,18 +25,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       emit(state.copyWith(notificationsEnabled: event.enabled));
     });
 
-    on<ToggleDarkMode>((event, emit) {
-      emit(state.copyWith(darkModeEnabled: event.enabled));
-    });
-
-    on<ToggleAnalytics>((event, emit) {
-      emit(state.copyWith(analyticsEnabled: event.enabled));
-    });
-
-    on<ChangeLanguage>((event, emit) {
-      emit(state.copyWith(selectedLanguage: event.language));
-    });
-
     on<NavigateToScreen>((event, emit) {
       emit(state.copyWith(navigationTarget: event.screen));
       emit(state.copyWith(navigationTarget: null)); // reset

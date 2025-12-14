@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'core/router/router.dart';
+import 'core/app_settings/app_settings_bloc.dart';
 import 'core/di/injections.dart';
+import 'core/router/router.dart';
 import 'core/theme/theme.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'features/auth/domain/usecases/delete_account_usecase.dart';
@@ -51,14 +52,16 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<FavoritesBloc>(create: (context) => sl<FavoritesBloc>()),
         BlocProvider<SavedBloc>(create: (context) => sl<SavedBloc>()),
+        BlocProvider(create: (_) => AppSettingsBloc()),
       ],
-      child: Builder(
-        builder: (context) {
+      child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
+        builder: (context, state) {
           return MaterialApp.router(
             routerConfig: createRouter(),
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.system,
+            themeMode: state.themeMode,
+            locale: state.locale,
             debugShowCheckedModeBanner: false,
           );
         },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/app_settings/app_settings_bloc.dart';
 import '../bloc/settings_bloc.dart';
 import '../widgets/profile_card.dart';
 import '../widgets/section_tile.dart';
@@ -84,8 +85,14 @@ class _SettingsView extends StatelessWidget {
                       icon: Icons.dark_mode_outlined,
                       title: 'Dark Mode',
                       subtitle: 'Enable dark theme',
-                      value: state.darkModeEnabled,
-                      onChanged: (value) => bloc.add(ToggleDarkMode(value)),
+                      value: Theme.of(context).brightness == Brightness.dark,
+                      onChanged: (enabled) {
+                        context.read<AppSettingsBloc>().add(
+                          ChangeThemeMode(
+                            enabled ? ThemeMode.dark : ThemeMode.light,
+                          ),
+                        );
+                      },
                     ),
                     SettingsTile.navigation(
                       icon: Icons.language_outlined,
@@ -130,19 +137,6 @@ class _SettingsView extends StatelessWidget {
                 SettingsSection(
                   title: 'Data & Privacy',
                   children: [
-                    SettingsTile.switchTile(
-                      icon: Icons.analytics_outlined,
-                      title: 'Analytics',
-                      subtitle: 'Help improve the app',
-                      value: state.analyticsEnabled,
-                      onChanged: (value) => bloc.add(ToggleAnalytics(value)),
-                    ),
-                    SettingsTile.navigation(
-                      icon: Icons.download_outlined,
-                      title: 'Export Data',
-                      subtitle: 'Download your recipes',
-                      onTap: () => bloc.add(NavigateToScreen('Export Data')),
-                    ),
                     SettingsTile.navigation(
                       icon: Icons.privacy_tip_outlined,
                       title: 'Privacy Policy',
@@ -153,7 +147,6 @@ class _SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // -------------------- Support --------------------
                 SettingsSection(
                   title: 'Support',
                   children: [
@@ -215,31 +208,30 @@ class _SettingsView extends StatelessWidget {
   }
 
   void _showLanguageDialog(BuildContext context) {
-    final bloc = context.read<SettingsBloc>();
-    final state = bloc.state;
-
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Select Language'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['English', 'Spanish', 'French', 'German'].map((lang) {
-            return RadioListTile<String>(
-              title: Text(lang),
-              value: lang,
-              groupValue: state.selectedLanguage,
-              onChanged: (v) {
-                Navigator.of(
-                  context,
-                  rootNavigator: true,
-                ).pop(); // close instantly
-                bloc.add(ChangeLanguage(v!));
-              },
-            );
-          }).toList(),
+          children: [
+            _langTile(context, 'English', const Locale('en')),
+            _langTile(context, 'Spanish', const Locale('es')),
+            _langTile(context, 'Hindi', const Locale('hi')),
+            _langTile(context, 'German', const Locale('de')),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _langTile(BuildContext context, String label, Locale locale) {
+    return ListTile(
+      title: Text(label),
+      onTap: () {
+        context.read<AppSettingsBloc>().add(ChangeLanguage(locale));
+        Navigator.pop(context);
+      },
     );
   }
 
