@@ -11,6 +11,8 @@ class AnalyticsRangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Wrap(
       spacing: 8,
       children: AnalyticsRange.values.map((range) {
@@ -19,6 +21,11 @@ class AnalyticsRangeSelector extends StatelessWidget {
         return ChoiceChip(
           label: Text(_label(range)),
           selected: isSelected,
+          selectedColor: cs.primary.withOpacity(0.15),
+          labelStyle: TextStyle(
+            color: isSelected ? cs.primary : cs.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
           onSelected: (_) {
             context.read<AnalyticsBloc>().add(ChangeRange(range));
           },
@@ -30,12 +37,12 @@ class AnalyticsRangeSelector extends StatelessWidget {
   String _label(AnalyticsRange range) {
     switch (range) {
       case AnalyticsRange.week:
-        return 'This Week';
+        return 'Week';
       case AnalyticsRange.month:
-        return 'This Month';
+        return 'Month';
       case AnalyticsRange.all:
       default:
-        return 'All Time';
+        return 'All';
     }
   }
 }

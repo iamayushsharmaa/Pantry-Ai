@@ -22,7 +22,7 @@ class AnalyticsKpiCard extends StatelessWidget {
         color: cs.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: cs.shadow.withOpacity(0.05), blurRadius: 10),
+          BoxShadow(color: cs.shadow.withOpacity(0.08), blurRadius: 12),
         ],
       ),
       child: Column(
@@ -32,10 +32,14 @@ class AnalyticsKpiCard extends StatelessWidget {
           const Spacer(),
           Text(
             value,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
           ),
           const SizedBox(height: 4),
-          Text(title, style: TextStyle(color: cs.onSurfaceVariant)),
+          Text(title, style: TextStyle(color: cs.onSurface.withOpacity(0.6))),
         ],
       ),
     );

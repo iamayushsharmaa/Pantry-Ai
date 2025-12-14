@@ -9,6 +9,7 @@ class AnalyticsInsightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final percentage = (analytics.favoriteToCookingRatio * 100).toStringAsFixed(
       0,
     );
@@ -16,17 +17,21 @@ class AnalyticsInsightCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        color: cs.primary.withOpacity(0.08),
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: Row(
         children: [
-          const Icon(Icons.insights, size: 32),
+          Icon(Icons.insights, color: cs.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              '$percentage% of your favorite recipes were added to cooking.',
-              style: const TextStyle(fontSize: 16),
+              '$percentage% of favorite recipes were added to cooking.',
+              style: TextStyle(
+                fontSize: 15,
+                color: cs.onSurface,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

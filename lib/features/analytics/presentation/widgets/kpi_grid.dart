@@ -15,9 +15,9 @@ class AnalyticsKpiGrid extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        mainAxisSpacing: 12,
         crossAxisSpacing: 12,
-        childAspectRatio: 1.3,
+        mainAxisSpacing: 12,
+        childAspectRatio: 1.35,
       ),
       children: [
         AnalyticsKpiCard(
@@ -26,7 +26,7 @@ class AnalyticsKpiGrid extends StatelessWidget {
           icon: Icons.restaurant_menu,
         ),
         AnalyticsKpiCard(
-          title: 'Added This Week',
+          title: 'This Week',
           value: analytics.addedThisWeek.toString(),
           icon: Icons.calendar_today,
         ),
