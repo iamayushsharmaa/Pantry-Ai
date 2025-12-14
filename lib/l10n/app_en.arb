@@ -1,5 +1,9 @@
 {
   "@@locale": "en",
+  "auth_email": "Email",
+  "auth_password": "Password",
+  "auth_signIn": "Sign In",
+  "auth_signUp": "Create account",
   "settings": "Settings",
   "darkMode": "Dark Mode",
   "language": "Language",
@@ -7,5 +11,13 @@
   "deleteAccount": "Delete Account",
   "addedToCooking": "Added to cooking",
   "favorites": "Favorites",
-  "savedRecipes": "Saved Recipes"
+  "savedRecipes": "Saved Recipes",
+  "recipe_ingredients": "Ingredients",
+  "recipe_instructions": "Cooking Instructions",
+  "recipe_addToCooking": "Add to cooking",
+  "taste_preference_title": "Taste Preferences",
+  "taste_spicyLevel": "Spicy level",
+  "taste_hint": "Tell us what you like",
+  "taste_save": "Save",
+  "taste_cancel": "Cancel"
 }
