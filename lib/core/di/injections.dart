@@ -5,6 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:pantry_ai/features/analytics/data/remote/analytics_remote_datasource.dart';
+import 'package:pantry_ai/features/analytics/domain/repository/analytics_repository.dart';
+import 'package:pantry_ai/features/analytics/domain/usecases/get_cooking_analytics.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_local_data_source_impl.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.dart';
@@ -20,6 +23,9 @@ import 'package:pantry_ai/features/save_recipe/presentation/bloc/saved_bloc.dart
 import 'package:pantry_ai/features/scan/presentation/bloc/scan_bloc.dart';
 import 'package:pantry_ai/features/settings/presentation/bloc/settings_bloc.dart';
 
+import '../../features/analytics/data/remote/analytics_remote_datasource_impl.dart';
+import '../../features/analytics/data/repository/analytics_repository_impl.dart';
+import '../../features/analytics/presentation/bloc/analytics_bloc.dart';
 import '../../features/auth/data/remote/auth_local_data_source.dart';
 import '../../features/auth/data/repository/auth_repository_impl.dart';
 import '../../features/auth/domain/repository/auth_repository.dart';
@@ -62,6 +68,7 @@ Future<void> initDependencies() async {
   _initSavedFeature();
   _initScanFeature();
   _initSettingsFeature();
+  _initAnalyticsFeature();
 }
 
 void _initFirebase() {
@@ -145,6 +152,25 @@ Future<void> _initAuthFeature() async {
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
   sl.registerLazySingleton(() => DeleteAccountUseCase(sl()));
+}
+
+Future<void> _initAnalyticsFeature() async {
+  sl.registerLazySingleton<AnalyticsLocalDataSource>(
+    () => AnalyticsLocalDataSourceImpl(
+      savedRepository: sl(),
+      favoriteRepository: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<AnalyticsRepository>(
+    () => AnalyticsRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton(() => GetCookingAnalytics(sl()));
+
+  sl.registerLazySingleton<AnalyticsBloc>(
+    () => AnalyticsBloc(getAnalytics: sl()),
+  );
 }
 
 Future<void> _initFavoriteFeature() async {

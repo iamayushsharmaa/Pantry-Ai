@@ -6,6 +6,7 @@ import '../widgets/empty_state.dart';
 import '../widgets/header.dart';
 import '../widgets/insight_card.dart';
 import '../widgets/kpi_grid.dart';
+
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
 
@@ -15,15 +16,11 @@ class AnalyticsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: cs.surface,
-      appBar: AppBar(
-        title: const Text('Analytics'),
-      ),
+      appBar: AppBar(title: const Text('Analytics')),
       body: BlocBuilder<AnalyticsBloc, AnalyticsState>(
         builder: (context, state) {
           if (state is AnalyticsLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: cs.primary),
-            );
+            return Center(child: CircularProgressIndicator(color: cs.primary));
           }
 
           if (state is AnalyticsLoaded) {

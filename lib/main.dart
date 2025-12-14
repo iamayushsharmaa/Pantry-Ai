@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'config/routes.dart';
+import 'core/router/router.dart';
 import 'core/di/injections.dart';
 import 'core/theme/theme.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
