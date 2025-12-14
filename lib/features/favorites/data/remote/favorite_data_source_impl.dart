@@ -53,4 +53,13 @@ class FavoriteRemoteDataSourceImpl implements FavoriteRemoteDataSource {
               .toList(),
         );
   }
+
+  @override
+  Future<List<FavoriteRecipeModel>> getFavoritesOnce() async {
+    final snapshot = await _favCol
+        .orderBy('favoritedAt', descending: true)
+        .get();
+
+    return snapshot.docs.map(FavoriteRecipeModel.fromFirestore).toList();
+  }
 }

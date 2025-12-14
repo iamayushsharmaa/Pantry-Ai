@@ -14,4 +14,7 @@ abstract class SavedRepository {
   Stream<Either<Failure, List<SavedRecipe>>> getSavedStream();
 
   Future<Either<Failure, void>> toggleSaved(Recipe recipe, {String? notes});
+
+  Future<Either<Failure, List<SavedRecipe>>> getSavedOnce();
+
 }

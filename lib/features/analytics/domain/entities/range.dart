@@ -1,0 +1,1 @@
+enum AnalyticsRange { all, week, month }

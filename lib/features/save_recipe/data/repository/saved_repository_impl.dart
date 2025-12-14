@@ -87,4 +87,14 @@ class SavedRepositoryImpl implements SavedRepository {
           isSaved ? unsaveRecipe(recipe.id) : saveRecipe(recipe, notes: notes),
     );
   }
+
+  @override
+  Future<Either<Failure, List<SavedRecipe>>> getSavedOnce() async {
+    try {
+      final models = await remote.getSavedOnce(auth.currentUserId);
+      return Right(models.map((m) => m.toEntity()).toList());
+    } catch (_) {
+      return Left(ServerFailure());
+    }
+  }
 }

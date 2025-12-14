@@ -12,4 +12,6 @@ abstract class FavoriteRepository {
   Future<Either<Failure, bool>> isFavorite(String recipeId);
 
   Stream<Either<Failure, List<FavoriteRecipe>>> getFavoritesStream();
+
+  Future<Either<Failure, List<FavoriteRecipe>>> getFavoritesOnce();
 }

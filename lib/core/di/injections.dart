@@ -153,7 +153,7 @@ Future<void> _initFavoriteFeature() async {
   );
 
   sl.registerLazySingleton<FavoriteRepository>(
-    () => FavoriteRepositoryImpl(sl()),
+    () => FavoriteRepositoryImpl(auth: sl(), remote: sl()),
   );
 
   sl.registerLazySingleton(() => ToggleFavorite(sl()));

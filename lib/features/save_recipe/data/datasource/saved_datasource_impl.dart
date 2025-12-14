@@ -43,4 +43,11 @@ class SavedRemoteDataSourceImpl implements SavedRemoteDataSource {
               snapshot.docs.map(SavedRecipeModel.fromFirestore).toList(),
         );
   }
+
+  @override
+  Future<List<SavedRecipeModel>> getSavedOnce(String uid) async {
+    final snapshot = await _col(uid).orderBy('savedAt', descending: true).get();
+
+    return snapshot.docs.map(SavedRecipeModel.fromFirestore).toList();
+  }
 }

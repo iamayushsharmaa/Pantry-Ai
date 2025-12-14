@@ -18,13 +18,12 @@ class AnalyticsScreen extends StatefulWidget {
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   String _selectedRange = 'week';
 
-  late final AnalyticsData _analyticsData;
 
-  @override
-  void initState() {
-    super.initState();
-    _analyticsData = AnalyticsData.mock();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _analyticsData = AnalyticsData.mock();
+  // }
 
   void _onRangeChanged(String range) {
     setState(() => _selectedRange = range);

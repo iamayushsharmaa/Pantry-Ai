@@ -10,4 +10,7 @@ abstract class FavoriteRemoteDataSource {
   Future<bool> isFavorite(String recipeId);
 
   Stream<List<FavoriteRecipeModel>> getFavoritesStream();
+
+  Future<List<FavoriteRecipeModel>> getFavoritesOnce();
+
 }

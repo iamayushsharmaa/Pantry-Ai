@@ -3,14 +3,16 @@ import 'package:fpdart/fpdart.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../../../shared/models/recipe/recipe_model.dart';
+import '../../../auth/data/remote/auth_local_data_source.dart';
 import '../../domain/entities/favorite_recipe_entity.dart';
 import '../../domain/repository/favorite_repository.dart';
 import '../remote/favorite_data_source.dart';
 
 class FavoriteRepositoryImpl implements FavoriteRepository {
   final FavoriteRemoteDataSource remote;
+  final AuthLocalDataSource auth;
 
-  FavoriteRepositoryImpl(this.remote);
+  FavoriteRepositoryImpl({required this.remote, required this.auth});
 
   @override
   Future<Either<Failure, void>> addToFavorites(Recipe recipe) async {
@@ -62,5 +64,15 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
         .handleError(
           (_) => Left<Failure, List<FavoriteRecipe>>(ServerFailure()),
         );
+  }
+
+  @override
+  Future<Either<Failure, List<FavoriteRecipe>>> getFavoritesOnce() async {
+    try {
+      final models = await remote.getFavoritesOnce();
+      return Right(models.map((model) => model).toList());
+    } catch (_) {
+      return Left(ServerFailure());
+    }
   }
 }

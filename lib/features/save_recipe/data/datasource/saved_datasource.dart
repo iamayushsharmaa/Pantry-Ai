@@ -11,4 +11,6 @@ abstract class SavedRemoteDataSource {
   Future<bool> isSaved({required String uid, required String recipeId});
 
   Stream<List<SavedRecipeModel>> getSavedStream(String uid);
+
+  Future<List<SavedRecipeModel>> getSavedOnce(String uid);
 }
