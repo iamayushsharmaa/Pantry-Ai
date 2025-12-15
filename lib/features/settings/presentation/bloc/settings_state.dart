@@ -1,9 +1,6 @@
 part of 'settings_bloc.dart';
 
 class SettingsState extends Equatable {
-  final bool darkModeEnabled;
-  final String selectedLanguage;
-
   final UserEntity user;
 
   final bool isLoading;
@@ -18,8 +15,6 @@ class SettingsState extends Equatable {
   final bool accountDeleted;
 
   const SettingsState({
-    required this.darkModeEnabled,
-    required this.selectedLanguage,
     required this.user,
     this.isLoading = false,
     this.errorMessage,
@@ -32,10 +27,6 @@ class SettingsState extends Equatable {
   });
 
   SettingsState copyWith({
-    bool? notificationsEnabled,
-    bool? darkModeEnabled,
-    bool? analyticsEnabled,
-    String? selectedLanguage,
     UserEntity? user,
     bool? isLoading,
     String? errorMessage,
@@ -47,8 +38,6 @@ class SettingsState extends Equatable {
     bool? accountDeleted,
   }) {
     return SettingsState(
-      darkModeEnabled: darkModeEnabled ?? this.darkModeEnabled,
-      selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage,
@@ -61,15 +50,12 @@ class SettingsState extends Equatable {
     );
   }
 
-  // Helper to clear messages
   SettingsState clearMessages() {
     return copyWith(errorMessage: null, successMessage: null);
   }
 
   @override
   List<Object?> get props => [
-    darkModeEnabled,
-    selectedLanguage,
     user,
     isLoading,
     errorMessage,

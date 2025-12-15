@@ -32,40 +32,38 @@ class ProfileCard extends StatelessWidget {
             height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: user.imageUrl == null
-                  ? const LinearGradient(
-                      colors: [Color(0xFF00A87D), Color(0xFF00C896)],
-                    )
-                  : null,
-              image: user.imageUrl != null
-                  ? DecorationImage(
-                      image: NetworkImage(user.imageUrl!),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
+              // gradient: user.imageUrl == null
+              //     ? const LinearGradient(
+              //         colors: [Color(0xFF00A87D), Color(0xFF00C896)],
+              //       )
+              //     : null,
+              // image: user.imageUrl != null
+              //     ? DecorationImage(
+              //         image: NetworkImage(user.imageUrl!),
+              //         fit: BoxFit.cover,
+              //       )
+              //     : null,
             ),
-            child: user.imageUrl == null
-                ? Center(
-                    child: Text(
-                      user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-                : null,
+            //   child: user.imageUrl == null
+            //       ? Center(
+            //           child: Text(
+            //             user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
+            //             style: const TextStyle(
+            //               fontSize: 28,
+            //               fontWeight: FontWeight.bold,
+            //               color: Colors.white,
+            //             ),
+            //           ),
+            //         )
+            //       : null,
           ),
           const SizedBox(width: 16),
-
-          // Name and Email
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name,
+                  user.email,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

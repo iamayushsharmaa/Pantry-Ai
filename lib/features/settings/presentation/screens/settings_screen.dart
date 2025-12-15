@@ -12,21 +12,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SettingsBloc(),
-      child: const _SettingsView(),
-    );
-  }
-}
-
-class _SettingsView extends StatelessWidget {
-  const _SettingsView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme
-        .of(context)
-        .colorScheme;
+    final cs = Theme.of(context).colorScheme;
 
     return BlocConsumer<SettingsBloc, SettingsState>(
       listener: (context, state) {
@@ -78,9 +64,7 @@ class _SettingsView extends StatelessWidget {
                       icon: Icons.dark_mode_outlined,
                       title: 'Dark Mode',
                       subtitle: 'Enable dark theme',
-                      value: Theme
-                          .of(context)
-                          .brightness == Brightness.dark,
+                      value: Theme.of(context).brightness == Brightness.dark,
                       onChanged: (enabled) {
                         context.read<AppSettingsBloc>().add(
                           ChangeThemeMode(
@@ -92,7 +76,7 @@ class _SettingsView extends StatelessWidget {
                     SettingsTile.navigation(
                       icon: Icons.language_outlined,
                       title: 'Language',
-                      subtitle: state.selectedLanguage,
+                      subtitle: null,
                       onTap: () => _showLanguageDialog(context),
                     ),
                   ],
@@ -106,22 +90,22 @@ class _SettingsView extends StatelessWidget {
                       icon: Icons.restaurant_menu_outlined,
                       title: 'Dietary Restrictions',
                       subtitle: 'Manage your diet preferences',
-                      onTap: () =>
-                          bloc.add(NavigateToScreen('Dietary Restrictions')),
+                      onTap: () {},
+                      // bloc.add(NavigateToScreen('Dietary Restrictions')),
                     ),
                     SettingsTile.navigation(
                       icon: Icons.kitchen_outlined,
                       title: 'Kitchen Equipment',
                       subtitle: 'Add your available tools',
-                      onTap: () =>
-                          bloc.add(NavigateToScreen('Kitchen Equipment')),
+                      onTap: () {},
+                      // bloc.add(NavigateToScreen('Kitchen Equipment')),
                     ),
                     SettingsTile.navigation(
                       icon: Icons.favorite_outline,
                       title: 'Favorite Cuisines',
                       subtitle: 'Select preferred cuisines',
-                      onTap: () =>
-                          bloc.add(NavigateToScreen('Favorite Cuisines')),
+                      onTap: () {},
+                      // bloc.add(NavigateToScreen('Favorite Cuisines')),
                     ),
                   ],
                 ),
@@ -134,7 +118,8 @@ class _SettingsView extends StatelessWidget {
                       icon: Icons.privacy_tip_outlined,
                       title: 'Privacy Policy',
                       subtitle: 'Read our privacy policy',
-                      onTap: () => bloc.add(NavigateToScreen('Privacy Policy')),
+                      onTap:
+                          () {}, //=> bloc.add(NavigateToScreen('Privacy Policy')),
                     ),
                   ],
                 ),
@@ -147,25 +132,27 @@ class _SettingsView extends StatelessWidget {
                       icon: Icons.help_outline,
                       title: 'Help Center',
                       subtitle: 'Get help and support',
-                      onTap: () => bloc.add(NavigateToScreen('Help Center')),
+                      onTap:
+                          () {}, // bloc.add(NavigateToScreen('Help Center')),
                     ),
                     SettingsTile.navigation(
                       icon: Icons.feedback_outlined,
                       title: 'Send Feedback',
                       subtitle: 'Share your thoughts',
-                      onTap: () => bloc.add(NavigateToScreen('Send Feedback')),
+                      onTap:
+                          () {}, //bloc.add(NavigateToScreen('Send Feedback')),
                     ),
                     SettingsTile.navigation(
                       icon: Icons.star_outline,
                       title: 'Rate Us',
                       subtitle: 'Rate on App Store',
-                      onTap: () => bloc.add(NavigateToScreen('Rate Us')),
+                      onTap: () {}, //bloc.add(NavigateToScreen('Rate Us')),
                     ),
                     SettingsTile.navigation(
                       icon: Icons.info_outline,
                       title: 'About',
                       subtitle: 'Version 1.0.0',
-                      onTap: () => bloc.add(NavigateToScreen('About')),
+                      onTap: () {}, //bloc.add(NavigateToScreen('About')),
                     ),
                   ],
                 ),
@@ -202,18 +189,17 @@ class _SettingsView extends StatelessWidget {
   void _showLanguageDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) =>
-          AlertDialog(
-            title: const Text('Select Language'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _languageTile(context, 'English', const Locale('en')),
-                _languageTile(context, 'Hindi', const Locale('hi')),
-                _languageTile(context, 'Spanish', const Locale('es')),
-              ],
-            ),
-          ),
+      builder: (_) => AlertDialog(
+        title: const Text('Select Language'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _languageTile(context, 'English', const Locale('en')),
+            _languageTile(context, 'Hindi', const Locale('hi')),
+            _languageTile(context, 'Spanish', const Locale('es')),
+          ],
+        ),
+      ),
     );
   }
 
@@ -232,27 +218,26 @@ class _SettingsView extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (_) =>
-          AlertDialog(
-            title: const Text('Logout'),
-            content: const Text('Are you sure you want to logout?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  bloc.add(LogoutConfirmed());
-                },
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
-                child: const Text('Logout'),
-              ),
-            ],
+      builder: (_) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text('Cancel'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              bloc.add(LogoutConfirmed());
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -261,29 +246,28 @@ class _SettingsView extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (_) =>
-          AlertDialog(
-            title: const Text('Delete Account'),
-            content: const Text(
-              'Are you sure you want to delete your account permanently?',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  bloc.add(DeleteAccountConfirmed());
-                },
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
-                child: const Text('Delete'),
-              ),
-            ],
+      builder: (_) => AlertDialog(
+        title: const Text('Delete Account'),
+        content: const Text(
+          'Are you sure you want to delete your account permanently?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text('Cancel'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              bloc.add(DeleteAccountConfirmed());
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
     );
   }
 }

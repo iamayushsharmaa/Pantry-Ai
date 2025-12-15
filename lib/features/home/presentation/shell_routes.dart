@@ -31,8 +31,16 @@ ShellRoute shellRoute = ShellRoute(
     GoRoute(
       path: AppRoutes.settings,
       name: AppRouteNames.settings,
-      builder: (_, __) =>
-          BlocProvider(create: (_) => SettingsBloc(), child: SettingsScreen()),
+      builder: (_, __) => BlocProvider(
+        create: (_) => SettingsBloc(
+          updateNameUseCase: sl(),
+          updateEmailUseCase: sl(),
+          signOutUseCase: sl(),
+          deleteAccountUseCase: sl(),
+          initialUser: sl(),
+        ),
+        child: SettingsScreen(),
+      ),
     ),
   ],
 );

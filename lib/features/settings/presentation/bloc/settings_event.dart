@@ -1,18 +1,10 @@
 part of 'settings_bloc.dart';
 
 abstract class SettingsEvent extends Equatable {
+  const SettingsEvent();
+
   @override
   List<Object?> get props => [];
-}
-
-class LoadSettings extends SettingsEvent {}
-
-class ToggleDarkMode extends SettingsEvent {}
-
-class ChangeLanguage extends SettingsEvent {
-  final String language;
-
-  ChangeLanguage(this.language);
 }
 
 class EditProfilePressed extends SettingsEvent {}
@@ -20,13 +12,19 @@ class EditProfilePressed extends SettingsEvent {}
 class UpdateNameRequested extends SettingsEvent {
   final String newName;
 
-  UpdateNameRequested(this.newName);
+  const UpdateNameRequested(this.newName);
+
+  @override
+  List<Object?> get props => [newName];
 }
 
 class UpdateEmailRequested extends SettingsEvent {
   final String newEmail;
 
-  UpdateEmailRequested(this.newEmail);
+  const UpdateEmailRequested(this.newEmail);
+
+  @override
+  List<Object?> get props => [newEmail];
 }
 
 class LogoutRequested extends SettingsEvent {}

@@ -5,7 +5,6 @@ import 'package:pantry_ai/features/auth/domain/usecases/update_email_usecase.dar
 import 'package:pantry_ai/features/auth/domain/usecases/update_name_usecase.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../core/utils/preferences.dart';
 import '../../../auth/domain/usecases/delete_account_usecase.dart';
 import '../../../auth/domain/usecases/sign_out_usecase.dart';
 
@@ -24,16 +23,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required this.signOutUseCase,
     required this.deleteAccountUseCase,
     required UserEntity initialUser,
-  }) : super(
-         SettingsState(
-           darkModeEnabled: false,
-           selectedLanguage: 'English',
-           user: initialUser,
-         ),
-       ) {
-    add(LoadSettings());
-    on<ToggleDarkMode>(_onToggleDarkMode);
-    on<ChangeLanguage>(_onChangeLanguage);
+  }) : super(SettingsState(user: initialUser)) {
+
     on<EditProfilePressed>(_onEditProfile);
     on<UpdateNameRequested>(_onUpdateName);
     on<UpdateEmailRequested>(_onUpdateEmail);
@@ -44,51 +35,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<DeleteAccountConfirmed>(_onDeleteAccountConfirmed);
     on<CloseDeleteDialog>(_onCloseDeleteDialog);
     on<ClearMessages>(_onClearMessages);
-  }
-
-  Future<void> _onLoadSettings(
-    LoadSettings event,
-    Emitter<SettingsState> emit,
-  ) async {
-    final darkMode = await AppPreferences.getDarkMode();
-    final language = await AppPreferences.getLanguage();
-
-    emit(
-      state
-          .copyWith(darkModeEnabled: darkMode, selectedLanguage: language)
-          .clearMessages(),
-    );
-
-    // Apply immediately to app
-    _applyTheme(darkMode);
-    _applyLanguage(language);
-  }
-
-  void _onToggleDarkMode(
-    ToggleDarkMode event,
-    Emitter<SettingsState> emit,
-  ) async {
-    final newValue = !state.darkModeEnabled;
-    emit(state.copyWith(darkModeEnabled: newValue).clearMessages());
-
-    // Save to prefs
-    await AppPreferences.setDarkMode(newValue);
-
-    // Apply to app
-    _applyTheme(newValue);
-  }
-
-  void _onChangeLanguage(
-    ChangeLanguage event,
-    Emitter<SettingsState> emit,
-  ) async {
-    emit(state.copyWith(selectedLanguage: event.language).clearMessages());
-
-    // Save to prefs
-    await AppPreferences.setLanguage(event.language);
-
-    // Apply to app
-    _applyLanguage(event.language);
   }
 
   void _onEditProfile(EditProfilePressed event, Emitter<SettingsState> emit) {
@@ -106,10 +52,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     result.fold(
       (failure) {
-        final msg = failure is ReAuthenticationFailure
+        final message = failure is ReAuthenticationFailure
             ? 'Please sign in again to update your name.'
             : 'Failed to update name. Try again.';
-        emit(state.copyWith(isLoading: false, errorMessage: msg));
+        emit(state.copyWith(isLoading: false, errorMessage: message));
       },
       (updatedUser) {
         emit(
@@ -133,17 +79,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     result.fold(
       (failure) {
-        final msg = failure is ReAuthenticationFailure
+        final message = failure is ReAuthenticationFailure
             ? 'Please sign in again to change email.'
             : 'Failed to send verification email.';
-        emit(state.copyWith(isLoading: false, errorMessage: msg));
+        emit(state.copyWith(isLoading: false, errorMessage: message));
       },
       (_) {
         emit(
           state.copyWith(
             isLoading: false,
             successMessage:
-                'Verification email sent to ${event.newEmail}.\nCheck your inbox!',
+                'Verification email sent to ${event.newEmail}. Check your inbox.',
           ),
         );
       },
@@ -165,7 +111,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final result = await signOutUseCase();
 
     result.fold(
-      (failure) => emit(
+      (_) => emit(
         state.copyWith(
           isLoading: false,
           errorMessage: 'Logout failed. Please try again.',
@@ -200,10 +146,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final result = await deleteAccountUseCase();
 
     result.fold((failure) {
-      final msg = failure is ReAuthenticationFailure
+      final message = failure is ReAuthenticationFailure
           ? 'Please sign in again to delete your account.'
           : 'Failed to delete account.';
-      emit(state.copyWith(isLoading: false, errorMessage: msg));
+      emit(state.copyWith(isLoading: false, errorMessage: message));
     }, (_) => emit(state.copyWith(isLoading: false, accountDeleted: true)));
   }
 
