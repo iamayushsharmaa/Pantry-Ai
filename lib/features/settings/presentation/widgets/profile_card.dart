@@ -86,7 +86,6 @@ class ProfileCard extends StatelessWidget {
             ),
           ),
 
-          // Edit Button
           Container(
             decoration: BoxDecoration(
               color: AppColors.brand.withOpacity(0.1),

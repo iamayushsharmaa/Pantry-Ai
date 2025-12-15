@@ -35,6 +35,8 @@ import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_google_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_usecase.dart';
 import '../../features/auth/domain/usecases/sign_out_usecase.dart';
+import '../../features/auth/domain/usecases/update_email_usecase.dart';
+import '../../features/auth/domain/usecases/update_name_usecase.dart';
 import '../../features/favorites/data/remote/favorite_data_source.dart';
 import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
 import '../../features/favorites/domain/repository/favorite_repository.dart';
@@ -206,5 +208,17 @@ Future<void> _initSavedFeature() async {
 }
 
 Future<void> _initSettingsFeature() async {
-  sl.registerLazySingleton<SettingsBloc>(() => SettingsBloc());
+  sl.registerLazySingleton(() => UpdateNameUseCase(sl()));
+
+  sl.registerLazySingleton(() => UpdateEmailUseCase(sl()));
+
+  sl.registerLazySingleton<SettingsBloc>(
+    () => SettingsBloc(
+      updateEmailUseCase: sl(),
+      updateNameUseCase: sl(),
+      signOutUseCase: sl(),
+      deleteAccountUseCase: sl(),
+      initialUser: sl(),
+    ),
+  );
 }

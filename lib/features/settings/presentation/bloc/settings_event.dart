@@ -5,19 +5,29 @@ abstract class SettingsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ToggleNotifications extends SettingsEvent {
-  final bool enabled;
+class LoadSettings extends SettingsEvent {}
 
-  ToggleNotifications(this.enabled);
-}
+class ToggleDarkMode extends SettingsEvent {}
 
-class NavigateToScreen extends SettingsEvent {
-  final String screen;
+class ChangeLanguage extends SettingsEvent {
+  final String language;
 
-  NavigateToScreen(this.screen);
+  ChangeLanguage(this.language);
 }
 
 class EditProfilePressed extends SettingsEvent {}
+
+class UpdateNameRequested extends SettingsEvent {
+  final String newName;
+
+  UpdateNameRequested(this.newName);
+}
+
+class UpdateEmailRequested extends SettingsEvent {
+  final String newEmail;
+
+  UpdateEmailRequested(this.newEmail);
+}
 
 class LogoutRequested extends SettingsEvent {}
 
@@ -30,3 +40,5 @@ class DeleteAccountRequested extends SettingsEvent {}
 class DeleteAccountConfirmed extends SettingsEvent {}
 
 class CloseDeleteDialog extends SettingsEvent {}
+
+class ClearMessages extends SettingsEvent {}

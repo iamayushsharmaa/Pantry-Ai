@@ -1,30 +1,33 @@
 part of 'settings_bloc.dart';
 
 class SettingsState extends Equatable {
-  final bool notificationsEnabled;
   final bool darkModeEnabled;
-  final bool analyticsEnabled;
   final String selectedLanguage;
-  final User user;
 
-  final String? navigationTarget;
+  final UserEntity user;
+
+  final bool isLoading;
+  final String? errorMessage;
+  final String? successMessage;
 
   final bool showLogoutDialog;
-  final bool logoutSuccess;
-
   final bool showDeleteDialog;
+
+  final String? navigationTarget;
+  final bool logoutSuccess;
   final bool accountDeleted;
 
   const SettingsState({
-    required this.notificationsEnabled,
     required this.darkModeEnabled,
-    required this.analyticsEnabled,
     required this.selectedLanguage,
     required this.user,
-    this.navigationTarget,
+    this.isLoading = false,
+    this.errorMessage,
+    this.successMessage,
     this.showLogoutDialog = false,
-    this.logoutSuccess = false,
     this.showDeleteDialog = false,
+    this.navigationTarget,
+    this.logoutSuccess = false,
     this.accountDeleted = false,
   });
 
@@ -33,38 +36,48 @@ class SettingsState extends Equatable {
     bool? darkModeEnabled,
     bool? analyticsEnabled,
     String? selectedLanguage,
-    User? user,
-    String? navigationTarget,
+    UserEntity? user,
+    bool? isLoading,
+    String? errorMessage,
+    String? successMessage,
     bool? showLogoutDialog,
-    bool? logoutSuccess,
     bool? showDeleteDialog,
+    String? navigationTarget,
+    bool? logoutSuccess,
     bool? accountDeleted,
   }) {
     return SettingsState(
-      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       darkModeEnabled: darkModeEnabled ?? this.darkModeEnabled,
-      analyticsEnabled: analyticsEnabled ?? this.analyticsEnabled,
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       user: user ?? this.user,
-      navigationTarget: navigationTarget,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage,
+      successMessage: successMessage,
       showLogoutDialog: showLogoutDialog ?? this.showLogoutDialog,
-      logoutSuccess: logoutSuccess ?? this.logoutSuccess,
       showDeleteDialog: showDeleteDialog ?? this.showDeleteDialog,
+      navigationTarget: navigationTarget,
+      logoutSuccess: logoutSuccess ?? this.logoutSuccess,
       accountDeleted: accountDeleted ?? this.accountDeleted,
     );
   }
 
+  // Helper to clear messages
+  SettingsState clearMessages() {
+    return copyWith(errorMessage: null, successMessage: null);
+  }
+
   @override
   List<Object?> get props => [
-    notificationsEnabled,
     darkModeEnabled,
-    analyticsEnabled,
     selectedLanguage,
     user,
-    navigationTarget,
+    isLoading,
+    errorMessage,
+    successMessage,
     showLogoutDialog,
-    logoutSuccess,
     showDeleteDialog,
+    navigationTarget,
+    logoutSuccess,
     accountDeleted,
   ];
 }
