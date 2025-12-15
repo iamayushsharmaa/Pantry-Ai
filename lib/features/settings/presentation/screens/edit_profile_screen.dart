@@ -81,7 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   textInputAction: TextInputAction.done,
                   style: TextStyle(color: cs.onSurface),
                   decoration: InputDecoration(
-                    labelText: 'Full name',
+                    labelText: 'Full Name',
                     prefixIcon: Icon(Icons.person_outline, color: cs.primary),
                     filled: true,
                     fillColor: cs.surface,
@@ -93,7 +93,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 const SizedBox(height: 28),
 
-                /// ───────── Save Button ─────────
                 SizedBox(
                   width: double.infinity,
                   height: 52,
