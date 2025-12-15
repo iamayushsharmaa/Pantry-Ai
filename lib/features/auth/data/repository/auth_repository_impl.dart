@@ -24,7 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
     try {
       final model = await remoteDataSource.checkAuthStatus();
-      return Right(UserMapper.toEntity(model));
+      return Right(model.toEntity());
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -38,7 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
   ) async {
     try {
       final model = await remoteDataSource.register(name, email, password);
-      return Right(UserMapper.toEntity(model));
+      return Right(model.toEntity());
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -51,7 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
   ) async {
     try {
       final model = await remoteDataSource.signIn(email, password);
-      return Right(UserMapper.toEntity(model));
+      return Right(model.toEntity());
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -61,7 +61,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> continueWithGoogle() async {
     try {
       final model = await remoteDataSource.continueWithGoogle();
-      return Right(UserMapper.toEntity(model));
+      return Right(model.toEntity());
     } on ServerException {
       return Left(ServerFailure());
     }
