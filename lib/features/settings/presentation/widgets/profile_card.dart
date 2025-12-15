@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
 
 import '../../../../core/theme/colors.dart';
-import '../../domain/entities/user_model.dart';
 
 class ProfileCard extends StatelessWidget {
-  final User user;
+  final UserEntity user;
   final VoidCallback onEditPressed;
 
   const ProfileCard({

@@ -24,7 +24,9 @@ class _SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final cs = Theme
+        .of(context)
+        .colorScheme;
 
     return BlocConsumer<SettingsBloc, SettingsState>(
       listener: (context, state) {
@@ -76,7 +78,9 @@ class _SettingsView extends StatelessWidget {
                       icon: Icons.dark_mode_outlined,
                       title: 'Dark Mode',
                       subtitle: 'Enable dark theme',
-                      value: Theme.of(context).brightness == Brightness.dark,
+                      value: Theme
+                          .of(context)
+                          .brightness == Brightness.dark,
                       onChanged: (enabled) {
                         context.read<AppSettingsBloc>().add(
                           ChangeThemeMode(
@@ -198,17 +202,18 @@ class _SettingsView extends StatelessWidget {
   void _showLanguageDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Select Language'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _languageTile(context, 'English', const Locale('en')),
-            _languageTile(context, 'Hindi', const Locale('hi')),
-            _languageTile(context, 'Spanish', const Locale('es')),
-          ],
-        ),
-      ),
+      builder: (_) =>
+          AlertDialog(
+            title: const Text('Select Language'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _languageTile(context, 'English', const Locale('en')),
+                _languageTile(context, 'Hindi', const Locale('hi')),
+                _languageTile(context, 'Spanish', const Locale('es')),
+              ],
+            ),
+          ),
     );
   }
 
@@ -227,26 +232,27 @@ class _SettingsView extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: const Text('Cancel'),
+      builder: (_) =>
+          AlertDialog(
+            title: const Text('Logout'),
+            content: const Text('Are you sure you want to logout?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  bloc.add(LogoutConfirmed());
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: const Text('Logout'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              bloc.add(LogoutConfirmed());
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Logout'),
-          ),
-        ],
-      ),
     );
   }
 
@@ -255,28 +261,29 @@ class _SettingsView extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Are you sure you want to delete your account permanently?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: const Text('Cancel'),
+      builder: (_) =>
+          AlertDialog(
+            title: const Text('Delete Account'),
+            content: const Text(
+              'Are you sure you want to delete your account permanently?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  bloc.add(DeleteAccountConfirmed());
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: const Text('Delete'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              bloc.add(DeleteAccountConfirmed());
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
     );
   }
 }

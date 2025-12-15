@@ -11,6 +11,10 @@ abstract class AuthRepository {
 
   FutureEither<UserEntity> continueWithGoogle();
 
+  FutureEither<UserEntity> updateName(String newName);
+
+  FutureEither<void> updateEmail(String newEmail);
+
   FutureEither<void> signOut();
 
   FutureEither<void> deleteAccount();

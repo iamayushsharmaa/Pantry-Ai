@@ -9,6 +9,10 @@ abstract class AuthRemoteDataSource {
 
   Future<UserModel> continueWithGoogle();
 
+  Future<UserModel> updateName(String newName);
+
+  Future<void> updateEmail(String newEmail);
+
   Future<void> signOut();
 
   Future<void> deleteAccount();

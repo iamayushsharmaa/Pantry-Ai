@@ -21,3 +21,8 @@ String mapFailureToMessage(Failure failure) {
   }
   return "Unexpected error occurred.";
 }
+
+class ReAuthenticationFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}

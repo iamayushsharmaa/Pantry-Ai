@@ -88,6 +88,40 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
+  Future<UserModel> updateName(String newName) async {
+    try {
+      final user = firebaseAuth.currentUser;
+      if (user == null) throw ServerException();
+
+      await user.updateDisplayName(newName);
+      await user.reload();
+
+      final updatedUser = firebaseAuth.currentUser!;
+      return UserModel.fromFirebaseUser(updatedUser);
+    } on fb.FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw ReAuthenticationRequiredException();
+      }
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<void> updateEmail(String newEmail) async {
+    try {
+      final user = firebaseAuth.currentUser;
+      if (user == null) throw ServerException();
+
+      await user.verifyBeforeUpdateEmail(newEmail);
+    } on fb.FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw ReAuthenticationRequiredException();
+      }
+      throw ServerException();
+    }
+  }
+
+  @override
   Future<void> signOut() async {
     try {
       await Future.wait([firebaseAuth.signOut(), googleSignIn.signOut()]);

@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:pantry_ai/core/type_def.dart';
 import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
 import 'package:pantry_ai/features/auth/domain/mapper/user_mapper.dart';
 
@@ -82,6 +83,36 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.deleteAccount();
       return const Right(null);
     } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateName(String newName) async {
+    try {
+      final userModel = await remoteDataSource.updateName(newName);
+      return Right(userModel as UserEntity);
+    } on ReAuthenticationRequiredException {
+      return Left(ReAuthenticationFailure());
+    } on ServerException {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  FutureEither<void> updateEmail(String newEmail) async {
+    try {
+      await remoteDataSource.updateEmail(newEmail);
+      return Right(null);
+    } on ReAuthenticationRequiredException {
+      return Left(ReAuthenticationFailure());
+    } on ServerException catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }
