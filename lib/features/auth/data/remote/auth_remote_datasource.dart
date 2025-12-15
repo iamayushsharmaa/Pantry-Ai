@@ -13,6 +13,8 @@ abstract class AuthRemoteDataSource {
 
   Future<void> updateEmail(String newEmail);
 
+  Future<UserModel> updateProfilePhoto(String photoUrl);
+
   Future<void> signOut();
 
   Future<void> deleteAccount();

@@ -15,6 +15,8 @@ abstract class AuthRepository {
 
   FutureEither<void> updateEmail(String newEmail);
 
+  FutureEither<UserEntity> updateProfilePhoto(String photoUrl);
+
   FutureEither<void> signOut();
 
   FutureEither<void> deleteAccount();

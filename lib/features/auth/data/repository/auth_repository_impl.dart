@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:pantry_ai/core/type_def.dart';
 import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
@@ -113,6 +115,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure());
     } catch (e) {
       print(e);
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  FutureEither<UserEntity> updateProfilePhoto(String photoUrl) async {
+    try {
+      final model = await remoteDataSource.updateProfilePhoto(photoUrl);
+      return Right(model.toEntity());
+    } catch (_) {
       return Left(ServerFailure());
     }
   }

@@ -18,6 +18,12 @@ class UpdateNameRequested extends SettingsEvent {
   List<Object?> get props => [newName];
 }
 
+class UpdateProfilePhotoRequested extends SettingsEvent {
+  final File image;
+
+  const UpdateProfilePhotoRequested(this.image);
+}
+
 class UpdateEmailRequested extends SettingsEvent {
   final String newEmail;
 

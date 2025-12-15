@@ -122,6 +122,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
+  Future<UserModel> updateProfilePhoto(String photoUrl) async {
+    final user = firebaseAuth.currentUser;
+    if (user == null) throw ServerException();
+
+    await user.updatePhotoURL(photoUrl);
+    await user.reload();
+
+    return UserModel.fromFirebaseUser(firebaseAuth.currentUser!);
+  }
+
+  @override
   Future<void> signOut() async {
     try {
       await Future.wait([firebaseAuth.signOut(), googleSignIn.signOut()]);
