@@ -59,6 +59,7 @@ import '../../features/save_recipe/data/repository/saved_repository_impl.dart';
 import '../../features/save_recipe/domain/usecases/get_saved_stream.dart';
 import '../../features/save_recipe/domain/usecases/toogle_saved.dart';
 import '../network/network_info.dart';
+import '../services/image_picker_services.dart';
 import '../utils/firebase_auth_service.dart';
 
 final sl = GetIt.instance;
@@ -102,6 +103,8 @@ void _initExternalServices() {
   sl.registerLazySingleton<AuthLocalDataSource>(
     () => AuthLocalDataSourceImpl(sl()),
   );
+
+  sl.registerLazySingleton<ImagePickerService>(() => ImagePickerServiceImpl());
 }
 
 Future<void> _initHiveBoxes() async {
