@@ -4,7 +4,7 @@ import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
 import '../../../../core/theme/colors.dart';
 
 class ProfileCard extends StatelessWidget {
-  final UserEntity user;
+  final UserEntity? user;
   final VoidCallback onEditPressed;
 
   const ProfileCard({
@@ -63,7 +63,7 @@ class ProfileCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.email,
+                  user!.name ?? 'User',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class ProfileCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  user.email,
+                  user!.email,
                   style: TextStyle(
                     fontSize: 14,
                     color: Theme.of(

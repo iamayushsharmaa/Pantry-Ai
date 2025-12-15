@@ -5,12 +5,16 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:pantry_ai/core/app_settings/app_settings_bloc.dart';
 import 'package:pantry_ai/features/analytics/data/remote/analytics_remote_datasource.dart';
 import 'package:pantry_ai/features/analytics/domain/repository/analytics_repository.dart';
 import 'package:pantry_ai/features/analytics/domain/usecases/get_cooking_analytics.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_local_data_source_impl.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource.dart';
 import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.dart';
+import 'package:pantry_ai/features/auth/data/remote/profile_remote_datasource.dart';
+import 'package:pantry_ai/features/auth/data/remote/profile_remote_datasource_impl.dart';
+import 'package:pantry_ai/features/auth/domain/usecases/update_profile_photo_usecase.dart';
 import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
@@ -144,6 +148,10 @@ Future<void> _initAuthFeature() async {
     ),
   );
 
+  sl.registerLazySingleton<ProfileImageRemoteDataSource>(
+    () => ProfileImageRemoteDataSourceImpl(sl()),
+  );
+
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(networkInfo: sl(), remoteDataSource: sl()),
   );
@@ -211,14 +219,23 @@ Future<void> _initSettingsFeature() async {
   sl.registerLazySingleton(() => UpdateNameUseCase(sl()));
 
   sl.registerLazySingleton(() => UpdateEmailUseCase(sl()));
+  sl.registerLazySingleton(
+    () => UpdateProfilePhotoUseCase(
+      authRepository: sl(),
+      imageRemoteDataSource: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<AppSettingsBloc>(() => AppSettingsBloc());
 
   sl.registerLazySingleton<SettingsBloc>(
     () => SettingsBloc(
+      checkAuthStatusUseCase: sl(),
       updateEmailUseCase: sl(),
       updateNameUseCase: sl(),
+      updateProfilePhotoUseCase: sl(),
       signOutUseCase: sl(),
       deleteAccountUseCase: sl(),
-      initialUser: sl(),
     ),
   );
 }

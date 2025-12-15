@@ -1,7 +1,7 @@
 part of 'settings_bloc.dart';
 
 class SettingsState extends Equatable {
-  final UserEntity user;
+  final UserEntity? user;
 
   final bool isLoading;
   final String? errorMessage;
@@ -15,7 +15,7 @@ class SettingsState extends Equatable {
   final bool accountDeleted;
 
   const SettingsState({
-    required this.user,
+    this.user,
     this.isLoading = false,
     this.errorMessage,
     this.successMessage,

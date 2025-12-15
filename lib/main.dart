@@ -8,12 +8,6 @@ import 'core/app_settings/app_settings_bloc.dart';
 import 'core/di/injections.dart';
 import 'core/router/router.dart';
 import 'core/theme/theme.dart';
-import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
-import 'features/auth/domain/usecases/delete_account_usecase.dart';
-import 'features/auth/domain/usecases/register_usecase.dart';
-import 'features/auth/domain/usecases/sign_in_google_usecase.dart';
-import 'features/auth/domain/usecases/sign_in_usecase.dart';
-import 'features/auth/domain/usecases/sign_out_usecase.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
@@ -42,19 +36,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AuthBloc(
-            checkAuthStatus: sl<CheckAuthStatusUseCase>(),
-            continueWithGoogle: sl<ContinueWithGoogleUseCase>(),
-            signIn: sl<SignInUseCase>(),
-            register: sl<RegisterUseCase>(),
-            signOut: sl<SignOutUseCase>(),
-            deleteAccount: sl<DeleteAccountUseCase>(),
-          ),
-        ),
+        BlocProvider<AuthBloc>(create: (context) => sl<AuthBloc>()),
         BlocProvider<FavoritesBloc>(create: (context) => sl<FavoritesBloc>()),
         BlocProvider<SavedBloc>(create: (context) => sl<SavedBloc>()),
-        BlocProvider(create: (_) => AppSettingsBloc()),
+        BlocProvider<AppSettingsBloc>(
+          create: (context) => sl<AppSettingsBloc>(),
+        ),
       ],
       child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
         builder: (context, state) {
@@ -64,11 +51,7 @@ class _MyAppState extends State<MyApp> {
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
             locale: state.locale,
-            supportedLocales: const [
-              Locale('en'),
-              Locale('hi'),
-              Locale('es'),
-            ],
+            supportedLocales: const [Locale('en'), Locale('hi'), Locale('es')],
             localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

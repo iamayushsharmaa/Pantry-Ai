@@ -32,13 +32,7 @@ ShellRoute shellRoute = ShellRoute(
       path: AppRoutes.settings,
       name: AppRouteNames.settings,
       builder: (_, __) => BlocProvider(
-        create: (_) => SettingsBloc(
-          updateNameUseCase: sl(),
-          updateEmailUseCase: sl(),
-          signOutUseCase: sl(),
-          deleteAccountUseCase: sl(),
-          initialUser: sl(),
-        ),
+        create: (_) => sl<SettingsBloc>()..add(SettingsStarted()),
         child: SettingsScreen(),
       ),
     ),

@@ -7,29 +7,35 @@ import 'package:pantry_ai/features/auth/domain/usecases/update_email_usecase.dar
 import 'package:pantry_ai/features/auth/domain/usecases/update_name_usecase.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../auth/domain/usecases/check_auth_status_usecase.dart';
 import '../../../auth/domain/usecases/delete_account_usecase.dart';
 import '../../../auth/domain/usecases/sign_out_usecase.dart';
+import '../../../auth/domain/usecases/update_profile_photo_usecase.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
+  final CheckAuthStatusUseCase checkAuthStatusUseCase;
   final UpdateNameUseCase updateNameUseCase;
   final UpdateEmailUseCase updateEmailUseCase;
+  final UpdateProfilePhotoUseCase updateProfilePhotoUseCase;
   final SignOutUseCase signOutUseCase;
   final DeleteAccountUseCase deleteAccountUseCase;
 
   SettingsBloc({
+    required this.checkAuthStatusUseCase,
     required this.updateNameUseCase,
     required this.updateEmailUseCase,
     required this.signOutUseCase,
     required this.deleteAccountUseCase,
-    required UserEntity initialUser,
-  }) : super(SettingsState(user: initialUser)) {
-
+    required this.updateProfilePhotoUseCase,
+  }) : super(const SettingsState(isLoading: true)) {
+    on<SettingsStarted>(_onStarted);
     on<EditProfilePressed>(_onEditProfile);
     on<UpdateNameRequested>(_onUpdateName);
     on<UpdateEmailRequested>(_onUpdateEmail);
+    on<UpdateProfilePhotoRequested>(_onUpdateProfilePhoto);
     on<LogoutRequested>(_onLogoutRequested);
     on<LogoutConfirmed>(_onLogoutConfirmed);
     on<CloseLogoutDialog>(_onCloseLogoutDialog);
@@ -37,6 +43,20 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<DeleteAccountConfirmed>(_onDeleteAccountConfirmed);
     on<CloseDeleteDialog>(_onCloseDeleteDialog);
     on<ClearMessages>(_onClearMessages);
+  }
+
+  Future<void> _onStarted(
+    SettingsStarted event,
+    Emitter<SettingsState> emit,
+  ) async {
+    final result = await checkAuthStatusUseCase();
+
+    result.fold(
+      (_) => emit(
+        state.copyWith(isLoading: false, errorMessage: 'Not authenticated'),
+      ),
+      (user) => emit(state.copyWith(isLoading: false, user: user)),
+    );
   }
 
   void _onEditProfile(EditProfilePressed event, Emitter<SettingsState> emit) {
@@ -95,6 +115,31 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _onUpdateProfilePhoto(
+    UpdateProfilePhotoRequested event,
+    Emitter<SettingsState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true).clearMessages());
+
+    final result = await updateProfilePhotoUseCase(event.image);
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: 'Failed to update profile photo',
+        ),
+      ),
+      (updatedUser) => emit(
+        state.copyWith(
+          isLoading: false,
+          user: updatedUser,
+          successMessage: 'Profile photo updated',
+        ),
+      ),
     );
   }
 
