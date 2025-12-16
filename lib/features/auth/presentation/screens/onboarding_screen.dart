@@ -22,7 +22,7 @@ class OnBoardingScreen extends StatelessWidget {
           state.mapOrNull(
             authenticated: (_) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.go('/home');
+                context.go(AppRouteNames.home);
               });
             },
             error: (err) => ScaffoldMessenger.of(
@@ -55,8 +55,8 @@ class OnBoardingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
-                        'PANTRY AI.',
+                      Text(
+                        l10n.home_appTitle,
                         style: TextStyle(
                           fontSize: 46,
                           fontWeight: FontWeight.w800,
@@ -64,8 +64,8 @@ class OnBoardingScreen extends StatelessWidget {
                         ),
                       ),
                       const Spacer(flex: 2),
-                      const Text(
-                        'Scan and make recipe_suggestions with AI.',
+                      Text(
+                        l10n.home_tagline,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -102,8 +102,8 @@ class OnBoardingScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               Text(
                                 isLoading
-                                    ? 'Signing in...'
-                                    : 'Continue with Google',
+                                    ? l10n.auth_google_signingIn
+                                    : l10n.auth_google_continue,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -138,8 +138,8 @@ class OnBoardingScreen extends StatelessWidget {
                                 width: 20,
                               ),
                               const SizedBox(width: 8),
-                              const Text(
-                                'Continue with Email',
+                              Text(
+                                l10n.auth_email_continue,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,

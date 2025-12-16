@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../../../../core/common/auth_text_field.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -24,6 +25,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         state.whenOrNull(
@@ -59,8 +62,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 18),
-                          const Text(
-                            'Sign up',
+                           Text(
+                           l10n.auth_signUp,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 26,
@@ -69,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           const SizedBox(height: 32),
                           Text(
-                            'Name',
+                            l10n.auth_name,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -79,13 +82,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(height: 4),
                           AuthTextField(
                             controller: nameController,
-                            hint: 'Enter Your Name',
+                            hint: l10n.auth_enter_name,
                             prefixIcon: Icons.person,
                             keyboardType: TextInputType.text,
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Email',
+                            l10n.auth_email,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -95,17 +98,17 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(height: 4),
                           AuthTextField(
                             controller: emailController,
-                            hint: 'Enter Your Email',
+                            hint: l10n.auth_enterEmail,
                             prefixIcon: Icons.email,
                             keyboardType: TextInputType.emailAddress,
                             validator: (input) =>
                                 (input == null || !input.contains('@'))
-                                ? 'Enter a valid email'
+                                ? l10n.auth_enterValid_email
                                 : null,
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Password',
+                            l10n.auth_password,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -115,7 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(height: 4),
                           AuthTextField(
                             controller: passwordController,
-                            hint: 'Enter Your Password',
+                            hint: l10n.auth_enterPassword,
                             prefixIcon: Icons.lock,
                             obscureText: true,
                             validator: (input) =>
@@ -156,8 +159,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                               child: isLoading
                                   ? const CircularProgressIndicator()
-                                  : const Text(
-                                      'Sign up',
+                                  :  Text(
+                                      l10n.auth_signUpButton,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
@@ -174,17 +177,17 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: RichText(
-                          text: const TextSpan(
+                          text:  TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Already have an account? ',
+                                text: l10n.auth_signInLink,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                 ),
                               ),
                               TextSpan(
-                                text: 'Sign in',
+                                text: l10n.auth_signInButton,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,

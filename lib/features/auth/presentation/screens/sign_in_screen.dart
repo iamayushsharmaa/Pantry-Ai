@@ -6,6 +6,7 @@ import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_state.dart';
 
 import '../../../../core/common/auth_text_field.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../bloc/auth_event.dart';
 
 class SigninScreen extends StatefulWidget {
@@ -22,6 +23,8 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
@@ -48,8 +51,8 @@ class _SigninScreenState extends State<SigninScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 18),
-                      const Text(
-                        'Sign in',
+                      Text(
+                        l10n.auth_signIn,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 26,
@@ -58,7 +61,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       ),
                       const SizedBox(height: 36),
                       Text(
-                        'Email',
+                        l10n.auth_email,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,
@@ -68,17 +71,17 @@ class _SigninScreenState extends State<SigninScreen> {
                       const SizedBox(height: 4),
                       AuthTextField(
                         controller: emailController,
-                        hint: 'Enter Your Email',
+                        hint: l10n.auth_enterEmail,
                         prefixIcon: Icons.email,
                         keyboardType: TextInputType.emailAddress,
                         validator: (input) =>
                             (input == null || !input.contains('@'))
-                            ? 'Enter a valid email'
+                            ? l10n.auth_enterValid_email
                             : null,
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Password',
+                        l10n.auth_password,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,
@@ -88,12 +91,12 @@ class _SigninScreenState extends State<SigninScreen> {
                       const SizedBox(height: 4),
                       AuthTextField(
                         controller: passwordController,
-                        hint: 'Enter Your Password',
+                        hint: l10n.auth_enterPassword,
                         prefixIcon: Icons.lock,
                         obscureText: true,
                         validator: (input) =>
                             (input == null || input.length < 6)
-                            ? 'Must be at least 6 chars'
+                            ? l10n.password_hint
                             : null,
                       ),
                       const SizedBox(height: 25),
@@ -130,7 +133,9 @@ class _SigninScreenState extends State<SigninScreen> {
                                 ),
                               ),
                               child: Text(
-                                isLoading ? 'Signing in…' : 'Sign in',
+                                isLoading
+                                    ? l10n.auth_google_signingIn
+                                    : l10n.auth_signIn,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
@@ -154,11 +159,11 @@ class _SigninScreenState extends State<SigninScreen> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Don\'t have an account? ',
+                            text: l10n.auth_signUpLink,
                             style: TextStyle(fontSize: 14, color: Colors.white),
                           ),
                           TextSpan(
-                            text: 'Sign up',
+                            text: l10n.auth_signUpButton,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,

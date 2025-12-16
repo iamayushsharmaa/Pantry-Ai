@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/week_label.dart';
 import '../../domain/entities/range.dart';
 import '../bloc/analytics_bloc.dart';
 
@@ -19,7 +20,7 @@ class AnalyticsRangeSelector extends StatelessWidget {
         final isSelected = range == selected;
 
         return ChoiceChip(
-          label: Text(_label(range)),
+          label: Text(label(range, context)),
           selected: isSelected,
           selectedColor: cs.primary.withOpacity(0.15),
           labelStyle: TextStyle(
@@ -32,17 +33,5 @@ class AnalyticsRangeSelector extends StatelessWidget {
         );
       }).toList(),
     );
-  }
-
-  String _label(AnalyticsRange range) {
-    switch (range) {
-      case AnalyticsRange.week:
-        return 'Week';
-      case AnalyticsRange.month:
-        return 'Month';
-      case AnalyticsRange.all:
-      default:
-        return 'All';
-    }
   }
 }
