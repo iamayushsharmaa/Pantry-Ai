@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:pantry_ai/l10n/app_localizations.dart';
 
 class DifficultyUtils {
-  static String getDifficultyLabel(int difficulty) {
+  static String getDifficultyLabel(int difficulty, AppLocalizations l10n) {
     switch (difficulty) {
       case 1:
         return "Very Easy";
       case 2:
-        return "Easy";
+        return l10n.easy;
       case 3:
-        return "Medium";
+        return l10n.medium;
       case 4:
-        return "Hard";
+        return l10n.hard;
       case 5:
-        return "Expert";
+        return l10n.hard; //expert
       default:
-        return "Medium";
+        return l10n.medium;
     }
   }
 

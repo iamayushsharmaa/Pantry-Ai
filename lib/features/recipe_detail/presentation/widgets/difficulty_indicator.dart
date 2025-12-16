@@ -41,7 +41,7 @@ class RecipeDifficultyIndicator extends StatelessWidget {
         }),
         const SizedBox(width: 8),
         Text(
-          DifficultyUtils.getDifficultyLabel(difficulty),
+          DifficultyUtils.getDifficultyLabel(difficulty, l10n),
           style: TextStyle(
             color: colorScheme.primary,
             fontSize: 14,
