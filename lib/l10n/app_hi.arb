@@ -1,11 +1,148 @@
 {
   "@@locale": "hi",
+  "home_appTitle": "PANTRY AI.",
+  "cook_smart_with_ai": "AI के साथ स्मार्ट तरीके से पकाएँ",
+  "home_tagline": "AI की मदद से स्कैन करें और रेसिपी सुझाव पाएँ।",
+  "home": "होम",
+  "scan": "स्कैन",
+  "analytics": "विश्लेषण",
   "settings": "सेटिंग्स",
+
+  "auth_email": "ईमेल",
+  "auth_name": "नाम",
+  "auth_enter_name": "अपना नाम दर्ज करें",
+  "auth_password": "पासवर्ड",
+  "auth_signIn": "साइन इन",
+  "auth_enterEmail": "अपना ईमेल दर्ज करें",
+  "auth_enterValid_email": "मान्य ईमेल दर्ज करें",
+  "auth_enterPassword": "अपना पासवर्ड दर्ज करें",
+  "password_hint": "कम से कम 6 अक्षर होने चाहिए",
+
+  "auth_signInLink": "पहले से खाता है? ",
+  "auth_signInButton": "साइन इन करें",
+  "auth_signUpLink": "खाता नहीं है? ",
+  "auth_signUpButton": "साइन अप करें",
+  "auth_signUp": "खाता बनाएँ",
+
+  "auth_google_signingIn": "साइन इन हो रहा है…",
+  "auth_google_continue": "Google के साथ जारी रखें",
+  "auth_email_continue": "ईमेल के साथ जारी रखें",
+
+  "scan_ingredient": "सामग्री स्कैन करें",
+  "scan_hint": "अपनी पैंट्री स्कैन करें या\nफोटो अपलोड करें",
+  "start_scanning": "स्कैन शुरू करें",
+  "searching_recipes": "रेसिपी खोज रहे हैं...",
+
   "darkMode": "डार्क मोड",
+  "enable_dark_theme": "डार्क थीम चालू करें",
   "language": "भाषा",
-  "logout": "लॉग आउट",
-  "deleteAccount": "खाता हटाएं",
-  "addedToCooking": "कुकिंग में जोड़ा गया",
+  "account": "खाता",
+  "select_language": "भाषा चुनें",
+  "english": "अंग्रेज़ी",
+  "hindi": "हिंदी",
+  "spanish": "स्पेनिश",
+
+  "logout": "लॉगआउट",
+  "delete": "हटाएँ",
+  "deleteAccount": "खाता हटाएँ",
+  "logout_confirmation": "क्या आप वाकई लॉगआउट करना चाहते हैं?",
+  "delete_confirmation": "क्या आप अपना खाता स्थायी रूप से हटाना चाहते हैं?",
+
+  "added_to_cooking": "कुकिंग में जोड़ा गया",
+  "add_to_cooking": "कुकिंग में जोड़ें",
+  "removed_from_cooking_list": "कुकिंग सूची से हटाया गया",
+
   "favorites": "पसंदीदा",
-  "savedRecipes": "सेव की गई रेसिपी"
+  "no_favorites_yet": "अभी कोई पसंदीदा नहीं",
+  "add_to_favorites": "पसंदीदा में जोड़ें",
+  "remove_from_favorites": "पसंदीदा से हटाया गया",
+
+  "recipe": "रेसिपी",
+  "recipes": "रेसिपी",
+  "search": "खोजें",
+  "found": "मिला",
+
+  "edit_profile_title": "प्रोफ़ाइल संपादित करें",
+  "full_name": "पूरा नाम",
+  "save_changes": "परिवर्तन सहेजें",
+
+  "app_settings": "ऐप सेटिंग्स",
+  "quick_recipes_coming_soon": "त्वरित रेसिपी जल्द आ रही हैं",
+  "generate_recipes_to_see_suggestions": "सुझाव देखने के लिए रेसिपी बनाएँ",
+  "no_recipes_generated_yet": "अभी तक कोई रेसिपी नहीं बनी",
+  "scan_your_pantry_to_get_started": "शुरू करने के लिए अपनी पैंट्री स्कैन करें",
+
+  "recently_generated": "हाल ही में बनाई गई",
+  "your_latest_recipe_discoveries": "आपकी नई रेसिपी खोजें",
+  "quick_and_easy": "आसान और जल्दी",
+  "recipes_under_30_minutes": "30 मिनट से कम समय वाली रेसिपी",
+
+  "scan_a_recipe": "रेसिपी स्कैन करें",
+  "no_recipe_found": "कोई रेसिपी नहीं मिली",
+  "try_adjusting_filters": "फ़िल्टर बदलने का प्रयास करें",
+
+  "savedRecipes": "सहेजी गई रेसिपी",
+  "ingredients_title": "सामग्री",
+  "missing_ingredients_title": "ग़ायब सामग्री",
+  "cooking_instructions": "पकाने की विधि",
+
+  "taste_preference_title": "स्वाद पसंद",
+  "how_would_you_like_to_taste": "आप किस तरह का स्वाद पसंद करेंगे?",
+  "which_cuisine_do_you_prefer": "आप कौन-सी व्यंजन शैली पसंद करते हैं?",
+  "whats_your_diet_preference": "आपकी डाइट पसंद क्या है?",
+  "how_much_time_do_you_have": "आपके पास कितना समय है?",
+  "spicyLevel": "मसाले का स्तर",
+  "tell_us_what_you_like": "हमें बताएं कि आपको क्या पसंद है",
+
+  "save": "सहेजें",
+  "cancel": "रद्द करें",
+  "finish_and_generate": "समाप्त करें और बनाएँ",
+  "next": "आगे",
+
+  "analytics_title": "विश्लेषण",
+  "analytics_range": "अवधि",
+  "analytics_no_yet": "अभी कोई डेटा नहीं",
+  "analytics_start_cooking": "इनसाइट्स देखने के लिए कुकिंग शुरू करें",
+  "analytics_your_cooking_insights": "आपकी कुकिंग इनसाइट्स",
+  "analytics_based_on_cooking": "कुकिंग में जोड़ी गई रेसिपी पर आधारित",
+  "analytics_favorite_to_cooking_ratio": "पसंदीदा रेसिपी का % कुकिंग में जोड़ा गया।",
+
+  "recommended_recipes": "सुझाई गई रेसिपी",
+  "smart_recipe_based_on_your_sccan": "आपके स्कैन पर आधारित स्मार्ट रेसिपी",
+  "no_recipes_yet": "अभी कोई रेसिपी नहीं",
+  "preparing_your_recipes": "आपकी रेसिपी तैयार की जा रही हैं…",
+
+  "suggested_recipes": "सुझाई गई रेसिपी",
+  "load_more_recipes": "और रेसिपी लोड करें",
+  "loading_more_recipes": "और रेसिपी लोड हो रही हैं...",
+  "saved_recipes": "सहेजी गई रेसिपी",
+  "no_saved_recipes": "अभी कोई सहेजी गई रेसिपी नहीं",
+  "save_recipes_to_find_them_here_later": "बाद में यहाँ देखने के लिए रेसिपी सहेजें",
+
+  "scan_your_ingredient": "अपनी सामग्री स्कैन करें।\nAI से तुरंत रेसिपी पाएँ।",
+
+  "this_week": "इस सप्ताह",
+  "top_cuisine": "शीर्ष व्यंजन",
+  "avg_cook_time": "औसत पकाने का समय",
+  "insights": "इनसाइट्स",
+  "missing": "ग़ायब",
+
+  "week": "सप्ताह",
+  "month": "महीना",
+  "all": "सभी",
+  "recent": "हालिया",
+
+  "easy": "आसान",
+  "medium": "मध्यम",
+  "hard": "कठिन",
+
+  "name_a_z": "नाम A-Z",
+  "cook_time": "पकाने का समय",
+  "difficulty": "कठिनाई",
+
+  "general": "सामान्य",
+  "see_all": "सभी देखें",
+  "items": "आइटम",
+  "min": "मिनट",
+  "cal": "कैल"
 }

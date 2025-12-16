@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/app_route_names.dart';
 import '../bloc/scan_bloc.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _ScanScreenState extends State<ScanScreen> {
           context.read<ScanBloc>().add(MarkNavigationHandled());
 
           context.pushReplacementNamed(
-            'tastePreference',
+            AppRouteNames.tastePreference,
             extra: state.imagePath,
           );
         }

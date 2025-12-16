@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_state.dart';
 
@@ -27,7 +28,7 @@ class _SigninScreenState extends State<SigninScreen> {
           listener: (context, state) {
             state.whenOrNull(
               authenticated: (user) {
-                context.goNamed('home');
+                context.goNamed(AppRouteNames.home);
               },
               error: (message) {
                 ScaffoldMessenger.of(
@@ -145,7 +146,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 GestureDetector(
                   key: const Key('signUpLink'),
                   onTap: () {
-                    context.pushNamed('signUp');
+                    context.pushNamed(AppRouteNames.signUp);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),

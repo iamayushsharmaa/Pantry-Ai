@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../../../../core/common/auth_text_field.dart';
 import '../bloc/auth_bloc.dart';
@@ -28,7 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
         state.whenOrNull(
           authenticated: (user) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/home');
+              context.go(AppRouteNames.home);
             });
           },
           error: (message) {

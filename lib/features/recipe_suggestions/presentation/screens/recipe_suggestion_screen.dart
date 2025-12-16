@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/app_bar.dart';
 
@@ -116,7 +117,7 @@ class RecipeListScreen extends StatelessWidget {
                             recipe: recipe,
                             colorScheme: cs,
                             onTap: () => context.pushNamed(
-                              'recipeDetails',
+                              AppRouteNames.recipeDetail,
                               extra: recipe,
                             ),
                           ),
@@ -126,7 +127,6 @@ class RecipeListScreen extends StatelessWidget {
 
                     const SizedBox(height: 8),
 
-                    // Load More Button
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),

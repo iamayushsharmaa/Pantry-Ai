@@ -18,7 +18,7 @@ class RecentRecipesList extends StatelessWidget {
         colorScheme: colorScheme,
         icon: Icons.restaurant_menu_rounded,
         message: "No recipes generated yet",
-        actionText: "Scan your pantry to get started",
+          actionText: "Scan your pantry to get started",
       );
     }
 

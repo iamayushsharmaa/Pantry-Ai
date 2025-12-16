@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 
 class ScanCardWidget extends StatelessWidget {
   const ScanCardWidget({super.key});
@@ -63,7 +64,7 @@ class ScanCardWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.8,
             child: ElevatedButton(
               onPressed: () {
-                context.pushNamed('scan');
+                context.pushNamed(AppRouteNames.scan);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,

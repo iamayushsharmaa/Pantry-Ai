@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_routes.dart';
+import 'package:pantry_ai/core/theme/colors.dart';
 
 class WidgetTree extends StatelessWidget {
   final Widget child;
 
   const WidgetTree({super.key, required this.child});
 
-  static const _tabs = ['/home', '/scan', '/analytics', '/settings'];
+  static const _tabs = [
+    AppRoutes.home,
+    AppRoutes.scan,
+    AppRoutes.analytics,
+    AppRoutes.settings,
+  ];
 
   int _getSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
@@ -16,23 +23,19 @@ class WidgetTree extends StatelessWidget {
 
   void _onTabTapped(BuildContext context, int index) {
     if (index >= 0 && index < _tabs.length) {
-      if (_tabs[index] == '/scan') {
-        context.push('/scan');
+      if (_tabs[index] == AppRoutes.scan) {
+        context.push(AppRoutes.scan);
       } else {
         context.go(_tabs[index]);
       }
     }
   }
 
-  bool _shouldShowFAB(String location) {
-    return location.startsWith('/home') || location.startsWith('/analytics');
-  }
-
   @override
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
     final selectedIndex = _getSelectedIndex(context);
-    const kBrandColor = Color(0xFF00A87D);
+    const kBrandColor = AppColors.brand;
 
     return Scaffold(
       body: child,

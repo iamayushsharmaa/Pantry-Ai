@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/common/state_chip.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../widgets/quick_recipe_list.dart';
 import '../widgets/recent_recipe_list.dart';
@@ -45,8 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 colorScheme: cs,
                 title: "Recently Generated",
                 subtitle: "Your latest recipe discoveries",
-                onSeeAll: () =>
-                    context.pushNamed('categorySeeAll', extra: 'Recent'),
+                onSeeAll: () => context.pushNamed(
+                  AppRouteNames.categorySeeAll,
+                  extra: 'Recent',
+                ),
               ),
               const SizedBox(height: 14),
 
@@ -59,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: "Quick & Easy",
                 subtitle: "Recipes under 30 minutes",
                 onSeeAll: () {
-                  context.pushNamed('categorySeeAll', extra: 'Recent');
+                  context.pushNamed(
+                    AppRouteNames.categorySeeAll,
+                    extra: 'QuickEasy',
+                  );
                 },
               ),
 

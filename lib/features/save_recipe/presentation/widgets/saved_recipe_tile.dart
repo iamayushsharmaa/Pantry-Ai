@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 import 'package:pantry_ai/features/save_recipe/presentation/widgets/recipe_image.dart';
 import 'package:pantry_ai/features/save_recipe/presentation/widgets/recipe_info.dart';
 import 'package:pantry_ai/features/save_recipe/presentation/widgets/unsave_button.dart';
@@ -18,8 +20,7 @@ class SavedRecipeTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: () {
-        // navigate to recipe detail
-        // context.push('/recipe/${recipe.id}');
+        context.pushNamed(AppRouteNames.recipeDetail, extra: recipe);
       },
       child: Ink(
         decoration: BoxDecoration(

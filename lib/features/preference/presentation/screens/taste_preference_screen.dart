@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/common/recipe_list_args.dart';
 import '../../../../core/constant/preference_constant.dart';
+import '../../../../core/router/app_route_names.dart';
 import '../bloc/taste_preference_bloc.dart';
 import '../models/taste_preference_ui_model.dart';
 import '../widgets/image_prev_card.dart';
@@ -162,7 +163,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                       maxCookingTime: state.maxCookingTime,
                     );
                     context.pushReplacementNamed(
-                      'recipesList',
+                      AppRouteNames.recipesList,
                       extra: RecipeListArgs(
                         imagePath: widget.imagePath,
                         preferences: prefs.toEntity(),

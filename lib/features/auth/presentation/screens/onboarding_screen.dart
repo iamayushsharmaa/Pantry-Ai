@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pantry_ai/l10n/app_localizations.dart';
 
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -12,6 +14,8 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -116,7 +120,8 @@ class OnBoardingScreen extends StatelessWidget {
                         height: 56,
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => context.pushNamed('signIn'),
+                          onPressed: () =>
+                              context.pushNamed(AppRouteNames.signIn),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey.shade300,
                             foregroundColor: Colors.black,

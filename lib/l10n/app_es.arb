@@ -1,11 +1,148 @@
 {
   "@@locale": "es",
+  "home_appTitle": "PANTRY AI.",
+  "cook_smart_with_ai": "Cocina de forma inteligente con IA",
+  "home_tagline": "Escanea y obtén sugerencias de recetas con IA.",
+  "home": "Inicio",
+  "scan": "Escanear",
+  "analytics": "Analíticas",
   "settings": "Configuración",
+
+  "auth_email": "Correo electrónico",
+  "auth_name": "Nombre",
+  "auth_enter_name": "Ingresa tu nombre",
+  "auth_password": "Contraseña",
+  "auth_signIn": "Iniciar sesión",
+  "auth_enterEmail": "Ingresa tu correo",
+  "auth_enterValid_email": "Ingresa un correo válido",
+  "auth_enterPassword": "Ingresa tu contraseña",
+  "password_hint": "Debe tener al menos 6 caracteres",
+
+  "auth_signInLink": "¿Ya tienes una cuenta? ",
+  "auth_signInButton": "Iniciar sesión",
+  "auth_signUpLink": "¿No tienes una cuenta? ",
+  "auth_signUpButton": "Registrarse",
+  "auth_signUp": "Crear cuenta",
+
+  "auth_google_signingIn": "Iniciando sesión…",
+  "auth_google_continue": "Continuar con Google",
+  "auth_email_continue": "Continuar con correo",
+
+  "scan_ingredient": "Escanear ingredientes",
+  "scan_hint": "Toca para escanear tu despensa o\nsubir una foto",
+  "start_scanning": "Comenzar escaneo",
+  "searching_recipes": "Buscando recetas...",
+
   "darkMode": "Modo oscuro",
+  "enable_dark_theme": "Activar tema oscuro",
   "language": "Idioma",
+  "account": "Cuenta",
+  "select_language": "Seleccionar idioma",
+  "english": "Inglés",
+  "hindi": "Hindi",
+  "spanish": "Español",
+
   "logout": "Cerrar sesión",
+  "delete": "Eliminar",
   "deleteAccount": "Eliminar cuenta",
-  "addedToCooking": "Añadido a cocinar",
+  "logout_confirmation": "¿Seguro que deseas cerrar sesión?",
+  "delete_confirmation": "¿Seguro que deseas eliminar tu cuenta permanentemente?",
+
+  "added_to_cooking": "Agregado a cocinar",
+  "add_to_cooking": "Agregar a cocinar",
+  "removed_from_cooking_list": "Eliminado de la lista de cocina",
+
   "favorites": "Favoritos",
-  "savedRecipes": "Recetas guardadas"
+  "no_favorites_yet": "Aún no hay favoritos",
+  "add_to_favorites": "Agregar a favoritos",
+  "remove_from_favorites": "Eliminado de favoritos",
+
+  "recipe": "receta",
+  "recipes": "recetas",
+  "search": "Buscar",
+  "found": "encontrado",
+
+  "edit_profile_title": "Editar perfil",
+  "full_name": "Nombre completo",
+  "save_changes": "Guardar cambios",
+
+  "app_settings": "Configuración de la app",
+  "quick_recipes_coming_soon": "Recetas rápidas próximamente",
+  "generate_recipes_to_see_suggestions": "Genera recetas para ver sugerencias",
+  "no_recipes_generated_yet": "Aún no se han generado recetas",
+  "scan_your_pantry_to_get_started": "Escanea tu despensa para comenzar",
+
+  "recently_generated": "Generadas recientemente",
+  "your_latest_recipe_discoveries": "Tus últimos descubrimientos de recetas",
+  "quick_and_easy": "Rápidas y fáciles",
+  "recipes_under_30_minutes": "Recetas en menos de 30 minutos",
+
+  "scan_a_recipe": "Escanear una receta",
+  "no_recipe_found": "No se encontró ninguna receta",
+  "try_adjusting_filters": "Intenta ajustar los filtros",
+
+  "savedRecipes": "Recetas guardadas",
+  "ingredients_title": "Ingredientes",
+  "missing_ingredients_title": "Ingredientes faltantes",
+  "cooking_instructions": "Instrucciones de cocina",
+
+  "taste_preference_title": "Preferencias de sabor",
+  "how_would_you_like_to_taste": "¿Cómo te gustaría el sabor?",
+  "which_cuisine_do_you_prefer": "¿Qué tipo de cocina prefieres?",
+  "whats_your_diet_preference": "¿Cuál es tu preferencia de dieta?",
+  "how_much_time_do_you_have": "¿Cuánto tiempo tienes?",
+  "spicyLevel": "Nivel de picante",
+  "tell_us_what_you_like": "Dinos qué te gusta",
+
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "finish_and_generate": "Finalizar y generar",
+  "next": "Siguiente",
+
+  "analytics_title": "Analíticas",
+  "analytics_range": "Rango",
+  "analytics_no_yet": "Aún no hay datos",
+  "analytics_start_cooking": "Empieza a cocinar para ver estadísticas",
+  "analytics_your_cooking_insights": "Tus estadísticas de cocina",
+  "analytics_based_on_cooking": "Basado en recetas agregadas a cocinar",
+  "analytics_favorite_to_cooking_ratio": "% de recetas favoritas se agregaron a cocinar.",
+
+  "recommended_recipes": "Recetas recomendadas",
+  "smart_recipe_based_on_your_sccan": "Recetas inteligentes basadas en tu escaneo",
+  "no_recipes_yet": "Aún no hay recetas",
+  "preparing_your_recipes": "Preparando tus recetas…",
+
+  "suggested_recipes": "Recetas sugeridas",
+  "load_more_recipes": "Cargar más recetas",
+  "loading_more_recipes": "Cargando más recetas...",
+  "saved_recipes": "Recetas guardadas",
+  "no_saved_recipes": "Aún no hay recetas guardadas",
+  "save_recipes_to_find_them_here_later": "Guarda recetas para encontrarlas aquí más tarde",
+
+  "scan_your_ingredient": "Escanea tus ingredientes.\nObtén recetas instantáneas con IA.",
+
+  "this_week": "Esta semana",
+  "top_cuisine": "Cocina principal",
+  "avg_cook_time": "Tiempo promedio",
+  "insights": "Insights",
+  "missing": "Faltante",
+
+  "week": "Semana",
+  "month": "Mes",
+  "all": "Todo",
+  "recent": "Reciente",
+
+  "easy": "Fácil",
+  "medium": "Media",
+  "hard": "Difícil",
+
+  "name_a_z": "Nombre A-Z",
+  "cook_time": "Tiempo de cocción",
+  "difficulty": "Dificultad",
+
+  "general": "General",
+  "see_all": "Ver todo",
+  "items": "elementos",
+  "min": "min",
+  "cal": "cal"
 }

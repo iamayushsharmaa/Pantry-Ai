@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/router/app_route_names.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_event.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_state.dart';
@@ -27,9 +28,9 @@ class _SplashState extends State<Splash> {
       listener: (context, state) {
         Future.delayed(const Duration(seconds: 2), () {
           state.mapOrNull(
-            authenticated: (_) => context.go('/home'),
-            unauthenticated: (_) => context.go('/onboarding'),
-            error: (_) => context.go('/onboarding'),
+            authenticated: (_) => context.go(AppRouteNames.home),
+            unauthenticated: (_) => context.go(AppRouteNames.onboarding),
+            error: (_) => context.go(AppRouteNames.onboarding),
           );
         });
       },
