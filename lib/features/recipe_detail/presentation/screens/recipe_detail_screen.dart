@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pantry_ai/shared/widgets/favorite_button.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../../../shared/widgets/add_to_cooking_button.dart';
 import '../widgets/difficulty_indicator.dart';
@@ -22,6 +23,7 @@ class RecipeDetailScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -170,7 +172,7 @@ class RecipeDetailScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 RecipeSectionHeader(
-                  title: "Ingredients",
+                  title: l10n.ingredients_title,
                   count: recipe.ingredients.length,
                   colorScheme: cs,
                 ),
@@ -192,7 +194,7 @@ class RecipeDetailScreen extends StatelessWidget {
                 ],
 
                 Text(
-                  "Cooking Instructions",
+                  l10n.cooking_instructions,
                   style: textTheme.titleLarge?.copyWith(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,

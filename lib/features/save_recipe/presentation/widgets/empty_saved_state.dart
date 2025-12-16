@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class EmptySavedState extends StatelessWidget {
   const EmptySavedState();
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Center(
       child: Padding(
@@ -15,13 +18,13 @@ class EmptySavedState extends StatelessWidget {
           children: [
             Icon(Icons.bookmark_border, size: 72, color: cs.onSurfaceVariant),
             const SizedBox(height: 16),
-            const Text(
-              'No saved recipes yet',
+            Text(
+              l10n.no_saved_recipes,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
             Text(
-              'Save recipes to find them here later',
+              l10n.save_recipes_to_find_them_here_later,
               textAlign: TextAlign.center,
               style: TextStyle(color: cs.onSurfaceVariant),
             ),

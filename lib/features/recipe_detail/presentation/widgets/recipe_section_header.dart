@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class RecipeSectionHeader extends StatelessWidget {
   final String title;
   final int count;
@@ -14,6 +16,8 @@ class RecipeSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -32,7 +36,7 @@ class RecipeSectionHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            "$count items",
+            "$count ${l10n.items}",
             style: TextStyle(
               color: colorScheme.onPrimaryContainer,
               fontSize: 13,

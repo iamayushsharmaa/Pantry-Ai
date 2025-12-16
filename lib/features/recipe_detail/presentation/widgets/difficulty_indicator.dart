@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pantry_ai/core/utils/difficulty_level.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class RecipeDifficultyIndicator extends StatelessWidget {
   final int difficulty;
   final ColorScheme colorScheme;
@@ -13,10 +15,12 @@ class RecipeDifficultyIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       children: [
         Text(
-          "Difficulty: ",
+          "${l10n.difficulty}: ",
           style: TextStyle(
             color: colorScheme.onSurface.withOpacity(0.7),
             fontSize: 15,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/recipe/taste_preference.dart';
 
 class PreferenceSummaryWidget extends StatelessWidget {
@@ -17,6 +18,8 @@ class PreferenceSummaryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
 
     return Container(
       padding: const EdgeInsets.all(12),
@@ -24,7 +27,6 @@ class PreferenceSummaryWidget extends StatelessWidget {
         color: cs.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: cs.outline.withOpacity(0.1), width: 1),
-        // Reduced shadow complexity
         boxShadow: [
           BoxShadow(
             color: cs.shadow.withOpacity(0.04),
@@ -36,7 +38,6 @@ class PreferenceSummaryWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image with caching
           ClipRRect(
             borderRadius: BorderRadius.circular(14),
             child: Image.file(
@@ -45,14 +46,12 @@ class PreferenceSummaryWidget extends StatelessWidget {
               height: 90,
               fit: BoxFit.cover,
               cacheWidth: 180,
-              // Cache at 2x for retina displays
               cacheHeight: 180,
             ),
           ),
 
           const SizedBox(width: 14),
 
-          // Chips
           Expanded(
             child: Wrap(
               spacing: 8,
@@ -62,7 +61,7 @@ class PreferenceSummaryWidget extends StatelessWidget {
                 _PreferenceChip(label: preferences.cuisine, cs: cs),
                 _PreferenceChip(label: preferences.diet, cs: cs),
                 _PreferenceChip(
-                  label: "${preferences.maxCookingTime} min",
+                  label: "${preferences.maxCookingTime} ${l10n.min}",
                   cs: cs,
                 ),
               ],

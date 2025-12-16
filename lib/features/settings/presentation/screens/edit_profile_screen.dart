@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/services/image_picker_services.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../bloc/settings_bloc.dart';
 import '../widgets/profile_avatar.dart';
 
@@ -31,10 +32,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final imagePicker = context.read<ImagePickerService>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Profile')),
+      appBar: AppBar(
+        title: Text(
+          l10n.edit_profile_title,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 18,
+            color: cs.onSurface,
+          ),
+        ),
+      ),
       body: BlocConsumer<SettingsBloc, SettingsState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
@@ -81,7 +92,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   textInputAction: TextInputAction.done,
                   style: TextStyle(color: cs.onSurface),
                   decoration: InputDecoration(
-                    labelText: 'Full Name',
+                    labelText: l10n.full_name,
                     prefixIcon: Icon(Icons.person_outline, color: cs.primary),
                     filled: true,
                     fillColor: cs.surface,
@@ -116,7 +127,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               color: Colors.white,
                             ),
                           )
-                        : Text('Save Changes', style: TextStyle(fontSize: 16)),
+                        : Text(
+                            l10n.save_changes,
+                            style: TextStyle(fontSize: 16),
+                          ),
                   ),
                 ),
               ],

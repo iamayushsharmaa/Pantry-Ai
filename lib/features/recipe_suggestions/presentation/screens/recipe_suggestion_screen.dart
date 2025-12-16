@@ -6,6 +6,7 @@ import 'package:pantry_ai/features/recipe_suggestions/presentation/bloc/recipe_b
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/app_bar.dart';
 
 import '../../../../core/constant/constants.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../widgets/preference_summary_widget.dart';
 import '../widgets/recipe_card_widget.dart';
 
@@ -15,6 +16,7 @@ class RecipeListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -28,7 +30,7 @@ class RecipeListScreen extends StatelessWidget {
                   CircularProgressIndicator(strokeWidth: 3, color: cs.primary),
                   const SizedBox(height: 20),
                   Text(
-                    'Preparing your recipes...',
+                    l10n.preparing_your_recipes,
                     style: TextStyle(
                       color: cs.onSurface.withOpacity(0.6),
                       fontSize: 16,
@@ -86,7 +88,7 @@ class RecipeListScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              "${recipes.length} recipes",
+                              "${recipes.length} ${l10n.recipes}",
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
@@ -96,7 +98,7 @@ class RecipeListScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            "Suggested Recipes",
+                            l10n.suggested_recipes,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -162,7 +164,7 @@ class RecipeListScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  "Load More Recipes",
+                                  l10n.load_more_recipes,
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -188,7 +190,7 @@ class RecipeListScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "Loading more recipes...",
+                              l10n.loading_more_recipes,
                               style: TextStyle(
                                 color: cs.onSurface.withOpacity(0.6),
                                 fontSize: 13,

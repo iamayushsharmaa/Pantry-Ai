@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class QuestionPage extends StatelessWidget {
   final String title;
   final List<dynamic> options;
@@ -65,6 +67,8 @@ class OptionChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return RepaintBoundary(
       child: Material(
         color: Colors.transparent,
@@ -88,7 +92,7 @@ class OptionChip extends StatelessWidget {
               ),
             ),
             child: Text(
-              option is int ? "< $option min" : option.toString(),
+              option is int ? "< $option ${l10n.min}" : option.toString(),
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,

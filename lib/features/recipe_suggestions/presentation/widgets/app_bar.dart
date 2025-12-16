@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class SuggestionAppBar extends StatelessWidget {
   final ColorScheme colorScheme;
 
@@ -8,6 +10,8 @@ class SuggestionAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SliverAppBar(
       expandedHeight: 140,
       floating: false,
@@ -30,7 +34,7 @@ class SuggestionAppBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Recommended Dishes",
+              l10n.recommended_recipes,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -40,7 +44,7 @@ class SuggestionAppBar extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              "Smart recipes based on your scan",
+              l10n.smart_recipe_based_on_your_sccan,
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,

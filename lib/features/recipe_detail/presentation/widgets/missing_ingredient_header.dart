@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class MissingIngredientsHeader extends StatelessWidget {
   final ColorScheme colorScheme;
 
@@ -7,12 +9,14 @@ class MissingIngredientsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       children: [
         Icon(Icons.warning_rounded, color: colorScheme.error, size: 20),
         const SizedBox(width: 8),
         Text(
-          "Missing Ingredients",
+          l10n.missing_ingredients_title,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

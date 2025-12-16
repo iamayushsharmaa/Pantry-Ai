@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
 
 import '../../../../core/theme/colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProfileCard extends StatelessWidget {
   final UserEntity? user;
@@ -16,6 +17,8 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
 
     if (user == null) {
       return _buildLoadingCard(context);
@@ -54,13 +57,12 @@ class ProfileCard extends StatelessWidget {
 
           const SizedBox(width: 16),
 
-          // ───────── Name & Email ─────────
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  displayName ?? 'User',
+                  displayName ?? 'Name',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -88,7 +90,7 @@ class ProfileCard extends StatelessWidget {
               icon: const Icon(Icons.edit_outlined),
               color: AppColors.brand,
               onPressed: onEditPressed,
-              tooltip: 'Edit Profile',
+              tooltip: l10n.edit_profile_title,
             ),
           ),
         ],

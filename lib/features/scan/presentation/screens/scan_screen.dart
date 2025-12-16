@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_route_names.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../bloc/scan_bloc.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -23,6 +24,8 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BlocConsumer<ScanBloc, ScanState>(
       listener: (context, state) {
         if (state.imagePath != null && !state.hasNavigated) {
@@ -89,8 +92,8 @@ class _ScanScreenState extends State<ScanScreen> {
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    const Text(
-                      "Scan your ingredients.\nGet instant recipes powered by AI.",
+                    Text(
+                      l10n.scan_your_ingredient,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.grey,

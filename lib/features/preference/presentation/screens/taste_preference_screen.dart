@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/common/recipe_list_args.dart';
 import '../../../../core/constant/preference_constant.dart';
 import '../../../../core/router/app_route_names.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../bloc/taste_preference_bloc.dart';
 import '../models/taste_preference_ui_model.dart';
 import '../widgets/image_prev_card.dart';
@@ -56,6 +57,8 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
 
     return BlocBuilder<TastePreferenceBloc, TastePreferenceState>(
       builder: (context, state) {
@@ -65,7 +68,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
             elevation: 0,
             backgroundColor: cs.surface,
             title: Text(
-              'Taste Preferences',
+              l10n.taste_preference_title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: cs.onBackground,
@@ -104,7 +107,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       QuestionPage(
-                        title: "How would you like the taste?",
+                        title: l10n.how_would_you_like_to_taste,
                         options: PreferenceData.tasteOptions,
                         selected: state.taste,
                         onSelected: (val) {
@@ -114,7 +117,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                         },
                       ),
                       QuestionPage(
-                        title: "Which cuisine do you prefer?",
+                        title: l10n.which_cuisine_do_you_prefer,
                         options: PreferenceData.cuisineOptions,
                         selected: state.cuisine,
                         onSelected: (val) {
@@ -124,7 +127,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                         },
                       ),
                       QuestionPage(
-                        title: "What's your diet preference?",
+                        title: l10n.whats_your_diet_preference,
                         options: PreferenceData.dietOptions,
                         selected: state.diet,
                         onSelected: (val) {
@@ -134,7 +137,7 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                         },
                       ),
                       QuestionPage(
-                        title: "How much time do you have?",
+                        title: l10n.how_much_time_do_you_have,
                         options: PreferenceData.cookingTimeOptions,
                         selected: state.maxCookingTime,
                         onSelected: (val) {
@@ -246,6 +249,8 @@ class BottomActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: RepaintBoundary(
@@ -284,7 +289,7 @@ class BottomActionButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      isLastPage ? "Finish & Generate" : "Next",
+                      isLastPage ? l10n.finish_and_generate : l10n.next,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

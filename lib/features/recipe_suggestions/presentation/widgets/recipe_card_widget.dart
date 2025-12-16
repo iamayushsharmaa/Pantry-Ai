@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 
 class RecipeCard extends StatelessWidget {
@@ -16,6 +17,8 @@ class RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -30,7 +33,6 @@ class RecipeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image with proper caching
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
@@ -40,7 +42,7 @@ class RecipeCard extends StatelessWidget {
                   child: Image.network(
                     recipe.imageUrl,
                     fit: BoxFit.cover,
-                    cacheWidth: 600, // Optimize image loading
+                    cacheWidth: 600,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
                       return Container(
@@ -89,7 +91,6 @@ class RecipeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
 
-                    // Stats Row
                     Row(
                       children: [
                         Icon(
@@ -99,7 +100,7 @@ class RecipeCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "${recipe.cookingTime} min",
+                          "${recipe.cookingTime} ${l10n.min}",
                           style: TextStyle(
                             color: colorScheme.onSurface.withOpacity(0.7),
                             fontSize: 13,
@@ -135,7 +136,7 @@ class RecipeCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          "Missing: ${recipe.missingIngredients.take(2).join(', ')}",
+                          "${l10n.missing}: ${recipe.missingIngredients.take(2).join(', ')}",
                           style: TextStyle(
                             color: colorScheme.onErrorContainer,
                             fontSize: 12,

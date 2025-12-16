@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../bloc/saved_bloc.dart';
 import '../widgets/empty_saved_state.dart';
 import '../widgets/save_loading.dart';
@@ -12,12 +13,13 @@ class SavedRecipesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: cs.surface,
       appBar: AppBar(
-        title: const Text(
-          'Saved Recipes',
+        title: Text(
+          l10n.saved_recipes,
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         backgroundColor: cs.surface,

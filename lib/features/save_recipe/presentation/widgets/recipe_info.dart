@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/save_recipe_entity.dart';
 
 class RecipeInfo extends StatelessWidget {
@@ -11,6 +12,7 @@ class RecipeInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final recipe = saved.recipe;
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +25,7 @@ class RecipeInfo extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          '${recipe.cuisine} • ${recipe.cookingTime} min',
+          '${recipe.cuisine} • ${recipe.cookingTime} ${l10n.min}',
           style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant),
         ),
         const SizedBox(height: 8),
