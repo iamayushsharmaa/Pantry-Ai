@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/analytics_data.dart';
 
 class AnalyticsInsightCard extends StatelessWidget {
@@ -10,6 +11,8 @@ class AnalyticsInsightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
     final percentage = (analytics.favoriteToCookingRatio * 100).toStringAsFixed(
       0,
     );
@@ -26,7 +29,7 @@ class AnalyticsInsightCard extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              '$percentage% of favorite recipes were added to cooking.',
+              '$percentage${l10n.analytics_favorite_to_cooking_ratio}',
               style: TextStyle(
                 fontSize: 15,
                 color: cs.onSurface,

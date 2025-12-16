@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class EmptyAnalyticsState extends StatelessWidget {
   const EmptyAnalyticsState({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Center(
       child: Column(
@@ -18,7 +21,7 @@ class EmptyAnalyticsState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'No analytics yet',
+            l10n.analytics_no_yet,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,

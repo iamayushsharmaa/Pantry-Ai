@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class SectionHeader extends StatelessWidget {
   final ColorScheme colorScheme;
   final String title;
@@ -15,6 +17,8 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +59,7 @@ class SectionHeader extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'See all',
+                  l10n.see_all,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

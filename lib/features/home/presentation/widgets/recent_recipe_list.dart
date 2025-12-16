@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/core/constant/constants.dart';
-import 'package:pantry_ai/features/home/presentation/widgets/recipe_home_card.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import 'empty_state.dart';
 
 class RecentRecipesList extends StatelessWidget {
@@ -11,14 +10,16 @@ class RecentRecipesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     const hasRecipes = false;
 
     if (!hasRecipes) {
       return EmptyState(
         colorScheme: colorScheme,
         icon: Icons.restaurant_menu_rounded,
-        message: "No recipes generated yet",
-          actionText: "Scan your pantry to get started",
+        message: l10n.no_recipes_generated_yet,
+        actionText: l10n.scan_your_pantry_to_get_started,
       );
     }
 

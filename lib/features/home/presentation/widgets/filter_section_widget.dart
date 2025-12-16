@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class FilterSection extends StatelessWidget {
   final ColorScheme colorScheme;
   final String selectedFilter;
@@ -17,6 +19,8 @@ class FilterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       height: 50,
       padding: const EdgeInsets.only(bottom: 8),
@@ -27,28 +31,28 @@ class FilterSection extends StatelessWidget {
         children: [
           FilterChip(
             colorScheme: colorScheme,
-            label: 'All',
+            label: l10n.all,
             isSelected: selectedFilter == 'All',
             onTap: () => onFilterChanged('All'),
           ),
           const SizedBox(width: 8),
           FilterChip(
             colorScheme: colorScheme,
-            label: 'Easy',
+            label: l10n.easy,
             isSelected: selectedFilter == 'Easy',
             onTap: () => onFilterChanged('Easy'),
           ),
           const SizedBox(width: 8),
           FilterChip(
             colorScheme: colorScheme,
-            label: 'Medium',
+            label: l10n.medium,
             isSelected: selectedFilter == 'Medium',
             onTap: () => onFilterChanged('Medium'),
           ),
           const SizedBox(width: 8),
           FilterChip(
             colorScheme: colorScheme,
-            label: 'Hard',
+            label: l10n.hard,
             isSelected: selectedFilter == 'Hard',
             onTap: () => onFilterChanged('Hard'),
           ),

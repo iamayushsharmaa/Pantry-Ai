@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class EmptyState extends StatelessWidget {
   final ColorScheme colorScheme;
 
@@ -7,6 +9,8 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +29,7 @@ class EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'No recipes found',
+            l10n.no_recipe_found,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -34,7 +38,7 @@ class EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Try adjusting your filters',
+            l10n.try_adjusting_filters,
             style: TextStyle(
               fontSize: 14,
               color: colorScheme.onSurface.withOpacity(0.6),

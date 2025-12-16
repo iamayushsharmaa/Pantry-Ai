@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/common/state_chip.dart';
 import 'package:pantry_ai/core/router/app_route_names.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../widgets/quick_recipe_list.dart';
 import '../widgets/recent_recipe_list.dart';
 import '../widgets/scan_card_widget.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -44,11 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 25),
               SectionHeader(
                 colorScheme: cs,
-                title: "Recently Generated",
-                subtitle: "Your latest recipe discoveries",
+                title: l10n.recently_generated,
+                subtitle: l10n.your_latest_recipe_discoveries,
                 onSeeAll: () => context.pushNamed(
                   AppRouteNames.categorySeeAll,
-                  extra: 'Recent',
+                  extra: l10n.recent,
                 ),
               ),
               const SizedBox(height: 14),
@@ -59,8 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SectionHeader(
                 colorScheme: cs,
-                title: "Quick & Easy",
-                subtitle: "Recipes under 30 minutes",
+                title: l10n.quick_and_easy,
+                subtitle: l10n.recipes_under_30_minutes,
                 onSeeAll: () {
                   context.pushNamed(
                     AppRouteNames.categorySeeAll,
@@ -89,6 +91,8 @@ class AppBarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -96,7 +100,7 @@ class AppBarSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Pantry AI',
+              l10n.home_appTitle,
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
@@ -106,7 +110,7 @@ class AppBarSection extends StatelessWidget {
             ),
             const SizedBox(height: 1),
             Text(
-              'Cook smart with AI',
+              l10n.cook_smart_with_ai,
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
@@ -117,7 +121,7 @@ class AppBarSection extends StatelessWidget {
         ),
         StatChip(
           icon: Icons.local_fire_department_rounded,
-          label: "630 cal",
+          label: "630 ${l10n.cal}",
           color: Colors.deepOrange,
           colorScheme: colorScheme,
         ),

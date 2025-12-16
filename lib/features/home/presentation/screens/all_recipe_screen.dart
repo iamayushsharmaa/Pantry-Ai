@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide FilterChip;
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/utils/category_title_utils.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../widgets/all_screen_empty_state.dart';
 import '../widgets/filter_section_widget.dart';
 import '../widgets/recipe_grid.dart';
@@ -89,6 +90,8 @@ class AppBarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 12, 16, 12),
       child: Row(
@@ -118,7 +121,7 @@ class AppBarSection extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$recipeCount ${recipeCount == 1 ? 'recipe' : 'recipes'} found',
+                  '$recipeCount ${recipeCount == 1 ? l10n.recipe : l10n.recipes} ${l10n.found}',
                   style: TextStyle(
                     fontSize: 12,
                     color: colorScheme.onSurface.withOpacity(0.6),

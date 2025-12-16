@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/router/app_routes.dart';
 import 'package:pantry_ai/core/theme/colors.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class WidgetTree extends StatelessWidget {
   final Widget child;
 
@@ -36,6 +38,7 @@ class WidgetTree extends StatelessWidget {
     final location = GoRouterState.of(context).uri.toString();
     final selectedIndex = _getSelectedIndex(context);
     const kBrandColor = AppColors.brand;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: child,
@@ -58,7 +61,7 @@ class WidgetTree extends StatelessWidget {
               'assets/icons/home.svg',
               colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
             ),
-            label: 'Home',
+            label: l10n.home,
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -69,7 +72,7 @@ class WidgetTree extends StatelessWidget {
               'assets/icons/scan.svg',
               colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
             ),
-            label: 'Scan',
+            label: l10n.scan,
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -80,7 +83,7 @@ class WidgetTree extends StatelessWidget {
               'assets/icons/analytics.svg',
               colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
             ),
-            label: 'Analytics',
+            label: l10n.analytics,
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -91,7 +94,7 @@ class WidgetTree extends StatelessWidget {
               'assets/icons/settings.svg',
               colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
             ),
-            label: 'Settings',
+            label: l10n.settings,
           ),
         ],
       ),

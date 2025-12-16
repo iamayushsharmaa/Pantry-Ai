@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pantry_ai/features/analytics/presentation/widgets/range_selector.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/range.dart';
 
 class AnalyticsHeader extends StatelessWidget {
@@ -11,12 +12,13 @@ class AnalyticsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Your Cooking Insights',
+          l10n.analytics_your_cooking_insights,
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w700,
@@ -25,7 +27,7 @@ class AnalyticsHeader extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Based on recipes added to cooking',
+          l10n.analytics_based_on_cooking,
           style: TextStyle(color: cs.onSurface.withOpacity(0.6)),
         ),
         const SizedBox(height: 14),

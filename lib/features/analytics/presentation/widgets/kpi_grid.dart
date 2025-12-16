@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/analytics_data.dart';
 import 'kpi_card.dart';
 
@@ -10,6 +11,8 @@ class AnalyticsKpiGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return GridView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -21,22 +24,22 @@ class AnalyticsKpiGrid extends StatelessWidget {
       ),
       children: [
         AnalyticsKpiCard(
-          title: 'Added to Cooking',
+          title: l10n.added_to_cooking,
           value: analytics.totalAddedToCooking.toString(),
           icon: Icons.restaurant_menu,
         ),
         AnalyticsKpiCard(
-          title: 'This Week',
+          title: l10n.this_week,
           value: analytics.addedThisWeek.toString(),
           icon: Icons.calendar_today,
         ),
         AnalyticsKpiCard(
-          title: 'Top Cuisine',
+          title: l10n.top_cuisine,
           value: analytics.topCuisine,
           icon: Icons.local_fire_department,
         ),
         AnalyticsKpiCard(
-          title: 'Avg Cook Time',
+          title: l10n.avg_cook_time,
           value: '${analytics.averageCookingTime.toStringAsFixed(0)} min',
           icon: Icons.timer,
         ),

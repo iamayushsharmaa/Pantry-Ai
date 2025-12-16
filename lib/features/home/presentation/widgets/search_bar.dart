@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class CategorySearchBar extends StatelessWidget {
   final ColorScheme colorScheme;
   final TextEditingController controller;
@@ -13,13 +15,15 @@ class CategorySearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
       child: TextField(
         controller: controller,
         onChanged: onSearch,
         decoration: InputDecoration(
-          hintText: 'Search recipes...',
+          hintText: l10n.searching_recipes,
           hintStyle: TextStyle(
             color: colorScheme.onSurface.withOpacity(0.5),
             fontSize: 15,

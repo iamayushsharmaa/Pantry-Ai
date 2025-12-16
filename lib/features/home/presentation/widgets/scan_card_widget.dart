@@ -3,12 +3,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/router/app_route_names.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class ScanCardWidget extends StatelessWidget {
   const ScanCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       width: MediaQuery.of(context).size.width * 1,
@@ -39,7 +43,7 @@ class ScanCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Scan Ingredients',
+            l10n.scan_ingredient,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -49,7 +53,7 @@ class ScanCardWidget extends StatelessWidget {
           const SizedBox(height: 6),
 
           Text(
-            'Tap to scan your pantry or\nupload a photo',
+            l10n.scan_hint,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -76,7 +80,7 @@ class ScanCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Start scanning',
+                    l10n.start_scanning,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/features/home/presentation/widgets/recipe_home_card.dart';
 
-import '../../../../core/constant/constants.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'empty_state.dart';
 
 class QuickRecipesList extends StatelessWidget {
@@ -11,14 +10,16 @@ class QuickRecipesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final hasRecipes = false;
 
     if (!hasRecipes) {
       return EmptyState(
         colorScheme: colorScheme,
         icon: Icons.flash_on_rounded,
-        message: "Quick recipes coming soon",
-        actionText: "Generate recipes to see suggestions",
+        message: l10n.quick_recipes_coming_soon,
+        actionText: l10n.generate_recipes_to_see_suggestions,
       );
     }
 

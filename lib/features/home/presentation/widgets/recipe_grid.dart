@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/difficulty_level.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class RecipeGrid extends StatelessWidget {
   final ColorScheme colorScheme;
@@ -14,6 +15,8 @@ class RecipeGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return GridView.builder(
@@ -37,8 +40,8 @@ class RecipeGrid extends StatelessWidget {
               colorScheme: colorScheme,
               title: recipe['title']?.toString() ?? 'Untitled Recipe',
               cookTime: recipe['cookTime']?.toString() ?? 'N/A',
-              difficulty: recipe['difficulty']?.toString() ?? 'Medium',
-              cuisine: recipe['cuisine']?.toString() ?? 'General',
+              difficulty: recipe['difficulty']?.toString() ?? l10n.medium,
+              cuisine: recipe['cuisine']?.toString() ?? l10n.general,
               onTap: () {
                 debugPrint('Tapped on ${recipe['title']}');
               },
