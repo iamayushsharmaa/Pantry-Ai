@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/utils/show_snackbar.dart';
 import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
+import '../../l10n/app_localizations.dart';
 import '../models/recipe/recipe.dart';
 
 class FavoriteButton extends StatelessWidget {
@@ -13,6 +14,7 @@ class FavoriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return BlocSelector<FavoritesBloc, FavoritesState, bool>(
       selector: (state) => state.favoriteIds.contains(recipe.id),
@@ -37,7 +39,7 @@ class FavoriteButton extends StatelessWidget {
 
             showSnackBar(
               context,
-              isFavorite ? 'Removed from favorites' : 'Added to favorites ❤',
+              isFavorite ? l10n.remove_from_favorites : l10n.added_to_favorites,
               cs,
             );
           },

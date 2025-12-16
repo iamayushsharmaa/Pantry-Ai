@@ -8,6 +8,8 @@ import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_event.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_state.dart';
 
+import 'l10n/app_localizations.dart';
+
 class Splash extends StatefulWidget {
   const Splash({super.key});
 
@@ -24,6 +26,8 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         Future.delayed(const Duration(seconds: 2), () {

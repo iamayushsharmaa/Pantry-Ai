@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/utils/show_snackbar.dart';
 import '../../features/save_recipe/presentation/bloc/saved_bloc.dart';
+import '../../l10n/app_localizations.dart';
 import '../models/recipe/recipe.dart';
 
 class AddToCookingAction extends StatelessWidget {
@@ -13,6 +14,7 @@ class AddToCookingAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return BlocSelector<SavedBloc, SavedState, bool>(
       selector: (state) => state.savedRecipeIds.contains(recipe.id),
@@ -50,7 +52,7 @@ class AddToCookingAction extends StatelessWidget {
                   size: 22,
                 ),
                 label: Text(
-                  isAdded ? 'Added to cooking' : 'Add to cooking',
+                  isAdded ? l10n.added_to_cooking : l10n.add_to_cooking,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -62,8 +64,8 @@ class AddToCookingAction extends StatelessWidget {
                   showSnackBar(
                     context,
                     isAdded
-                        ? 'Removed from cooking list'
-                        : 'Added to cooking 🍳',
+                        ? l10n.removed_from_cooking_list
+                        : l10n.added_to_cooking,
                     cs,
                   );
                 },

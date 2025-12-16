@@ -210,9 +210,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get try_adjusting_filters => 'Intenta ajustar los filtros';
 
   @override
-  String get savedRecipes => 'Recetas guardadas';
-
-  @override
   String get ingredients_title => 'Ingredientes';
 
   @override
@@ -241,6 +238,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tell_us_what_you_like => 'Dinos qué te gusta';
+
+  @override
+  String get added_to_favorites => 'Agregado a favoritos';
 
   @override
   String get save => 'Guardar';

@@ -499,12 +499,6 @@ abstract class AppLocalizations {
   /// **'Try adjusting your filters'**
   String get try_adjusting_filters;
 
-  /// No description provided for @savedRecipes.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved Recipes'**
-  String get savedRecipes;
-
   /// No description provided for @ingredients_title.
   ///
   /// In en, this message translates to:
@@ -564,6 +558,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tell us what you like'**
   String get tell_us_what_you_like;
+
+  /// No description provided for @added_to_favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to favorites'**
+  String get added_to_favorites;
 
   /// No description provided for @save.
   ///
