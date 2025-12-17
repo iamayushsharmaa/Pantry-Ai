@@ -8,6 +8,6 @@ List<GoRoute> favoriteRoutes = [
   GoRoute(
     path: AppRoutes.favorites,
     name: AppRouteNames.favorites,
-    builder: (_, __) => FavoriteScreen(),
+    builder: (_, __) => FavoritesScreen(),
   ),
 ];

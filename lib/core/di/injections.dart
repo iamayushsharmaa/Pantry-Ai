@@ -19,6 +19,8 @@ import 'package:pantry_ai/features/favorites/data/repository/favorite_repository
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
+import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource.dart';
+import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource_impl.dart';
 import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
 import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource.dart';
 import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource_impl.dart';
@@ -46,6 +48,7 @@ import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
 import '../../features/favorites/domain/repository/favorite_repository.dart';
 import '../../features/favorites/domain/usecases/get_favorite_stream.dart';
 import '../../features/recipe_detail/data/repository/recipe_detail_repository_impl.dart';
+import '../../features/recipe_detail/domain/usecases/get_recipe_by_id.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource_impl.dart';
 import '../../features/recipe_suggestions/data/datasource/remote/recipe_remote_datasource.dart';
@@ -125,9 +128,15 @@ Future<void> _initRecipeFeature() async {
     () => RecipeRepositoryImpl(remote: sl(), local: sl()),
   );
 
+  sl.registerLazySingleton<RecipeDetailRemoteDataSource>(
+    () => RecipeDetailRemoteDataSourceImpl(sl()),
+  );
+
   sl.registerLazySingleton<RecipeDetailRepository>(
     () => RecipeDetailRepositoryImpl(sl()),
   );
+
+  sl.registerLazySingleton(() => GetRecipeById(sl()));
 
   sl.registerLazySingleton(() => GenerateRecipesUseCase(sl()));
   sl.registerLazySingleton(() => GetCachedRecipesUseCase(sl()));

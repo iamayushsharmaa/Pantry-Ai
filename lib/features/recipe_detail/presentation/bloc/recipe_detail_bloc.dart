@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 
+import '../../../../core/errors/failure.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../domain/usecases/get_recipe_by_id.dart';
 
@@ -11,19 +12,35 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
 
   RecipeDetailBloc({required this.getRecipeById})
     : super(RecipeDetailInitial()) {
-    on<LoadRecipeDetail>(_onLoadRecipe);
+    on<LoadRecipeById>(_onLoadFromId);
+    on<LoadRecipeFromMemory>(_onLoadFromMemory);
   }
 
-  Future<void> _onLoadRecipe(
-    LoadRecipeDetail event,
+  void _onLoadFromMemory(
+    LoadRecipeFromMemory event,
+    Emitter<RecipeDetailState> emit,
+  ) {
+    emit(RecipeDetailLoaded(event.recipe));
+  }
+
+  Future<void> _onLoadFromId(
+    LoadRecipeById event,
     Emitter<RecipeDetailState> emit,
   ) async {
     emit(RecipeDetailLoading());
+
     final result = await getRecipeById(event.recipeId);
 
     result.fold(
-      (failure) => emit(RecipeDetailError('Failed to load recipe')),
+      (failure) => emit(RecipeDetailError(_mapFailureToMessage(failure))),
       (recipe) => emit(RecipeDetailLoaded(recipe)),
     );
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    if (failure is NetworkFailure) {
+      return 'No internet connection';
+    }
+    return 'Failed to load recipe';
   }
 }
