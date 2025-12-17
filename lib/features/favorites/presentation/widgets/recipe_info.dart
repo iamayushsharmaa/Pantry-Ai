@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import 'meta_chip.dart';
 
 class RecipeInfo extends StatelessWidget {
-  final Recipe recipe;
+  final RecipeSnapshot recipe;
 
   const RecipeInfo({super.key, required this.recipe});
 

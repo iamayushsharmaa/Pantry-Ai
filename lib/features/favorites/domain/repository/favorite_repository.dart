@@ -1,11 +1,11 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../shared/models/recipe/recipe.dart';
+import '../../../../shared/models/recipe/recipe_snapshot_model.dart';
 import '../entities/favorite_recipe_entity.dart';
 
 abstract class FavoriteRepository {
-  Future<Either<Failure, void>> addToFavorites(Recipe recipe);
+  Future<Either<Failure, void>> addToFavorites(RecipeSnapshot recipe);
 
   Future<Either<Failure, void>> removeFromFavorites(String recipeId);
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 import 'package:pantry_ai/shared/widgets/favorite_button.dart';
 
 import '../../../../l10n/app_localizations.dart';
@@ -45,8 +46,6 @@ class RecipeDetailScreen extends StatelessWidget {
 
         final recipe = (state as RecipeDetailLoaded).recipe;
 
-        // ⬇⬇⬇ EVERYTHING BELOW IS YOUR ORIGINAL UI (UNCHANGED) ⬇⬇⬇
-
         return Scaffold(
           backgroundColor: cs.surface,
           extendBodyBehindAppBar: true,
@@ -69,7 +68,7 @@ class RecipeDetailScreen extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
             ),
             actions: [
-              FavoriteButton(recipe: recipe),
+              FavoriteButton(recipe: RecipeSnapshot.fromRecipe(recipe)),
               const SizedBox(width: 8),
             ],
           ),

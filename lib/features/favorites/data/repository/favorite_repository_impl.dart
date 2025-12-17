@@ -1,8 +1,7 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../shared/models/recipe/recipe.dart';
-import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../../auth/data/remote/auth_local_data_source.dart';
 import '../../domain/entities/favorite_recipe_entity.dart';
 import '../../domain/repository/favorite_repository.dart';
@@ -15,9 +14,11 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   FavoriteRepositoryImpl({required this.remote, required this.auth});
 
   @override
-  Future<Either<Failure, void>> addToFavorites(Recipe recipe) async {
+  Future<Either<Failure, void>> addToFavorites(
+    RecipeSnapshot recipeSnapshot,
+  ) async {
     try {
-      await remote.addToFavorites(recipe as RecipeModel);
+      await remote.addToFavorites(recipeSnapshot);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure());

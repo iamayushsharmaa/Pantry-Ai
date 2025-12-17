@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/l10n/app_localizations.dart';
 
+import '../../../../core/router/app_route_names.dart';
 import '../bloc/favorites_bloc.dart';
 import '../widgets/empty_fav_view.dart';
 import '../widgets/favroite_recipe_card.dart';
@@ -39,12 +41,16 @@ class FavoritesScreen extends StatelessWidget {
               final fav = state.favorites[index];
 
               return FavoriteRecipeCard(
-                recipe: fav.recipeId,
+                recipe: fav.recipeSnapshot,
                 onRemove: () {
                   context.read<FavoritesBloc>().add(
-                    ToggleFavoriteEvent(fav.recipe),
+                    ToggleFavoriteEvent(fav.recipeSnapshot),
                   );
                 },
+                onTap: () => context.pushNamed(
+                  AppRouteNames.recipeDetail,
+                  extra: fav.recipeId,
+                ),
               );
             },
           );

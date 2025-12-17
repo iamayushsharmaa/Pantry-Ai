@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../../core/utils/show_snackbar.dart';
 import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
 import '../../l10n/app_localizations.dart';
-import '../models/recipe/recipe.dart';
 
 class FavoriteButton extends StatelessWidget {
-  final Recipe recipe;
+  final RecipeSnapshot recipe;
 
   const FavoriteButton({super.key, required this.recipe});
 
