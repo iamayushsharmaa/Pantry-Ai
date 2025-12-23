@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constant/constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'empty_state.dart';
 
 class QuickRecipesList extends StatelessWidget {
   final ColorScheme colorScheme;
 
-  const QuickRecipesList({required this.colorScheme});
+  const QuickRecipesList({super.key, required this.colorScheme});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class QuickRecipesList extends StatelessWidget {
         actionText: l10n.generate_recipes_to_see_suggestions,
       );
     }
-
+    //
     // return SizedBox(
     //   height: 204,
     //   child: ListView.builder(

@@ -11,6 +11,7 @@ import '../../analytics/presentation/bloc/analytics_bloc.dart';
 import '../../analytics/presentation/screens/analytics_screen.dart';
 import '../../settings/presentation/bloc/settings_bloc.dart';
 import '../../settings/presentation/screens/settings_screen.dart';
+import 'bloc/home_bloc.dart';
 
 ShellRoute shellRoute = ShellRoute(
   builder: (_, __, child) => WidgetTree(child: child),
@@ -18,7 +19,10 @@ ShellRoute shellRoute = ShellRoute(
     GoRoute(
       path: AppRoutes.home,
       name: AppRouteNames.home,
-      builder: (_, __) => HomeScreen(),
+      builder: (_, __) => BlocProvider(
+        create: (context) => sl<HomeBloc>()..add(const LoadRecentRecipes()),
+        child: const HomeScreen(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.analytics,

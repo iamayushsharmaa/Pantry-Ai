@@ -18,6 +18,7 @@ import 'package:pantry_ai/features/auth/domain/usecases/update_profile_photo_use
 import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'package:pantry_ai/features/home/presentation/bloc/home_bloc.dart';
 import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource_impl.dart';
@@ -47,6 +48,7 @@ import '../../features/favorites/data/remote/favorite_data_source.dart';
 import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
 import '../../features/favorites/domain/repository/favorite_repository.dart';
 import '../../features/favorites/domain/usecases/get_favorite_stream.dart';
+import '../../features/home/domain/usecases/get_recent_recipe_usecase.dart';
 import '../../features/recipe_detail/data/repository/recipe_detail_repository_impl.dart';
 import '../../features/recipe_detail/domain/usecases/get_recipe_by_id.dart';
 import '../../features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
@@ -73,6 +75,7 @@ Future<void> initDependencies() async {
   _initExternalServices();
   _initPreferenceFeature();
   _initAuthFeature();
+  _initHomeFeature();
   _initRecipeFeature();
   _initFavoriteFeature();
   _initSavedFeature();
@@ -141,6 +144,11 @@ Future<void> _initRecipeFeature() async {
   sl.registerLazySingleton(() => GenerateRecipesUseCase(sl()));
   sl.registerLazySingleton(() => GetCachedRecipesUseCase(sl()));
   sl.registerLazySingleton(() => CacheRecipesUseCase(sl()));
+}
+
+Future<void> _initHomeFeature() async {
+  sl.registerLazySingleton(() => GetRecentRecipesUseCase(sl()));
+  sl.registerLazySingleton<HomeBloc>(() => HomeBloc(getRecentRecipes: sl()));
 }
 
 Future<void> _initScanFeature() async {
