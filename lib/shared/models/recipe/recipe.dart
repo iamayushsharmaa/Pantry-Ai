@@ -1,4 +1,6 @@
-class Recipe {
+import 'package:equatable/equatable.dart';
+
+class Recipe extends Equatable {
   final String id;
   final String title;
   final String description;
@@ -17,7 +19,7 @@ class Recipe {
   final List<String> instructions;
   final List<String> tags;
 
-  Recipe({
+  const Recipe({
     required this.id,
     required this.title,
     required this.description,
@@ -36,34 +38,44 @@ class Recipe {
     required this.instructions,
     required this.tags,
   });
+
+  @override
+  List<Object?> get props => [id];
+
 }
 
-class Ingredient {
+class Ingredient extends Equatable {
   final String id;
   final String name;
   final double quantity;
   final String unit;
   final bool isAvailable;
 
-  Ingredient({
+  const Ingredient({
     required this.id,
     required this.name,
     required this.quantity,
     required this.unit,
     required this.isAvailable,
   });
+
+  @override
+  List<Object?> get props => [id];
 }
 
-class NutritionInfo {
+class NutritionInfo extends Equatable {
   final double protein;
   final double carbs;
   final double fat;
   final double fiber;
 
-  NutritionInfo({
+  const NutritionInfo({
     required this.protein,
     required this.carbs,
     required this.fat,
     required this.fiber,
   });
+
+  @override
+  List<Object?> get props => [protein, carbs, fat, fiber];
 }

@@ -8,16 +8,21 @@ class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
 
   RecipeLocalDataSourceImpl(this.box);
 
+  static const _cacheKey = 'recipes';
+
   @override
   Future<void> cacheRecipes(List<RecipeModel> recipes) async {
-    await box.put("recipes", recipes.toList());
+    final jsonList = recipes.map((e) => e.toJson()).toList();
+    await box.put(_cacheKey, jsonList);
   }
 
   @override
   Future<List<RecipeModel>> getCachedRecipes() async {
-    final raw = box.get("recipes");
+    final raw = box.get(_cacheKey);
     if (raw == null) return [];
 
-    return (raw as List).map((e) => RecipeModel.fromJson(e)).toList();
+    return (raw as List)
+        .map((e) => RecipeModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 }

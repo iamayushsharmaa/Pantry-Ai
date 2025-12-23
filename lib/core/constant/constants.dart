@@ -3,10 +3,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../shared/models/recipe/recipe.dart';
 
 class Constants {
-  static final GEMINI_API_KEY = dotenv.env['GEMINI_API_KEY'];
+  static String get geminiApiKey {
+    final key = dotenv.env['GEMINI_API_KEY'];
+    if (key == null || key.isEmpty) {
+      throw Exception('GEMINI_API_KEY not found in .env');
+    }
+    return key;
+  }
 
-  static final GEMINI_API_URL =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY";
+  static String get geminiApiUrl =>
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey";
 
   static final List<Recipe> dummyRecipeList = [
     Recipe(

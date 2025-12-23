@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/app_settings/app_settings_bloc.dart';
 import 'core/di/injections.dart';
@@ -16,9 +17,13 @@ import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (_) {
+    throw Exception('.env file not found');
+  }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: ".env");
-
   await initDependencies();
 
   runApp(const MyApp());

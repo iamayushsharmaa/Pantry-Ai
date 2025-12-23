@@ -111,9 +111,9 @@ void _initExternalServices() {
 }
 
 Future<void> _initHiveBoxes() async {
-  await Hive.initFlutter();
-  final recipeBox = await Hive.openBox('recipesBox');
-  sl.registerLazySingleton<Box>(() => recipeBox);
+  final recipesBox = await Hive.openBox<List>('recipesBox');
+
+  sl.registerLazySingleton<Box<List>>(() => recipesBox);
 }
 
 Future<void> _initRecipeFeature() async {
