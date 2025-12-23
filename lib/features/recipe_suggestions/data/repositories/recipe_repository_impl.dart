@@ -1,6 +1,5 @@
 import '../../../../shared/models/mappers/recipe_mapper.dart';
 import '../../../../shared/models/recipe/recipe.dart';
-import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../../../shared/models/recipe/taste_preference.dart';
 import '../../domain/repository/recipe_repository.dart';
 import '../datasource/local/recipe_local_datasource.dart';
@@ -16,13 +15,17 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<List<Recipe>> generateRecipes(
     String imagePath,
     TastePreferences preferences,
-    List<RecipeModel>? previouslySuggestedRecipes,
+    List<Recipe>? previouslySuggestedRecipes,
   ) async {
     try {
+      final previousModels = previouslySuggestedRecipes
+          ?.map(RecipeMapper.toModel)
+          .toList();
+
       final models = await remote.generateRecipes(
         imagePath,
         preferences,
-        previouslySuggestedRecipes,
+        previousModels,
       );
 
       await local.cacheRecipes(models);

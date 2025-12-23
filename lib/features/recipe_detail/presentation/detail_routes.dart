@@ -16,16 +16,20 @@ List<GoRoute> detailRecipeRoutes = [
       final extra = state.extra;
 
       return BlocProvider(
-        create: (_) => sl<RecipeDetailBloc>()
-          ..add(
-            extra is Recipe
-                ? LoadRecipeFromMemory(extra)
-                : LoadRecipeById(extra as String),
-          ),
-        child: RecipeDetailScreen(
-          recipe: extra is Recipe ? extra : null,
-          recipeId: extra is String ? extra : null,
-        ),
+        create: (_) {
+          final bloc = sl<RecipeDetailBloc>();
+
+          if (extra is Recipe) {
+            bloc.add(LoadRecipeFromMemory(extra));
+          } else if (extra is String) {
+            bloc.add(LoadRecipeById(extra));
+          } else {
+            throw Exception('Invalid recipe detail route argument');
+          }
+
+          return bloc;
+        },
+        child: RecipeDetailScreen(), // ✅ no params
       );
     },
   ),

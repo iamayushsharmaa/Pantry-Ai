@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../domain/repository/recipe_detail_repository.dart';
@@ -15,7 +16,9 @@ class RecipeDetailRepositoryImpl implements RecipeDetailRepository {
     try {
       final model = await remote.getRecipeById(recipeId);
       return Right(model);
-    } catch (e) {
+    } on NetworkException {
+      return Left(NetworkFailure());
+    }  catch (_) {
       return Left(ServerFailure());
     }
   }

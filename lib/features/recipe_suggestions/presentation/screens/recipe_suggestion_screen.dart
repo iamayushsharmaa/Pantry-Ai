@@ -5,7 +5,6 @@ import 'package:pantry_ai/core/router/app_route_names.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/bloc/recipe_bloc.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/widgets/app_bar.dart';
 
-import '../../../../core/constant/constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../widgets/preference_summary_widget.dart';
 import '../widgets/recipe_card_widget.dart';
@@ -22,7 +21,9 @@ class RecipeListScreen extends StatelessWidget {
       backgroundColor: cs.surface,
       body: BlocBuilder<RecipeBloc, RecipeState>(
         builder: (context, state) {
-          if (state.isLoading && state.recipes.isEmpty) {
+          final recipes = state.recipes;
+
+          if (state.isLoading && recipes.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -41,6 +42,18 @@ class RecipeListScreen extends StatelessWidget {
             );
           }
 
+          if (!state.isLoading && recipes.isEmpty) {
+            return Center(
+              child: Text(
+                l10n.no_recipe_found,
+                style: TextStyle(
+                  color: cs.onSurface.withOpacity(0.6),
+                  fontSize: 16,
+                ),
+              ),
+            );
+          }
+
           if (state.imagePath == null || state.preferences == null) {
             return Center(
               child: CircularProgressIndicator(
@@ -49,8 +62,6 @@ class RecipeListScreen extends StatelessWidget {
               ),
             );
           }
-
-          final recipes = Constants.dummyRecipeList;
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -147,11 +158,14 @@ class RecipeListScreen extends StatelessWidget {
                         type: MaterialType.transparency,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            context.read<RecipeBloc>().add(
-                              FetchMoreRecipesRequested(),
-                            );
-                          },
+                          onTap: state.isLoading
+                              ? null
+                              : () {
+                                  context.read<RecipeBloc>().add(
+                                    FetchMoreRecipesRequested(),
+                                  );
+                                },
+
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: Row(

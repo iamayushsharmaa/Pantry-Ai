@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../shared/models/recipe/recipe.dart';
-import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../../../shared/models/recipe/taste_preference.dart';
 import '../../domain/usecases/cache_reccipe_usecase.dart';
 import '../../domain/usecases/generate_recipe_usecase.dart';
@@ -69,7 +68,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     emit(state.copyWith(isLoading: true, error: null));
 
     try {
-      final oldModels = state.recipes.toList() as List<RecipeModel>;
+      final oldModels = state.recipes.toList();
 
       final newRecipes = await generateRecipes(
         state.imagePath!,

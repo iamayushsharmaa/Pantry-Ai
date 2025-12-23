@@ -9,7 +9,6 @@ class GetRecipeById {
 
   GetRecipeById(this.repository);
 
-  @override
   Future<Either<Failure, Recipe>> call(String recipeId) async {
     return await repository.getRecipeById(recipeId);
   }

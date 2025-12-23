@@ -20,6 +20,7 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
     LoadRecipeFromMemory event,
     Emitter<RecipeDetailState> emit,
   ) {
+    if (state is RecipeDetailLoading) return;
     emit(RecipeDetailLoaded(event.recipe));
   }
 
@@ -27,6 +28,8 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
     LoadRecipeById event,
     Emitter<RecipeDetailState> emit,
   ) async {
+    if (state is RecipeDetailLoading) return;
+
     emit(RecipeDetailLoading());
 
     final result = await getRecipeById(event.recipeId);
