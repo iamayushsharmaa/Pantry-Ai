@@ -11,7 +11,7 @@ import '../../analytics/presentation/bloc/analytics_bloc.dart';
 import '../../analytics/presentation/screens/analytics_screen.dart';
 import '../../settings/presentation/bloc/settings_bloc.dart';
 import '../../settings/presentation/screens/settings_screen.dart';
-import 'bloc/home_bloc.dart';
+import 'bloc/recent_bloc/home_bloc.dart';
 
 ShellRoute shellRoute = ShellRoute(
   builder: (_, __, child) => WidgetTree(child: child),

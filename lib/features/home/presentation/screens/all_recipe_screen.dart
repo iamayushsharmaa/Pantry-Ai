@@ -82,6 +82,7 @@ class AppBarSection extends StatelessWidget {
   final VoidCallback onBack;
 
   const AppBarSection({
+    super.key,
     required this.colorScheme,
     required this.title,
     required this.recipeCount,

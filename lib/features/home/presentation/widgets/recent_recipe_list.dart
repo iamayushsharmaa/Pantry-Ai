@@ -5,7 +5,7 @@ import 'package:pantry_ai/features/home/presentation/widgets/recipe_home_card.da
 
 import '../../../../core/router/app_route_names.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../bloc/home_bloc.dart';
+import '../bloc/recent_bloc/home_bloc.dart';
 import 'empty_state.dart';
 
 class RecentRecipesList extends StatelessWidget {

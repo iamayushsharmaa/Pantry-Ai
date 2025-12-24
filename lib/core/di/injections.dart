@@ -18,7 +18,7 @@ import 'package:pantry_ai/features/auth/domain/usecases/update_profile_photo_use
 import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
-import 'package:pantry_ai/features/home/presentation/bloc/home_bloc.dart';
+import 'package:pantry_ai/features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource_impl.dart';
@@ -76,10 +76,10 @@ Future<void> initDependencies() async {
   _initPreferenceFeature();
   _initAuthFeature();
   _initHomeFeature();
+  _initScanFeature();
   _initRecipeFeature();
   _initFavoriteFeature();
   _initSavedFeature();
-  _initScanFeature();
   _initSettingsFeature();
   _initAnalyticsFeature();
 }

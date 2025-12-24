@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../shared/models/recipe/recipe.dart';
-import '../../domain/usecases/get_recent_recipe_usecase.dart';
+import '../../../../../shared/models/recipe/recipe.dart';
+import '../../../domain/usecases/get_recent_recipe_usecase.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
