@@ -11,6 +11,7 @@ import '../../analytics/presentation/bloc/analytics_bloc.dart';
 import '../../analytics/presentation/screens/analytics_screen.dart';
 import '../../settings/presentation/bloc/settings_bloc.dart';
 import '../../settings/presentation/screens/settings_screen.dart';
+import 'bloc/quick_bloc/quick_recipe_bloc.dart';
 import 'bloc/recent_bloc/home_bloc.dart';
 
 ShellRoute shellRoute = ShellRoute(
@@ -19,8 +20,16 @@ ShellRoute shellRoute = ShellRoute(
     GoRoute(
       path: AppRoutes.home,
       name: AppRouteNames.home,
-      builder: (_, __) => BlocProvider(
-        create: (context) => sl<HomeBloc>()..add(const LoadRecentRecipes()),
+      builder: (_, __) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => sl<HomeBloc>()..add(const LoadRecentRecipes()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                sl<QuickRecipesBloc>()..add(const LoadQuickRecipes()),
+          ),
+        ],
         child: const HomeScreen(),
       ),
     ),

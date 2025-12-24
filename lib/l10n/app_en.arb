@@ -144,5 +144,8 @@
   "see_all": "See all",
   "items": "items",
   "min": "min",
-  "cal": "cal"
+  "cal": "cal",
+
+  "failed_to_load_quick_recipes": "Failed to load quick recipes",
+  "try_again": "Try again"
 }

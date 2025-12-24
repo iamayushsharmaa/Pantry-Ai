@@ -367,4 +367,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cal => 'cal';
+
+  @override
+  String get failed_to_load_quick_recipes => 'No se pudieron cargar las recetas rápidas';
+
+  @override
+  String get try_again => 'Intentar de nuevo';
 }

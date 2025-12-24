@@ -146,5 +146,8 @@
   "see_all": "Ver todo",
   "items": "elementos",
   "min": "min",
-  "cal": "cal"
+  "cal": "cal",
+
+  "failed_to_load_quick_recipes": "No se pudieron cargar las recetas rápidas",
+  "try_again": "Intentar de nuevo"
 }

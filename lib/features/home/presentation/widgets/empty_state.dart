@@ -5,12 +5,15 @@ class EmptyState extends StatelessWidget {
   final IconData icon;
   final String message;
   final String actionText;
+  final VoidCallback? onAction;
 
   const EmptyState({
+    super.key,
     required this.colorScheme,
     required this.icon,
     required this.message,
     required this.actionText,
+    this.onAction,
   });
 
   @override
@@ -43,12 +46,16 @@ class EmptyState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            actionText,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              color: colorScheme.onSurface.withOpacity(0.6),
+          GestureDetector(
+            onTap: onAction,
+            child: Text(
+              actionText,
+              style: TextStyle(
+                fontSize: 13,
+                color: onAction == null
+                    ? colorScheme.onSurface.withOpacity(0.4)
+                    : colorScheme.onSurface.withOpacity(0.6),
+              ),
             ),
           ),
         ],

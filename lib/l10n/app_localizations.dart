@@ -816,6 +816,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'cal'**
   String get cal;
+
+  /// No description provided for @failed_to_load_quick_recipes.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load quick recipes'**
+  String get failed_to_load_quick_recipes;
+
+  /// No description provided for @try_again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get try_again;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -367,4 +367,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get cal => 'कैल';
+
+  @override
+  String get failed_to_load_quick_recipes => 'त्वरित रेसिपी लोड करने में असफल';
+
+  @override
+  String get try_again => 'फिर से प्रयास करें';
 }

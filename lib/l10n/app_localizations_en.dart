@@ -367,4 +367,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cal => 'cal';
+
+  @override
+  String get failed_to_load_quick_recipes => 'Failed to load quick recipes';
+
+  @override
+  String get try_again => 'Try again';
 }
