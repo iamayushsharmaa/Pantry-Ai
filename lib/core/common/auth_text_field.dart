@@ -43,13 +43,13 @@ class _AuthTextFieldState extends State<AuthTextField> {
         prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
         suffixIcon: widget.obscureText
             ? IconButton(
-          onPressed: () {
-            setState(() {
-              isObscure = !isObscure;
-            });
-          },
-          icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off),
-        )
+                onPressed: () {
+                  setState(() {
+                    isObscure = !isObscure;
+                  });
+                },
+                icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off),
+              )
             : null,
         filled: true,
         fillColor: Colors.grey.shade900,

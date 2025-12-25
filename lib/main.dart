@@ -21,7 +21,7 @@ void main() async {
   try {
     await dotenv.load(fileName: ".env");
   } catch (_) {
-    throw Exception('.env file not found');
+    throw Exception('.env file not lfound');
   }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initDependencies();
