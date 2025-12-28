@@ -21,7 +21,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    context.read<AuthBloc>().add(const AuthEvent.checkAuthStatus());
+    context.read<AuthBloc>().add(AuthEvent.checkAuthStatus());
   }
 
   @override
@@ -32,9 +32,9 @@ class _SplashState extends State<Splash> {
       listener: (context, state) {
         Future.delayed(const Duration(seconds: 2), () {
           state.mapOrNull(
-            authenticated: (_) => context.go(AppRouteNames.home),
-            unauthenticated: (_) => context.go(AppRouteNames.onboarding),
-            error: (_) => context.go(AppRouteNames.onboarding),
+            authenticated: (_) => context.goNamed(AppRouteNames.home),
+            unauthenticated: (_) => context.goNamed(AppRouteNames.onboarding),
+            error: (_) => context.goNamed(AppRouteNames.onboarding),
           );
         });
       },

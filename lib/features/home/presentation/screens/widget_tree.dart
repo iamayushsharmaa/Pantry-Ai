@@ -11,7 +11,7 @@ class WidgetTree extends StatelessWidget {
 
   const WidgetTree({super.key, required this.child});
 
-  static const _tabs = [
+  static const List<String> _tabs = [
     AppRoutes.home,
     AppRoutes.scan,
     AppRoutes.analytics,
@@ -19,26 +19,31 @@ class WidgetTree extends StatelessWidget {
   ];
 
   int _getSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
-    return _tabs.indexWhere((path) => location.startsWith(path));
+    final location = GoRouterState.of(context).uri.path;
+
+    final index = _tabs.indexWhere(
+      (path) => location == path || location.startsWith('$path/'),
+    );
+
+    return index == -1 ? 0 : index;
   }
 
   void _onTabTapped(BuildContext context, int index) {
-    if (index >= 0 && index < _tabs.length) {
-      if (_tabs[index] == AppRoutes.scan) {
-        context.push(AppRoutes.scan);
-      } else {
-        context.go(_tabs[index]);
-      }
-    }
+    if (index < 0 || index >= _tabs.length) return;
+
+    final target = _tabs[index];
+    final current = GoRouterState.of(context).uri.path;
+
+    if (current == target) return;
+
+    context.go(target);
   }
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
     final selectedIndex = _getSelectedIndex(context);
-    const kBrandColor = AppColors.brand;
     final l10n = AppLocalizations.of(context)!;
+    const brandColor = AppColors.brand;
 
     return Scaffold(
       body: child,
@@ -46,7 +51,7 @@ class WidgetTree extends StatelessWidget {
         currentIndex: selectedIndex,
         onTap: (index) => _onTabTapped(context, index),
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: kBrandColor,
+        selectedItemColor: brandColor,
         unselectedItemColor: Colors.grey,
         iconSize: 22,
         selectedFontSize: 12,
@@ -59,7 +64,7 @@ class WidgetTree extends StatelessWidget {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/home.svg',
-              colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
             ),
             label: l10n.home,
           ),
@@ -70,7 +75,7 @@ class WidgetTree extends StatelessWidget {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/scan.svg',
-              colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
             ),
             label: l10n.scan,
           ),
@@ -81,7 +86,7 @@ class WidgetTree extends StatelessWidget {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/analytics.svg',
-              colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
             ),
             label: l10n.analytics,
           ),
@@ -92,7 +97,7 @@ class WidgetTree extends StatelessWidget {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/settings.svg',
-              colorFilter: const ColorFilter.mode(kBrandColor, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
             ),
             label: l10n.settings,
           ),

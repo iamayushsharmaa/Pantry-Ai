@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -15,9 +16,14 @@ import 'package:pantry_ai/features/auth/data/remote/auth_remote_datasource_impl.
 import 'package:pantry_ai/features/auth/data/remote/profile_remote_datasource.dart';
 import 'package:pantry_ai/features/auth/data/remote/profile_remote_datasource_impl.dart';
 import 'package:pantry_ai/features/auth/domain/usecases/update_profile_photo_usecase.dart';
+import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
 import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'package:pantry_ai/features/home/data/remote/user_remote_datasource.dart';
+import 'package:pantry_ai/features/home/data/remote/user_remote_datasource_impl.dart';
+import 'package:pantry_ai/features/home/domain/repository/quick_repository/quick_recipe_repository.dart';
+import 'package:pantry_ai/features/home/presentation/bloc/quick_bloc/quick_recipe_bloc.dart';
 import 'package:pantry_ai/features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource.dart';
@@ -48,6 +54,8 @@ import '../../features/favorites/data/remote/favorite_data_source.dart';
 import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
 import '../../features/favorites/domain/repository/favorite_repository.dart';
 import '../../features/favorites/domain/usecases/get_favorite_stream.dart';
+import '../../features/home/data/repository/quick_repository/quick_recipe_repository_impl.dart';
+import '../../features/home/domain/usecases/get_quick_recipe_usecase.dart';
 import '../../features/home/domain/usecases/get_recent_recipe_usecase.dart';
 import '../../features/recipe_detail/data/repository/recipe_detail_repository_impl.dart';
 import '../../features/recipe_detail/domain/usecases/get_recipe_by_id.dart';
@@ -87,6 +95,8 @@ Future<void> initDependencies() async {
 void _initFirebase() {
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
 
+  sl.registerLazySingleton<FirebaseStorage>(() => FirebaseStorage.instance);
+
   sl.registerLazySingleton<fb.FirebaseAuth>(() => fb.FirebaseAuth.instance);
 
   sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
@@ -116,7 +126,7 @@ void _initExternalServices() {
 Future<void> _initHiveBoxes() async {
   final recipesBox = await Hive.openBox<List>('recipesBox');
 
-  sl.registerLazySingleton<Box<List>>(() => recipesBox);
+  sl.registerSingleton<Box<List>>(recipesBox);
 }
 
 Future<void> _initRecipeFeature() async {
@@ -125,7 +135,7 @@ Future<void> _initRecipeFeature() async {
   );
 
   sl.registerLazySingleton<RecipeLocalDataSource>(
-    () => RecipeLocalDataSourceImpl(sl<Box>()),
+    () => RecipeLocalDataSourceImpl(sl<Box<List>>()),
   );
   sl.registerLazySingleton<RecipeRepository>(
     () => RecipeRepositoryImpl(remote: sl(), local: sl()),
@@ -148,6 +158,20 @@ Future<void> _initRecipeFeature() async {
 
 Future<void> _initHomeFeature() async {
   sl.registerLazySingleton(() => GetRecentRecipesUseCase(sl()));
+
+  sl.registerLazySingleton(() => GetQuickRecipesUseCase(sl()));
+
+  sl.registerLazySingleton<UserRecipesRemoteDataSource>(
+    () => UserRecipesRemoteDataSourceImpl(firestore: sl()),
+  );
+
+  sl.registerLazySingleton<QuickRecipesRepository>(
+    () => QuickRecipesRepositoryImpl(remote: sl()),
+  );
+
+  sl.registerLazySingleton(
+    () => QuickRecipesBloc(checkAuthStatus: sl(), getQuickRecipes: sl()),
+  );
   sl.registerLazySingleton<HomeBloc>(() => HomeBloc(getRecentRecipes: sl()));
 }
 
@@ -182,6 +206,17 @@ Future<void> _initAuthFeature() async {
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
   sl.registerLazySingleton(() => DeleteAccountUseCase(sl()));
+
+  sl.registerLazySingleton<AuthBloc>(
+    () => AuthBloc(
+      checkAuthStatus: sl(),
+      continueWithGoogle: sl(),
+      signIn: sl(),
+      register: sl(),
+      signOut: sl(),
+      deleteAccount: sl(),
+    ),
+  );
 }
 
 Future<void> _initAnalyticsFeature() async {
@@ -237,8 +272,8 @@ Future<void> _initSavedFeature() async {
 
 Future<void> _initSettingsFeature() async {
   sl.registerLazySingleton(() => UpdateNameUseCase(sl()));
-
   sl.registerLazySingleton(() => UpdateEmailUseCase(sl()));
+
   sl.registerLazySingleton(
     () => UpdateProfilePhotoUseCase(
       authRepository: sl(),
@@ -248,7 +283,7 @@ Future<void> _initSettingsFeature() async {
 
   sl.registerLazySingleton<AppSettingsBloc>(() => AppSettingsBloc());
 
-  sl.registerLazySingleton<SettingsBloc>(
+  sl.registerFactory<SettingsBloc>(
     () => SettingsBloc(
       checkAuthStatusUseCase: sl(),
       updateEmailUseCase: sl(),

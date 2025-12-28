@@ -5,7 +5,7 @@ import '../../remote/user_remote_datasource.dart';
 class QuickRecipesRepositoryImpl implements QuickRecipesRepository {
   final UserRecipesRemoteDataSource remote;
 
-  QuickRecipesRepositoryImpl(this.remote);
+  QuickRecipesRepositoryImpl({required this.remote});
 
   @override
   Future<List<Recipe>> getQuickRecipes({

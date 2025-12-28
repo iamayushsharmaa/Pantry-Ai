@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/common/state_chip.dart';
+import 'package:pantry_ai/core/common/theme_scaffold.dart';
 import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../bloc/quick_bloc/quick_recipe_bloc.dart';
+import '../bloc/recent_bloc/home_bloc.dart';
 import '../widgets/quick_recipe_list.dart';
 import '../widgets/recent_recipe_list.dart';
 import '../widgets/scan_card_widget.dart';
@@ -30,53 +34,72 @@ class _HomeScreenState extends State<HomeScreen> {
     final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: cs.surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 14),
-              AppBarSection(colorScheme: cs),
-              const SizedBox(height: 18),
-              ScanCardWidget(),
-              const SizedBox(height: 25),
-              SectionHeader(
-                colorScheme: cs,
-                title: l10n.recently_generated,
-                subtitle: l10n.your_latest_recipe_discoveries,
-                onSeeAll: () => context.pushNamed(
-                  AppRouteNames.categorySeeAll,
-                  extra: l10n.recent,
+    return ThemedScaffold(
+      child: Scaffold(
+        backgroundColor: cs.surface,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 14),
+                AppBarSection(colorScheme: cs),
+                const SizedBox(height: 18),
+                ScanCardWidget(),
+                const SizedBox(height: 25),
+
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    final hasData =
+                        state is HomeLoaded && state.recipes.isNotEmpty;
+
+                    return SectionHeader(
+                      colorScheme: cs,
+                      title: l10n.recently_generated,
+                      subtitle: l10n.your_latest_recipe_discoveries,
+                      onSeeAll: hasData
+                          ? () => context.pushNamed(
+                              AppRouteNames.categorySeeAll,
+                              extra: l10n.recent,
+                            )
+                          : null,
+                    );
+                  },
                 ),
-              ),
-              const SizedBox(height: 14),
+                const SizedBox(height: 14),
 
-              RecentRecipesList(colorScheme: cs),
+                RecentRecipesList(colorScheme: cs),
 
-              const SizedBox(height: 14),
+                const SizedBox(height: 14),
 
-              SectionHeader(
-                colorScheme: cs,
-                title: l10n.quick_and_easy,
-                subtitle: l10n.recipes_under_30_minutes,
-                onSeeAll: () {
-                  context.pushNamed(
-                    AppRouteNames.categorySeeAll,
-                    extra: 'QuickEasy',
-                  );
-                },
-              ),
+                BlocBuilder<QuickRecipesBloc, QuickRecipesState>(
+                  builder: (context, state) {
+                    final hasData =
+                        state is QuickRecipesLoaded && state.recipes.isNotEmpty;
 
-              const SizedBox(height: 14),
+                    return SectionHeader(
+                      colorScheme: cs,
+                      title: l10n.quick_and_easy,
+                      subtitle: l10n.recipes_under_30_minutes,
+                      onSeeAll: hasData
+                          ? () => context.pushNamed(
+                              AppRouteNames.categorySeeAll,
+                              extra: 'QuickEasy',
+                            )
+                          : null,
+                    );
+                  },
+                ),
 
-              QuickRecipesList(colorScheme: cs),
+                const SizedBox(height: 14),
 
-              const SizedBox(height: 16),
-            ],
+                QuickRecipesList(colorScheme: cs),
+
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),

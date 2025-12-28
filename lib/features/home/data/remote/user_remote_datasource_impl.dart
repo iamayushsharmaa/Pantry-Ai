@@ -6,7 +6,7 @@ import 'user_remote_datasource.dart';
 class UserRecipesRemoteDataSourceImpl implements UserRecipesRemoteDataSource {
   final FirebaseFirestore firestore;
 
-  UserRecipesRemoteDataSourceImpl(this.firestore);
+  UserRecipesRemoteDataSourceImpl({required this.firestore});
 
   @override
   Future<List<RecipeModel>> getQuickRecipes({

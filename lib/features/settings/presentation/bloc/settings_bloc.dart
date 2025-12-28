@@ -13,6 +13,7 @@ import '../../../auth/domain/usecases/sign_out_usecase.dart';
 import '../../../auth/domain/usecases/update_profile_photo_usecase.dart';
 
 part 'settings_event.dart';
+
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
@@ -31,6 +32,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required this.deleteAccountUseCase,
     required this.updateProfilePhotoUseCase,
   }) : super(const SettingsState(isLoading: true)) {
+
     on<SettingsStarted>(_onStarted);
     on<EditProfilePressed>(_onEditProfile);
     on<UpdateNameRequested>(_onUpdateName);
@@ -45,17 +47,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<ClearMessages>(_onClearMessages);
   }
 
-  Future<void> _onStarted(
-    SettingsStarted event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onStarted(SettingsStarted event,
+      Emitter<SettingsState> emit,) async {
     final result = await checkAuthStatusUseCase();
 
     result.fold(
-      (_) => emit(
-        state.copyWith(isLoading: false, errorMessage: 'Not authenticated'),
-      ),
-      (user) => emit(state.copyWith(isLoading: false, user: user)),
+          (_) =>
+          emit(
+            state.copyWith(isLoading: false, errorMessage: 'Not authenticated'),
+          ),
+          (user) => emit(state.copyWith(isLoading: false, user: user)),
     );
   }
 
@@ -64,22 +65,20 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     emit(state.copyWith(navigationTarget: null));
   }
 
-  Future<void> _onUpdateName(
-    UpdateNameRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onUpdateName(UpdateNameRequested event,
+      Emitter<SettingsState> emit,) async {
     emit(state.copyWith(isLoading: true).clearMessages());
 
     final result = await updateNameUseCase(event.newName);
 
     result.fold(
-      (failure) {
+          (failure) {
         final message = failure is ReAuthenticationFailure
             ? 'Please sign in again to update your name.'
             : 'Failed to update name. Try again.';
         emit(state.copyWith(isLoading: false, errorMessage: message));
       },
-      (updatedUser) {
+          (updatedUser) {
         emit(
           state.copyWith(
             isLoading: false,
@@ -91,55 +90,53 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
   }
 
-  Future<void> _onUpdateEmail(
-    UpdateEmailRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onUpdateEmail(UpdateEmailRequested event,
+      Emitter<SettingsState> emit,) async {
     emit(state.copyWith(isLoading: true).clearMessages());
 
     final result = await updateEmailUseCase(event.newEmail);
 
     result.fold(
-      (failure) {
+          (failure) {
         final message = failure is ReAuthenticationFailure
             ? 'Please sign in again to change email.'
             : 'Failed to send verification email.';
         emit(state.copyWith(isLoading: false, errorMessage: message));
       },
-      (_) {
+          (_) {
         emit(
           state.copyWith(
             isLoading: false,
             successMessage:
-                'Verification email sent to ${event.newEmail}. Check your inbox.',
+            'Verification email sent to ${event.newEmail}. Check your inbox.',
           ),
         );
       },
     );
   }
 
-  Future<void> _onUpdateProfilePhoto(
-    UpdateProfilePhotoRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onUpdateProfilePhoto(UpdateProfilePhotoRequested event,
+      Emitter<SettingsState> emit,) async {
     emit(state.copyWith(isLoading: true).clearMessages());
 
     final result = await updateProfilePhotoUseCase(event.image);
 
     result.fold(
-      (failure) => emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: 'Failed to update profile photo',
-        ),
-      ),
-      (updatedUser) => emit(
-        state.copyWith(
-          isLoading: false,
-          user: updatedUser,
-          successMessage: 'Profile photo updated',
-        ),
-      ),
+          (failure) =>
+          emit(
+            state.copyWith(
+              isLoading: false,
+              errorMessage: 'Failed to update profile photo',
+            ),
+          ),
+          (updatedUser) =>
+          emit(
+            state.copyWith(
+              isLoading: false,
+              user: updatedUser,
+              successMessage: 'Profile photo updated',
+            ),
+          ),
     );
   }
 
@@ -147,10 +144,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     emit(state.copyWith(showLogoutDialog: true));
   }
 
-  Future<void> _onLogoutConfirmed(
-    LogoutConfirmed event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onLogoutConfirmed(LogoutConfirmed event,
+      Emitter<SettingsState> emit,) async {
     emit(
       state.copyWith(isLoading: true, showLogoutDialog: false).clearMessages(),
     );
@@ -158,34 +153,29 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final result = await signOutUseCase();
 
     result.fold(
-      (_) => emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: 'Logout failed. Please try again.',
-        ),
-      ),
-      (_) => emit(state.copyWith(isLoading: false, logoutSuccess: true)),
+          (_) =>
+          emit(
+            state.copyWith(
+              isLoading: false,
+              errorMessage: 'Logout failed. Please try again.',
+            ),
+          ),
+          (_) => emit(state.copyWith(isLoading: false, logoutSuccess: true)),
     );
   }
 
-  void _onCloseLogoutDialog(
-    CloseLogoutDialog event,
-    Emitter<SettingsState> emit,
-  ) {
+  void _onCloseLogoutDialog(CloseLogoutDialog event,
+      Emitter<SettingsState> emit,) {
     emit(state.copyWith(showLogoutDialog: false));
   }
 
-  void _onDeleteAccountRequested(
-    DeleteAccountRequested event,
-    Emitter<SettingsState> emit,
-  ) {
+  void _onDeleteAccountRequested(DeleteAccountRequested event,
+      Emitter<SettingsState> emit,) {
     emit(state.copyWith(showDeleteDialog: true));
   }
 
-  Future<void> _onDeleteAccountConfirmed(
-    DeleteAccountConfirmed event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onDeleteAccountConfirmed(DeleteAccountConfirmed event,
+      Emitter<SettingsState> emit,) async {
     emit(
       state.copyWith(isLoading: true, showDeleteDialog: false).clearMessages(),
     );
@@ -200,10 +190,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }, (_) => emit(state.copyWith(isLoading: false, accountDeleted: true)));
   }
 
-  void _onCloseDeleteDialog(
-    CloseDeleteDialog event,
-    Emitter<SettingsState> emit,
-  ) {
+  void _onCloseDeleteDialog(CloseDeleteDialog event,
+      Emitter<SettingsState> emit,) {
     emit(state.copyWith(showDeleteDialog: false));
   }
 

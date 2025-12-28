@@ -33,6 +33,7 @@ ShellRoute shellRoute = ShellRoute(
         child: const HomeScreen(),
       ),
     ),
+
     GoRoute(
       path: AppRoutes.analytics,
       name: AppRouteNames.analytics,

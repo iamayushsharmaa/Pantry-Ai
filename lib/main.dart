@@ -29,43 +29,60 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(create: (context) => sl<AuthBloc>()),
-        BlocProvider<FavoritesBloc>(create: (context) => sl<FavoritesBloc>()),
-        BlocProvider<SavedBloc>(create: (context) => sl<SavedBloc>()),
-        BlocProvider<AppSettingsBloc>(
-          create: (context) => sl<AppSettingsBloc>(),
-        ),
+        BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
+        BlocProvider<FavoritesBloc>(create: (_) => sl<FavoritesBloc>()),
+        BlocProvider<SavedBloc>(create: (_) => sl<SavedBloc>()),
+        BlocProvider<AppSettingsBloc>(create: (_) => sl<AppSettingsBloc>()),
       ],
-      child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
-        builder: (context, state) {
-          return MaterialApp.router(
-            routerConfig: createRouter(),
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: state.themeMode,
-            locale: state.locale,
-            supportedLocales: const [Locale('en'), Locale('hi'), Locale('es')],
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            debugShowCheckedModeBanner: false,
-          );
-        },
+      child: _AppView(),
+    );
+  }
+}
+
+class _AppView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AppSettingsBloc, AppSettingsState>(
+      listenWhen: (p, c) =>
+      p.themeMode != c.themeMode || p.locale != c.locale,
+      listener: (context, state) {
+        // 🔥 This forces Flutter to update inherited widgets safely
+        WidgetsBinding.instance.handlePlatformBrightnessChanged();
+      },
+      child: MaterialApp.router(
+        routerConfig: createRouter(),
+        debugShowCheckedModeBanner: false,
+
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+
+        // ✅ SAFE — Flutter updates internally
+        themeMode: context.select<AppSettingsBloc, ThemeMode>(
+              (b) => b.state.themeMode,
+        ),
+
+        locale: context.select<AppSettingsBloc, Locale>(
+              (b) => b.state.locale,
+        ),
+
+        supportedLocales: const [
+          Locale('en'),
+          Locale('hi'),
+          Locale('es'),
+        ],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
       ),
     );
   }

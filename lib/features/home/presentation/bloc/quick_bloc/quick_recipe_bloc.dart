@@ -27,7 +27,19 @@ class QuickRecipesBloc extends Bloc<QuickRecipesEvent, QuickRecipesState> {
 
     final authResult = await checkAuthStatus();
 
-    authResult.fold((_) => emit(QuickRecipesEmpty()), (user) async {
+    if (authResult.isLeft()) {
+      emit(QuickRecipesEmpty());
+      return;
+    }
+
+    final user = authResult.fold((_) => null, (user) => user);
+
+    if (user == null) {
+      emit(QuickRecipesEmpty());
+      return;
+    }
+
+    try {
       final recipes = await getQuickRecipes(user.id);
 
       if (recipes.isEmpty) {
@@ -35,6 +47,8 @@ class QuickRecipesBloc extends Bloc<QuickRecipesEvent, QuickRecipesState> {
       } else {
         emit(QuickRecipesLoaded(recipes));
       }
-    });
+    } catch (_) {
+      emit(QuickRecipesError());
+    }
   }
 }

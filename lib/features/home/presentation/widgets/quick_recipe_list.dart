@@ -35,7 +35,6 @@ class QuickRecipesList extends StatelessWidget {
           );
         }
 
-        // 3️⃣ Loaded
         if (state is QuickRecipesLoaded) {
           final recipes = state.recipes;
 

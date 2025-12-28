@@ -22,7 +22,7 @@ class OnBoardingScreen extends StatelessWidget {
           state.mapOrNull(
             authenticated: (_) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.go(AppRouteNames.home);
+                context.goNamed(AppRouteNames.home);
               });
             },
             error: (err) => ScaffoldMessenger.of(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pantry_ai/core/common/theme_scaffold.dart';
 import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../../../../core/app_settings/app_settings_bloc.dart';
@@ -18,46 +19,47 @@ class SettingsScreen extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
-    return BlocProvider(
-      create: (_) => context.read<SettingsBloc>()..add(SettingsStarted()),
-      child: BlocConsumer<SettingsBloc, SettingsState>(
-        listener: (context, state) {
-          if (state.showLogoutDialog) {
-            _showLogoutDialog(context, l10n);
-          }
+    return BlocConsumer<SettingsBloc, SettingsState>(
+      listener: (context, state) {
+        if (state.showLogoutDialog) {
+          _showLogoutDialog(context, l10n);
+        }
 
-          if (state.showDeleteDialog) {
-            _showDeleteAccountDialog(context, l10n);
-          }
+        if (state.showDeleteDialog) {
+          _showDeleteAccountDialog(context, l10n);
+        }
 
-          if (state.logoutSuccess || state.accountDeleted) {
-            context.goNamed(AppRouteNames.onboarding);
-          }
+        if (state.logoutSuccess || state.accountDeleted) {
+          context.goNamed(AppRouteNames.onboarding);
+        }
 
-          if (state.errorMessage != null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          }
+        if (state.errorMessage != null) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+        }
 
-          if (state.successMessage != null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.successMessage!)));
-          }
-        },
-        builder: (context, state) {
-          final bloc = context.read<SettingsBloc>();
+        if (state.successMessage != null) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.successMessage!)));
+        }
+      },
+      builder: (context, state) {
+        final bloc = context.read<SettingsBloc>();
 
-          if (state.isLoading && state.user == null) {
-            return const Scaffold(
+        if (state.isLoading && state.user == null) {
+          return ThemedScaffold(
+            child: const Scaffold(
               body: Center(child: CircularProgressIndicator()),
-            );
-          }
+            ),
+          );
+        }
 
-          final user = state.user!;
+        final user = state.user!;
 
-          return Scaffold(
+        return ThemedScaffold(
+          child: Scaffold(
             appBar: AppBar(
               title: Text(
                 l10n.settings,
@@ -129,9 +131,9 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

@@ -9,6 +9,7 @@ class SectionHeader extends StatelessWidget {
   final VoidCallback? onSeeAll;
 
   const SectionHeader({
+    super.key,
     required this.colorScheme,
     required this.title,
     required this.subtitle,
