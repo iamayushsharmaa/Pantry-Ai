@@ -15,12 +15,17 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late final TextEditingController _nameController;
+  bool _initialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    final user = context.read<SettingsBloc>().state.user;
-    _nameController = TextEditingController(text: user?.name ?? '');
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_initialized) {
+      final user = context.read<SettingsBloc>().state.user;
+      _nameController = TextEditingController(text: user?.name ?? '');
+      _initialized = true;
+    }
   }
 
   @override
@@ -73,10 +78,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 ProfileAvatar(
                   photoUrl: user.profile?.photoUrl,
-                  isLoading: state.isLoading,
+                  isLoading: state.isActionLoading,
                   onTap: () async {
                     final image = await imagePicker.pickImageFromGallery();
-
                     if (image != null && context.mounted) {
                       context.read<SettingsBloc>().add(
                         UpdateProfilePhotoRequested(image),
@@ -84,12 +88,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     }
                   },
                 ),
-
                 const SizedBox(height: 32),
 
                 TextField(
                   controller: _nameController,
-                  textInputAction: TextInputAction.done,
                   style: TextStyle(color: cs.onSurface),
                   decoration: InputDecoration(
                     labelText: l10n.full_name,
@@ -101,14 +103,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 28),
 
                 SizedBox(
                   width: double.infinity,
                   height: 52,
                   child: ElevatedButton(
-                    onPressed: state.isLoading
+                    onPressed: state.isActionLoading
                         ? null
                         : () {
                             final newName = _nameController.text.trim();
@@ -118,19 +119,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               );
                             }
                           },
-                    child: state.isLoading
-                        ? const SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
+                    child: state.isActionLoading
+                        ? const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
                           )
-                        : Text(
-                            l10n.save_changes,
-                            style: TextStyle(fontSize: 16),
-                          ),
+                        : Text(l10n.save_changes),
                   ),
                 ),
               ],

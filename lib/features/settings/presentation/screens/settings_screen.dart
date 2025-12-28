@@ -20,6 +20,13 @@ class SettingsScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return BlocConsumer<SettingsBloc, SettingsState>(
+      listenWhen: (prev, curr) =>
+          prev.showLogoutDialog != curr.showLogoutDialog ||
+          prev.showDeleteDialog != curr.showDeleteDialog ||
+          prev.logoutSuccess != curr.logoutSuccess ||
+          prev.accountDeleted != curr.accountDeleted ||
+          prev.errorMessage != curr.errorMessage ||
+          prev.successMessage != curr.successMessage,
       listener: (context, state) {
         if (state.showLogoutDialog) {
           _showLogoutDialog(context, l10n);
@@ -37,105 +44,123 @@ class SettingsScreen extends StatelessWidget {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+          context.read<SettingsBloc>().add(ClearMessages());
         }
 
         if (state.successMessage != null) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.successMessage!)));
+          context.read<SettingsBloc>().add(ClearMessages());
         }
       },
       builder: (context, state) {
         final bloc = context.read<SettingsBloc>();
 
-        if (state.isLoading && state.user == null) {
-          return ThemedScaffold(
-            child: const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            ),
+        // ✅ ONLY initial load uses full screen loader
+        if (state.isInitialLoading && state.user == null) {
+          return const ThemedScaffold(
+            child: Center(child: CircularProgressIndicator()),
           );
         }
 
         final user = state.user!;
 
         return ThemedScaffold(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                l10n.settings,
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  color: cs.onSurface,
-                ),
-              ),
-              backgroundColor: cs.surface,
-            ),
-            backgroundColor: cs.surface,
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  ProfileCard(
-                    user: user,
-                    onEditPressed: () => bloc.add(EditProfilePressed()),
+          child: Stack(
+            children: [
+              Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    l10n.settings,
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: cs.onSurface,
+                    ),
                   ),
-                  const SizedBox(height: 24),
-
-                  SettingsSection(
-                    title: l10n.app_settings,
+                  backgroundColor: cs.surface,
+                ),
+                backgroundColor: cs.surface,
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
                     children: [
-                      BlocBuilder<AppSettingsBloc, AppSettingsState>(
-                        builder: (context, appState) {
-                          return SettingsTile.switchTile(
-                            icon: Icons.dark_mode_outlined,
-                            title: l10n.darkMode,
-                            subtitle: l10n.enable_dark_theme,
-                            value: appState.themeMode == ThemeMode.dark,
-                            onChanged: (enabled) {
-                              context.read<AppSettingsBloc>().add(
-                                ChangeThemeMode(
-                                  enabled ? ThemeMode.dark : ThemeMode.light,
-                                ),
+                      ProfileCard(
+                        user: user,
+                        onEditPressed: () => bloc.add(EditProfilePressed()),
+                      ),
+                      const SizedBox(height: 24),
+
+                      SettingsSection(
+                        title: l10n.app_settings,
+                        children: [
+                          BlocBuilder<AppSettingsBloc, AppSettingsState>(
+                            builder: (context, appState) {
+                              return SettingsTile.switchTile(
+                                icon: Icons.dark_mode_outlined,
+                                title: l10n.darkMode,
+                                subtitle: l10n.enable_dark_theme,
+                                value: appState.themeMode == ThemeMode.dark,
+                                onChanged: (enabled) {
+                                  context.read<AppSettingsBloc>().add(
+                                    ChangeThemeMode(
+                                      enabled
+                                          ? ThemeMode.dark
+                                          : ThemeMode.light,
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
+                          ),
+                          SettingsTile.navigation(
+                            icon: Icons.language_outlined,
+                            title: l10n.language,
+                            onTap: () => _showLanguageDialog(context, l10n),
+                          ),
+                        ],
                       ),
-                      SettingsTile.navigation(
-                        icon: Icons.language_outlined,
-                        title: l10n.language,
-                        onTap: () => _showLanguageDialog(context, l10n),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                  SettingsSection(
-                    title: l10n.account,
-                    children: [
-                      SettingsTile.navigation(
-                        icon: Icons.logout,
-                        title: l10n.logout,
-                        textColor: Colors.red,
-                        onTap: () => bloc.add(LogoutRequested()),
-                      ),
-                      SettingsTile.navigation(
-                        icon: Icons.delete_outline,
-                        title: l10n.deleteAccount,
-                        textColor: Colors.red,
-                        onTap: () => bloc.add(DeleteAccountRequested()),
+                      SettingsSection(
+                        title: l10n.account,
+                        children: [
+                          SettingsTile.navigation(
+                            icon: Icons.logout,
+                            title: l10n.logout,
+                            textColor: Colors.red,
+                            onTap: () => bloc.add(LogoutRequested()),
+                          ),
+                          SettingsTile.navigation(
+                            icon: Icons.delete_outline,
+                            title: l10n.deleteAccount,
+                            textColor: Colors.red,
+                            onTap: () => bloc.add(DeleteAccountRequested()),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
+
+              // ✅ Lightweight action loader overlay
+              if (state.isActionLoading)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black.withOpacity(0.15),
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                ),
+            ],
           ),
         );
       },
     );
   }
+
+  // ---------- dialogs (unchanged) ----------
 
   void _showLanguageDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(

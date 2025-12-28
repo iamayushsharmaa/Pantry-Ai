@@ -15,6 +15,7 @@ import 'features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'features/home/presentation/bloc/quick_bloc/quick_recipe_bloc.dart';
 import 'features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
+import 'features/settings/presentation/bloc/settings_bloc.dart';
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
@@ -46,6 +47,8 @@ class MyApp extends StatelessWidget {
           create: (_) => sl<QuickRecipesBloc>()..add(const LoadQuickRecipes()),
         ),
         BlocProvider(create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics())),
+
+        BlocProvider(create: (_) => sl<SettingsBloc>()..add(SettingsStarted())),
 
         BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
         BlocProvider<FavoritesBloc>(create: (_) => sl<FavoritesBloc>()),

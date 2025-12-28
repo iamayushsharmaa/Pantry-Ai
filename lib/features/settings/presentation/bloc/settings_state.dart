@@ -1,9 +1,10 @@
 part of 'settings_bloc.dart';
 
 class SettingsState extends Equatable {
+  final bool isInitialLoading;
+  final bool isActionLoading;
   final UserEntity? user;
 
-  final bool isLoading;
   final String? errorMessage;
   final String? successMessage;
 
@@ -15,8 +16,9 @@ class SettingsState extends Equatable {
   final bool accountDeleted;
 
   const SettingsState({
+    this.isInitialLoading = false,
+    this.isActionLoading = false,
     this.user,
-    this.isLoading = false,
     this.errorMessage,
     this.successMessage,
     this.showLogoutDialog = false,
@@ -27,8 +29,9 @@ class SettingsState extends Equatable {
   });
 
   SettingsState copyWith({
+    bool? isInitialLoading,
+    bool? isActionLoading,
     UserEntity? user,
-    bool? isLoading,
     String? errorMessage,
     String? successMessage,
     bool? showLogoutDialog,
@@ -38,8 +41,9 @@ class SettingsState extends Equatable {
     bool? accountDeleted,
   }) {
     return SettingsState(
+      isInitialLoading: isInitialLoading ?? this.isInitialLoading,
+      isActionLoading: isActionLoading ?? this.isActionLoading,
       user: user ?? this.user,
-      isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage,
       successMessage: successMessage,
       showLogoutDialog: showLogoutDialog ?? this.showLogoutDialog,
@@ -56,8 +60,9 @@ class SettingsState extends Equatable {
 
   @override
   List<Object?> get props => [
+    isInitialLoading,
+    isActionLoading,
     user,
-    isLoading,
     errorMessage,
     successMessage,
     showLogoutDialog,
