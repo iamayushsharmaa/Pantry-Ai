@@ -17,4 +17,6 @@ abstract class AppRouteNames {
   static const home = 'home';
   static const analytics = 'analytics';
   static const settings = 'settings';
+
+  static const editProfile = 'editProfile';
 }

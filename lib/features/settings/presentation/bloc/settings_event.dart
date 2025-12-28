@@ -11,6 +11,8 @@ class SettingsStarted extends SettingsEvent {}
 
 class EditProfilePressed extends SettingsEvent {}
 
+class ClearNavigation extends SettingsEvent {}
+
 class UpdateNameRequested extends SettingsEvent {
   final String newName;
 

@@ -28,36 +28,62 @@ class SettingsScreen extends StatelessWidget {
           prev.errorMessage != curr.errorMessage ||
           prev.successMessage != curr.successMessage,
       listener: (context, state) {
+
+        if (state.navigation == SettingsNavigation.editProfile) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!context.mounted) return;
+            context.pushNamed(AppRouteNames.editProfile);
+            context.read<SettingsBloc>().add(ClearNavigation());
+          });
+        }
+
         if (state.showLogoutDialog) {
-          _showLogoutDialog(context, l10n);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              _showLogoutDialog(context, l10n);
+            }
+          });
         }
 
         if (state.showDeleteDialog) {
-          _showDeleteAccountDialog(context, l10n);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              _showDeleteAccountDialog(context, l10n);
+            }
+          });
         }
 
         if (state.logoutSuccess || state.accountDeleted) {
-          context.goNamed(AppRouteNames.onboarding);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              context.goNamed(AppRouteNames.onboarding);
+            }
+          });
         }
 
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          context.read<SettingsBloc>().add(ClearMessages());
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+            context.read<SettingsBloc>().add(ClearMessages());
+          });
         }
 
         if (state.successMessage != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.successMessage!)));
-          context.read<SettingsBloc>().add(ClearMessages());
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.successMessage!)));
+            context.read<SettingsBloc>().add(ClearMessages());
+          });
         }
       },
       builder: (context, state) {
         final bloc = context.read<SettingsBloc>();
 
-        // ✅ ONLY initial load uses full screen loader
         if (state.isInitialLoading && state.user == null) {
           return const ThemedScaffold(
             child: Center(child: CircularProgressIndicator()),
@@ -145,7 +171,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
 
-              // ✅ Lightweight action loader overlay
+              // ✅ action loader overlay
               if (state.isActionLoading)
                 Positioned.fill(
                   child: Container(
@@ -160,7 +186,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  // ---------- dialogs (unchanged) ----------
+  // ---------------- dialogs ----------------
 
   void _showLanguageDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
@@ -184,7 +210,11 @@ class SettingsScreen extends StatelessWidget {
       title: Text(label),
       onTap: () {
         context.read<AppSettingsBloc>().add(ChangeLanguage(locale));
-        Navigator.pop(context);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+        });
       },
     );
   }

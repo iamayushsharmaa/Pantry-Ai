@@ -115,7 +115,7 @@ void main() {
   testWidgets('navigates to EmailSignInScreen on tap', (tester) async {
     when(() => mockAuthBloc.state).thenReturn(const AuthState.initial());
 
-    final router = createRouter();
+    final router = appRouter;
     router.go('/onboarding');
     await tester.pumpWidget(
       BlocProvider<AuthBloc>.value(

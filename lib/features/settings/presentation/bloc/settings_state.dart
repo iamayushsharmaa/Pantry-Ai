@@ -5,6 +5,8 @@ class SettingsState extends Equatable {
   final bool isActionLoading;
   final UserEntity? user;
 
+  final SettingsNavigation? navigation;
+
   final String? errorMessage;
   final String? successMessage;
 
@@ -19,6 +21,7 @@ class SettingsState extends Equatable {
     this.isInitialLoading = false,
     this.isActionLoading = false,
     this.user,
+    this.navigation,
     this.errorMessage,
     this.successMessage,
     this.showLogoutDialog = false,
@@ -32,6 +35,7 @@ class SettingsState extends Equatable {
     bool? isInitialLoading,
     bool? isActionLoading,
     UserEntity? user,
+    SettingsNavigation? navigation,
     String? errorMessage,
     String? successMessage,
     bool? showLogoutDialog,
@@ -44,6 +48,7 @@ class SettingsState extends Equatable {
       isInitialLoading: isInitialLoading ?? this.isInitialLoading,
       isActionLoading: isActionLoading ?? this.isActionLoading,
       user: user ?? this.user,
+      navigation: navigation,
       errorMessage: errorMessage,
       successMessage: successMessage,
       showLogoutDialog: showLogoutDialog ?? this.showLogoutDialog,
@@ -63,6 +68,7 @@ class SettingsState extends Equatable {
     isInitialLoading,
     isActionLoading,
     user,
+    navigation,
     errorMessage,
     successMessage,
     showLogoutDialog,
@@ -72,3 +78,5 @@ class SettingsState extends Equatable {
     accountDeleted,
   ];
 }
+
+enum SettingsNavigation { editProfile }

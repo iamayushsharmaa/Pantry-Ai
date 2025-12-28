@@ -20,4 +20,6 @@ abstract class AppRoutes {
   static const scan = '/scan';
   static const analytics = '/analytics';
   static const settings = '/settings';
+
+  static const editProfile = '/edit-profile';
 }

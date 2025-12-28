@@ -7,22 +7,22 @@ import '../../features/home/presentation/shell_routes.dart';
 import '../../features/preference/presentation/preference_routes.dart';
 import '../../features/save_recipe/presentation/saved_routes.dart';
 import '../../features/scan/presentation/scan_route.dart';
+import '../../features/settings/presentation/edit_profile_route.dart';
 import 'app_routes.dart';
 
-GoRouter createRouter() {
-  return GoRouter(
-    initialLocation: AppRoutes.splash,
-    debugLogDiagnostics: true,
-    routes: [
-      ...authRoutes,
-      ...recipeRoutes,
-      ...scanRoutes,
-      ...tasteRoutes,
-      ...favoriteRoutes,
-      ...savedRoutes,
-      shellRoute,
-    ],
-    errorBuilder: (_, state) =>
-        Scaffold(body: Center(child: Text('Page not found: ${state.uri}'))),
-  );
-}
+final GoRouter appRouter = GoRouter(
+  initialLocation: AppRoutes.splash,
+  debugLogDiagnostics: true,
+  routes: [
+    ...authRoutes,
+    ...recipeRoutes,
+    ...scanRoutes,
+    ...tasteRoutes,
+    ...favoriteRoutes,
+    ...savedRoutes,
+    ...editProfileRoutes,
+    shellRoute,
+  ],
+  errorBuilder: (_, state) =>
+      Scaffold(body: Center(child: Text('Page not found: ${state.uri}'))),
+);

@@ -42,13 +42,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<DeleteAccountConfirmed>(_onDeleteAccountConfirmed);
     on<CloseDeleteDialog>(_onCloseDeleteDialog);
     on<ClearMessages>(_onClearMessages);
+    on<EditProfilePressed>(_onEditProfilePressed);
+    on<ClearNavigation>(_onClearNavigation);
   }
 
   Future<void> _onStarted(
     SettingsStarted event,
     Emitter<SettingsState> emit,
   ) async {
-    // ✅ Load user ONLY once
     if (state.user != null) {
       emit(state.copyWith(isInitialLoading: false));
       return;
@@ -67,6 +68,20 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       ),
       (user) => emit(state.copyWith(isInitialLoading: false, user: user)),
     );
+  }
+
+  void _onEditProfilePressed(
+      EditProfilePressed event,
+      Emitter<SettingsState> emit,
+      ) {
+    emit(state.copyWith(navigation: SettingsNavigation.editProfile));
+  }
+
+  void _onClearNavigation(
+      ClearNavigation event,
+      Emitter<SettingsState> emit,
+      ) {
+    emit(state.copyWith(navigation: null));
   }
 
   Future<void> _onUpdateName(

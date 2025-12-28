@@ -47,48 +47,46 @@ class MyApp extends StatelessWidget {
           create: (_) => sl<QuickRecipesBloc>()..add(const LoadQuickRecipes()),
         ),
         BlocProvider(create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics())),
-
         BlocProvider(create: (_) => sl<SettingsBloc>()..add(SettingsStarted())),
-
-        BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
-        BlocProvider<FavoritesBloc>(create: (_) => sl<FavoritesBloc>()),
-        BlocProvider<SavedBloc>(create: (_) => sl<SavedBloc>()),
-        BlocProvider<AppSettingsBloc>(create: (_) => sl<AppSettingsBloc>()),
+        BlocProvider(create: (_) => sl<AuthBloc>()),
+        BlocProvider(create: (_) => sl<FavoritesBloc>()),
+        BlocProvider(create: (_) => sl<SavedBloc>()),
+        BlocProvider(create: (_) => sl<AppSettingsBloc>()),
       ],
-      child: _AppView(),
+      child: const _AppView(),
     );
   }
 }
 
 class _AppView extends StatelessWidget {
+  const _AppView();
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppSettingsBloc, AppSettingsState>(
-      listenWhen: (p, c) => p.themeMode != c.themeMode || p.locale != c.locale,
-      listener: (context, state) {
-        WidgetsBinding.instance.handlePlatformBrightnessChanged();
-      },
-      child: MaterialApp.router(
-        routerConfig: createRouter(),
-        debugShowCheckedModeBanner: false,
+    final themeMode = context.select<AppSettingsBloc, ThemeMode>(
+      (b) => b.state.themeMode,
+    );
 
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
+    final locale = context.select<AppSettingsBloc, Locale>(
+      (b) => b.state.locale,
+    );
 
-        themeMode: context.select<AppSettingsBloc, ThemeMode>(
-          (b) => b.state.themeMode,
-        ),
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: appRouter,
 
-        locale: context.select<AppSettingsBloc, Locale>((b) => b.state.locale),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
 
-        supportedLocales: const [Locale('en'), Locale('hi'), Locale('es')],
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-      ),
+      locale: locale,
+      supportedLocales: const [Locale('en'), Locale('hi'), Locale('es')],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
     );
   }
 }
