@@ -9,7 +9,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../bloc/scan_bloc.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({Key? key}) : super(key: key);
+  const ScanScreen({super.key});
 
   @override
   State<ScanScreen> createState() => _ScanScreenState();

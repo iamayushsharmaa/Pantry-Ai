@@ -13,41 +13,27 @@ import '../../settings/presentation/bloc/settings_bloc.dart';
 import '../../settings/presentation/screens/settings_screen.dart';
 import 'bloc/quick_bloc/quick_recipe_bloc.dart';
 import 'bloc/recent_bloc/home_bloc.dart';
-
 ShellRoute shellRoute = ShellRoute(
   builder: (_, __, child) => WidgetTree(child: child),
   routes: [
     GoRoute(
       path: AppRoutes.home,
       name: AppRouteNames.home,
-      builder: (_, __) => MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => sl<HomeBloc>()..add(const LoadRecentRecipes()),
-          ),
-          BlocProvider(
-            create: (context) =>
-                sl<QuickRecipesBloc>()..add(const LoadQuickRecipes()),
-          ),
-        ],
-        child: const HomeScreen(),
-      ),
+      builder: (_, __) => const HomeScreen(),
     ),
 
     GoRoute(
       path: AppRoutes.analytics,
       name: AppRouteNames.analytics,
-      builder: (_, __) => BlocProvider(
-        create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics()),
-        child: const AnalyticsScreen(),
-      ),
+      builder: (_, __) => const AnalyticsScreen(),
     ),
+
     GoRoute(
       path: AppRoutes.settings,
       name: AppRouteNames.settings,
       builder: (_, __) => BlocProvider(
         create: (_) => sl<SettingsBloc>()..add(SettingsStarted()),
-        child: SettingsScreen(),
+        child: const SettingsScreen(),
       ),
     ),
   ],

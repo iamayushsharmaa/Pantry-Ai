@@ -40,7 +40,6 @@ class AnalyticsBloc extends Bloc<AnalyticsEvent, AnalyticsState> {
     Emitter<AnalyticsState> emit,
   ) async {
     _currentRange = event.range;
-    emit(AnalyticsLoading());
 
     final analytics = await getAnalytics(range: _currentRange);
 

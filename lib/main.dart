@@ -9,8 +9,11 @@ import 'core/app_settings/app_settings_bloc.dart';
 import 'core/di/injections.dart';
 import 'core/router/router.dart';
 import 'core/theme/theme.dart';
+import 'features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'features/home/presentation/bloc/quick_bloc/quick_recipe_bloc.dart';
+import 'features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
@@ -36,6 +39,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (_) => sl<HomeBloc>()..add(const LoadRecentRecipes()),
+        ),
+        BlocProvider(
+          create: (_) => sl<QuickRecipesBloc>()..add(const LoadQuickRecipes()),
+        ),
+        BlocProvider(create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics())),
+
         BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
         BlocProvider<FavoritesBloc>(create: (_) => sl<FavoritesBloc>()),
         BlocProvider<SavedBloc>(create: (_) => sl<SavedBloc>()),
@@ -50,10 +61,8 @@ class _AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AppSettingsBloc, AppSettingsState>(
-      listenWhen: (p, c) =>
-      p.themeMode != c.themeMode || p.locale != c.locale,
+      listenWhen: (p, c) => p.themeMode != c.themeMode || p.locale != c.locale,
       listener: (context, state) {
-        // 🔥 This forces Flutter to update inherited widgets safely
         WidgetsBinding.instance.handlePlatformBrightnessChanged();
       },
       child: MaterialApp.router(
@@ -63,20 +72,13 @@ class _AppView extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
 
-        // ✅ SAFE — Flutter updates internally
         themeMode: context.select<AppSettingsBloc, ThemeMode>(
-              (b) => b.state.themeMode,
+          (b) => b.state.themeMode,
         ),
 
-        locale: context.select<AppSettingsBloc, Locale>(
-              (b) => b.state.locale,
-        ),
+        locale: context.select<AppSettingsBloc, Locale>((b) => b.state.locale),
 
-        supportedLocales: const [
-          Locale('en'),
-          Locale('hi'),
-          Locale('es'),
-        ],
+        supportedLocales: const [Locale('en'), Locale('hi'), Locale('es')],
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

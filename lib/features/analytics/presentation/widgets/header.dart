@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pantry_ai/features/analytics/presentation/widgets/range_selector.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/range.dart';
+import '../bloc/analytics_bloc.dart';
 
 class AnalyticsHeader extends StatelessWidget {
-  final AnalyticsRange range;
-
-  const AnalyticsHeader({super.key, required this.range});
+  const AnalyticsHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,14 @@ class AnalyticsHeader extends StatelessWidget {
           style: TextStyle(color: cs.onSurface.withOpacity(0.6)),
         ),
         const SizedBox(height: 14),
-        AnalyticsRangeSelector(selected: range),
+
+        BlocSelector<AnalyticsBloc, AnalyticsState, AnalyticsRange>(
+          selector: (state) =>
+              state is AnalyticsLoaded ? state.range : AnalyticsRange.all,
+          builder: (context, range) {
+            return AnalyticsRangeSelector(selected: range);
+          },
+        ),
       ],
     );
   }
