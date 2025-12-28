@@ -20,7 +20,18 @@ class AnalyticsScreen extends StatelessWidget {
     return ThemedScaffold(
       child: Scaffold(
         backgroundColor: cs.surface,
-        appBar: AppBar(title: Text(l10n.analytics)),
+        appBar: AppBar(
+          title: Text(
+            l10n.analytics,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              color: cs.onSurface,
+              letterSpacing: -0.5,
+            ),
+          ),
+          centerTitle: false,
+        ),
         body: BlocBuilder<AnalyticsBloc, AnalyticsState>(
           builder: (context, state) {
             if (state is AnalyticsLoading) {
