@@ -15,11 +15,9 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   RecipeRemoteDataSourceImpl(this.dio);
 
   @override
-  Future<List<RecipeModel>> generateRecipes(
-    String imagePath,
-    TastePreferences prefs,
-    List<RecipeModel>? previouslySuggestedRecipes,
-  ) async {
+  Future<List<RecipeModel>> generateRecipes(String imagePath,
+      TastePreferences prefs,
+      List<RecipeModel>? previouslySuggestedRecipes,) async {
     final prompt = buildPrompt(prefs, oldRecipes: previouslySuggestedRecipes);
 
     final imageBytes = await File(imagePath).readAsBytes();
@@ -58,7 +56,7 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
     }
 
     final textPart = parts.cast<Map<String, dynamic>>().firstWhere(
-      (p) => p.containsKey('text'),
+          (p) => p.containsKey('text'),
       orElse: () => {},
     );
 

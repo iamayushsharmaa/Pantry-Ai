@@ -59,7 +59,6 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
     final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
-
     return BlocBuilder<TastePreferenceBloc, TastePreferenceState>(
       builder: (context, state) {
         return Scaffold(
@@ -241,6 +240,7 @@ class BottomActionButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const BottomActionButton({
+    super.key,
     required this.colorScheme,
     required this.enabled,
     required this.isLastPage,

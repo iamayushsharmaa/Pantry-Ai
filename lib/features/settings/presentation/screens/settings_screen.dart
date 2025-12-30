@@ -28,7 +28,6 @@ class SettingsScreen extends StatelessWidget {
           prev.errorMessage != curr.errorMessage ||
           prev.successMessage != curr.successMessage,
       listener: (context, state) {
-
         if (state.navigation == SettingsNavigation.editProfile) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (!context.mounted) return;
@@ -185,8 +184,6 @@ class SettingsScreen extends StatelessWidget {
       },
     );
   }
-
-  // ---------------- dialogs ----------------
 
   void _showLanguageDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
