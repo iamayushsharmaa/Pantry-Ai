@@ -9,6 +9,7 @@ class QuestionPage extends StatelessWidget {
   final Function(dynamic) onSelected;
 
   const QuestionPage({
+    super.key,
     required this.title,
     required this.options,
     this.selected,
@@ -59,6 +60,7 @@ class OptionChip extends StatelessWidget {
   final VoidCallback onTap;
 
   const OptionChip({
+    super.key,
     required this.option,
     required this.isSelected,
     required this.colorScheme,

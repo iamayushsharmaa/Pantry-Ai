@@ -83,12 +83,6 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
           body: SafeArea(
             child: Column(
               children: [
-                // _AppBarSection(
-                //   colorScheme: cs,
-                //   showBackButton: state.currentPage > 0,
-                //   onBackPressed: () =>
-                //       _previousPage(context, state.currentPage),
-                // ),
                 const SizedBox(height: 18),
                 ImagePreviewCard(imagePath: widget.imagePath, colorScheme: cs),
                 const SizedBox(height: 20),
@@ -178,57 +172,6 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class _AppBarSection extends StatelessWidget {
-  final ColorScheme colorScheme;
-  final bool showBackButton;
-  final VoidCallback onBackPressed;
-
-  const _AppBarSection({
-    required this.colorScheme,
-    required this.showBackButton,
-    required this.onBackPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          if (showBackButton)
-            IconButton(
-              onPressed: onBackPressed,
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: colorScheme.onSurface,
-                size: 20,
-              ),
-              padding: const EdgeInsets.all(8),
-              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-            )
-          else
-            const SizedBox(width: 48),
-
-          Expanded(
-            child: Text(
-              'Taste Preferences',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: colorScheme.onSurface,
-                letterSpacing: -0.3,
-              ),
-            ),
-          ),
-
-          const SizedBox(width: 48),
-        ],
-      ),
     );
   }
 }
