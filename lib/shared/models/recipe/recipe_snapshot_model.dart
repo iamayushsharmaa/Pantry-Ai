@@ -56,7 +56,7 @@ class RecipeSnapshot {
     return RecipeSnapshot(
       id: recipe.id,
       title: recipe.title,
-      imageUrl: recipe.imageUrl,
+      imageUrl: recipe.imageUrl ?? "",
       difficulty: recipe.difficulty,
       cookingTime: recipe.cookingTime,
       calories: recipe.calories,

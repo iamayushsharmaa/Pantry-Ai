@@ -30,7 +30,7 @@ class RecipeModel extends Recipe {
       id: json['id']?.toString() ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      imageUrl: json['imageUrl'] ?? '',
+      imageUrl: json['imageUrl']?.toString() ?? '',
       cookingTime: json['cookingTime'] as int? ?? 0,
       prepTime: json['prepTime'] as int? ?? 0,
       difficulty: json['difficulty'] as int? ?? 1,
@@ -39,10 +39,21 @@ class RecipeModel extends Recipe {
       dietaryInfo: List<String>.from(json['dietaryInfo'] ?? const []),
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       calories: json['calories'] as int? ?? 0,
-      nutrition: NutritionInfoModel.fromJson(json['nutrition'] ?? const {}),
-      ingredients: (json['ingredients'] as List? ?? const [])
-          .map((i) => IngredientModel.fromJson(i))
+      nutrition: NutritionInfoModel.fromJson(
+        Map<String, dynamic>.from(json['nutrition'] ?? {}),
+      ),
+
+      ingredients: (json['ingredients'] as List? ?? [])
+          .asMap()
+          .entries
+          .map(
+            (e) => IngredientModel.fromJson(
+              Map<String, dynamic>.from(e.value),
+              fallbackId: 'ing_${e.key}',
+            ),
+          )
           .toList(),
+
       missingIngredients: List<String>.from(
         json['missingIngredients'] ?? const [],
       ),

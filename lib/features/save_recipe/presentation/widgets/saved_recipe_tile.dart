@@ -36,7 +36,7 @@ class SavedRecipeTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            RecipeImage(recipe.imageUrl),
+            RecipeImage(recipe.imageUrl ?? ""),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12),

@@ -6,9 +6,7 @@ import 'package:pantry_ai/core/common/theme_scaffold.dart';
 import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../bloc/quick_bloc/quick_recipe_bloc.dart';
 import '../bloc/recent_bloc/home_bloc.dart';
-import '../widgets/quick_recipe_list.dart';
 import '../widgets/recent_recipe_list.dart';
 import '../widgets/scan_card_widget.dart';
 import '../widgets/section_header.dart';
@@ -22,6 +20,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeBloc>().add(const RefreshRecentRecipes());
+    });
+  }
 
   @override
   void dispose() {
@@ -59,12 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       colorScheme: cs,
                       title: l10n.recently_generated,
                       subtitle: l10n.your_latest_recipe_discoveries,
-                      onSeeAll: hasData
-                          ? () => context.pushNamed(
-                              AppRouteNames.categorySeeAll,
-                              extra: l10n.recent,
-                            )
-                          : null,
                     );
                   },
                 ),
@@ -73,31 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 RecentRecipesList(colorScheme: cs),
 
                 const SizedBox(height: 14),
-
-                BlocBuilder<QuickRecipesBloc, QuickRecipesState>(
-                  builder: (context, state) {
-                    final hasData =
-                        state is QuickRecipesLoaded && state.recipes.isNotEmpty;
-
-                    return SectionHeader(
-                      colorScheme: cs,
-                      title: l10n.quick_and_easy,
-                      subtitle: l10n.recipes_under_30_minutes,
-                      onSeeAll: hasData
-                          ? () => context.pushNamed(
-                              AppRouteNames.categorySeeAll,
-                              extra: 'QuickEasy',
-                            )
-                          : null,
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 14),
-
-                QuickRecipesList(colorScheme: cs),
-
-                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -145,7 +120,7 @@ class AppBarSection extends StatelessWidget {
         StatChip(
           icon: Icons.local_fire_department_rounded,
           label: "630 ${l10n.cal}",
-          color: Colors.deepOrange,
+          iconColor: Colors.deepOrange,
           colorScheme: colorScheme,
         ),
       ],

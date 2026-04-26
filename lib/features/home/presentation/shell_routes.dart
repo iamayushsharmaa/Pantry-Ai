@@ -31,7 +31,7 @@ ShellRoute shellRoute = ShellRoute(
   ],
 );
 
-List<GoRoute> recipeRoutes = [
+List<GoRoute> recipeHomeRoutes = [
   GoRoute(
     path: AppRoutes.categorySeeAll,
     name: AppRouteNames.categorySeeAll,

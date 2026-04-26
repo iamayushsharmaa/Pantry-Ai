@@ -29,7 +29,7 @@ List<GoRoute> detailRecipeRoutes = [
 
           return bloc;
         },
-        child: RecipeDetailScreen(), // ✅ no params
+        child: RecipeDetailScreen(),
       );
     },
   ),

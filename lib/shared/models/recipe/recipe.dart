@@ -4,7 +4,7 @@ class Recipe extends Equatable {
   final String id;
   final String title;
   final String description;
-  final String imageUrl;
+  final String? imageUrl;
   final int cookingTime;
   final int prepTime;
   final int difficulty;

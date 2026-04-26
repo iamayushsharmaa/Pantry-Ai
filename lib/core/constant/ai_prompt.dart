@@ -28,7 +28,6 @@ For each recipe include:
 - id (unique string identifier)
 - title
 - description (2-3 sentences about the dish)
-- imageUrl (royalty-free recipe image URL)
 - cookingTime (in minutes)
 - prepTime (in minutes)
 - difficulty (1–5 scale: 1=Very Easy, 2=Easy, 3=Medium, 4=Hard, 5=Expert)
@@ -60,7 +59,6 @@ Return output **ONLY in strict JSON**, using this exact schema:
       "id": "recipe_001",
       "title": "Spicy Tomato Pasta",
       "description": "A quick and flavorful pasta dish with fresh tomatoes and aromatic spices.",
-      "imageUrl": "https://example.com/recipe-image.jpg",
       "cookingTime": 25,
       "prepTime": 10,
       "difficulty": 2,

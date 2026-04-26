@@ -14,24 +14,42 @@ class MissingIngredientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: colorScheme.errorContainer.withOpacity(0.3),
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.error.withOpacity(0.3), width: 1),
+        // ✅ left accent — mirrors IngredientCard style
+        border: Border(
+          left: BorderSide(color: colorScheme.error.withOpacity(0.5), width: 3),
+        ),
       ),
       child: Row(
         children: [
-          Icon(Icons.remove_circle_outline, color: colorScheme.error, size: 18),
-          const SizedBox(width: 10),
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: colorScheme.error.withOpacity(0.5),
+            ),
+          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
               name,
               style: TextStyle(
-                color: colorScheme.onErrorContainer,
+                color: colorScheme.onSurface,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
+            ),
+          ),
+          Text(
+            'Need to buy',
+            style: TextStyle(
+              color: colorScheme.error.withOpacity(0.6),
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],

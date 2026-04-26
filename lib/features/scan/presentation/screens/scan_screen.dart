@@ -30,6 +30,7 @@ class _ScanScreenState extends State<ScanScreen> {
       listener: (context, state) {
         if (state.imagePath != null && !state.hasNavigated) {
           context.read<ScanBloc>().add(MarkNavigationHandled());
+          context.read<ScanBloc>().add(DisposeCamera());
 
           context.pushReplacementNamed(
             AppRouteNames.tastePreference,
@@ -66,7 +67,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
               Positioned.fill(
                 child: Container(
-                  color: Colors.black.withOpacity(0.8),
+                  color: Colors.black.withOpacity(0.2),
                   child: Center(
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.8,
@@ -90,7 +91,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.pop(),
                     ),
                     Text(
                       l10n.scan_your_ingredient,
@@ -104,7 +105,9 @@ class _ScanScreenState extends State<ScanScreen> {
                     IconButton(
                       icon: Icon(
                         state.isFlashOn ? Icons.flash_on : Icons.flash_off,
-                        color: Colors.white,
+                        color: state.isFlashOn
+                            ? const Color(0xFF00A87D)
+                            : Colors.white,
                       ),
                       onPressed: () =>
                           context.read<ScanBloc>().add(ToggleFlash()),
@@ -140,7 +143,14 @@ class _ScanScreenState extends State<ScanScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 4),
                         ),
-                        child: SvgPicture.asset(''),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
                       ),
                     ),
 

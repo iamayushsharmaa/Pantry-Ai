@@ -9,13 +9,18 @@ class IngredientModel extends Ingredient {
     required super.isAvailable,
   });
 
-  factory IngredientModel.fromJson(Map<String, dynamic> json) {
+  factory IngredientModel.fromJson(
+    Map<String, dynamic> json, {
+    String fallbackId = '',
+  }) {
     return IngredientModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      quantity: (json['quantity'] as num).toDouble(),
-      unit: json['unit'] as String,
-      isAvailable: json['isAvailable'] as bool,
+      id: json['id']?.toString().isNotEmpty == true
+          ? json['id'].toString()
+          : fallbackId,
+      name: json['name']?.toString() ?? '',
+      quantity: (json['quantity'] as num?)?.toDouble() ?? 0.0,
+      unit: json['unit']?.toString() ?? '',
+      isAvailable: json['isAvailable'] as bool? ?? false,
     );
   }
 }

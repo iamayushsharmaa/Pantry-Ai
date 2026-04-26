@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,24 +14,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({required this.getRecentRecipes}) : super(const HomeLoading()) {
     on<LoadRecentRecipes>(_onLoadRecentRecipes);
+    on<RefreshRecentRecipes>(_onRefreshRecentRecipes);
+
+    add(const LoadRecentRecipes());
   }
 
   Future<void> _onLoadRecentRecipes(
     LoadRecentRecipes event,
     Emitter<HomeState> emit,
   ) async {
+    await _loadRecipes(emit);
+  }
+
+  Future<void> _onRefreshRecentRecipes(
+    RefreshRecentRecipes event,
+    Emitter<HomeState> emit,
+  ) async {
+    await _loadRecipes(emit);
+  }
+
+  Future<void> _loadRecipes(Emitter<HomeState> emit) async {
     emit(const HomeLoading());
 
     try {
       final recipes = await getRecentRecipes();
-
       if (recipes.isEmpty) {
         emit(const HomeEmpty());
       } else {
         emit(HomeLoaded(recipes));
       }
-    } catch (_) {
-      emit(const HomeError('Failed to load recent recipes'));
+    } catch (e) {
+      log(e.toString());
+      emit(HomeError(e.toString()));
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../../../shared/models/recipe/taste_preference.dart';
@@ -19,7 +19,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     required this.generateRecipes,
     required this.getCachedRecipes,
     required this.cacheRecipes,
-  }) : super(RecipeState()) {
+  }) : super(const RecipeState()) {
     on<GenerateRecipesRequested>(_onGenerateRecipes);
     on<FetchMoreRecipesRequested>(_onFetchMoreRecipes);
     on<LoadCachedRecipesRequested>(_onLoadCachedRecipes);
@@ -29,8 +29,17 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     GenerateRecipesRequested event,
     Emitter<RecipeState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true, error: null));
+    debugPrint('🚀 GenerateRecipesRequested fired');
+    debugPrint('   imagePath: ${event.imagePath}');
+    debugPrint('   preferences: ${event.preferences}');
 
+    emit(
+      state.copyWith(
+        status: RecipeStatus.loading,
+        imagePath: event.imagePath,
+        preferences: event.preferences,
+      ),
+    );
     try {
       final recipes = await generateRecipes(
         event.imagePath,
@@ -38,24 +47,42 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         null,
       );
 
-      await cacheRecipes(recipes);
-
       emit(
         state.copyWith(
+          status: RecipeStatus.success,
           recipes: recipes,
           imagePath: event.imagePath,
           preferences: event.preferences,
-          isLoading: false,
+          fetchCount: 0,
+          hasReachedMax: false,
           error: null,
         ),
       );
-    } catch (e) {
-      // fallback to cached recipes
-      final cached = await getCachedRecipes();
-
-      emit(
-        state.copyWith(recipes: cached, isLoading: false, error: e.toString()),
-      );
+    } catch (e, stack) {
+      try {
+        final cached = await getCachedRecipes();
+        emit(
+          state.copyWith(
+            status: cached.isEmpty
+                ? RecipeStatus.failure
+                : RecipeStatus.success,
+            recipes: cached,
+            imagePath: event.imagePath,
+            preferences: event.preferences,
+            error: e.toString(),
+            retryCount: state.retryCount + 1,
+          ),
+        );
+      } catch (cacheError) {
+        emit(
+          state.copyWith(
+            status: RecipeStatus.failure,
+            error: e.toString(),
+            imagePath: event.imagePath,
+            preferences: event.preferences,
+          ),
+        );
+      }
     }
   }
 
@@ -63,26 +90,38 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     FetchMoreRecipesRequested event,
     Emitter<RecipeState> emit,
   ) async {
+    if (!state.canFetchMore) {
+      emit(state.copyWith(hasReachedMax: true));
+      return;
+    }
+
     if (state.imagePath == null || state.preferences == null) return;
 
-    emit(state.copyWith(isLoading: true, error: null));
+    emit(state.copyWith(status: RecipeStatus.loading));
 
     try {
-      final oldModels = state.recipes.toList();
-
       final newRecipes = await generateRecipes(
         state.imagePath!,
         state.preferences!,
-        oldModels,
+        state.recipes.toList(),
       );
 
       final updatedList = [...state.recipes, ...newRecipes];
+      final newFetchCount = state.fetchCount + 1;
 
-      await cacheRecipes(updatedList);
-
-      emit(state.copyWith(recipes: updatedList, isLoading: false, error: null));
+      emit(
+        state.copyWith(
+          status: RecipeStatus.success,
+          recipes: updatedList,
+          fetchCount: newFetchCount,
+          hasReachedMax:
+              newFetchCount >= RecipeState.maxFetches ||
+              updatedList.length >= RecipeState.maxRecipes,
+          error: null,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(isLoading: false, error: e.toString()));
+      emit(state.copyWith(status: RecipeStatus.success, error: e.toString()));
     }
   }
 
@@ -90,14 +129,13 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     LoadCachedRecipesRequested event,
     Emitter<RecipeState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true, error: null));
+    emit(state.copyWith(status: RecipeStatus.loading));
 
     try {
       final recipes = await getCachedRecipes();
-
-      emit(state.copyWith(recipes: recipes, isLoading: false));
+      emit(state.copyWith(status: RecipeStatus.success, recipes: recipes));
     } catch (e) {
-      emit(state.copyWith(isLoading: false, error: e.toString()));
+      emit(state.copyWith(status: RecipeStatus.failure, error: e.toString()));
     }
   }
 }

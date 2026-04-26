@@ -18,35 +18,33 @@ class RecipeStatsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+    return Row(
       children: [
         StatChip(
           icon: Icons.star_rounded,
-          label: recipe.rating.toString(),
-          color: Colors.amber,
+          label: recipe.rating.toStringAsFixed(1),
+          iconColor: const Color(0xFFFBBF24),
           colorScheme: colorScheme,
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
         StatChip(
           icon: Icons.schedule_rounded,
           label: "${recipe.cookingTime} ${l10n.min}",
-          color: colorScheme.primary,
+          iconColor: colorScheme.primary,
           colorScheme: colorScheme,
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
         StatChip(
           icon: Icons.local_fire_department_rounded,
           label: "${recipe.calories} ${l10n.cal}",
-          color: Colors.deepOrange,
+          iconColor: Colors.deepOrange,
           colorScheme: colorScheme,
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
         StatChip(
           icon: Icons.person_outline_rounded,
-          label: "${recipe.servings}",
-          color: Colors.teal,
+          label: "${recipe.servings} srv",
+          iconColor: colorScheme.primary,
           colorScheme: colorScheme,
         ),
       ],

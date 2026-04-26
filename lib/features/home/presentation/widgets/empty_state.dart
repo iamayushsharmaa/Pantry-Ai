@@ -19,7 +19,8 @@ class EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 34),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
@@ -29,7 +30,6 @@ class EmptyState extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(12),
-            width: MediaQuery.sizeOf(context).width * 0.8,
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer.withOpacity(0.5),
               shape: BoxShape.circle,

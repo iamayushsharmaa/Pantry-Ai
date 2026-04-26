@@ -6,14 +6,12 @@ class SectionHeader extends StatelessWidget {
   final ColorScheme colorScheme;
   final String title;
   final String subtitle;
-  final VoidCallback? onSeeAll;
 
   const SectionHeader({
     super.key,
     required this.colorScheme,
     required this.title,
     required this.subtitle,
-    this.onSeeAll,
   });
 
   @override
@@ -49,33 +47,6 @@ class SectionHeader extends StatelessWidget {
             ],
           ),
         ),
-        if (onSeeAll != null)
-          TextButton(
-            onPressed: onSeeAll,
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: Row(
-              children: [
-                Text(
-                  l10n.see_all,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: colorScheme.primary,
-                  size: 16,
-                ),
-              ],
-            ),
-          ),
       ],
     );
   }

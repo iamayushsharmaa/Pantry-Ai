@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +33,7 @@ class _SplashState extends State<Splash> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         Future.delayed(const Duration(seconds: 2), () {
+          if (!context.mounted) return;
           state.mapOrNull(
             authenticated: (_) => context.goNamed(AppRouteNames.home),
             unauthenticated: (_) => context.goNamed(AppRouteNames.onboarding),
@@ -51,49 +50,80 @@ class _SplashState extends State<Splash> {
           statusBarBrightness: Brightness.dark,
         ),
         child: Scaffold(
-          body: Stack(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: RadialGradient(
-                    center: Alignment.center,
-                    radius: 1.4,
-                    colors: [Color(0xFF00A87D), Colors.black],
+          body: Container(
+            decoration: const BoxDecoration(
+
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF00C896),
+                  Color(0xFF00A87D),
+                  Color(0xFF004D3A),
+                ],
+                stops: [0.0, 0.45, 1.0],
+              ),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: SvgPicture.asset(
+                        'assets/icons/scan.svg',
+                        colorFilter: const ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
 
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                child: Container(color: Colors.transparent),
-              ),
+                  const SizedBox(height: 24),
 
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/scan.svg',
-                      colorFilter: ColorFilter.mode(
-                        cs.onPrimary,
-                        BlendMode.srcIn,
-                      ),
-                      height: 200,
-                      width: 200,
+                  const Text(
+                    'Pantry AI',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Pantry AI.',
-                      style: TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    'Cook smart with what you have',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white.withOpacity(0.6),
+                      letterSpacing: 0.2,
                     ),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(height: 80),
+
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white.withOpacity(0.4),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

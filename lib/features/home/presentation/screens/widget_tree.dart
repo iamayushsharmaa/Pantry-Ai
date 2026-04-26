@@ -21,6 +21,8 @@ class WidgetTree extends StatelessWidget {
   int _getSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
 
+    if (location == AppRoutes.scan) return 0;
+
     final index = _tabs.indexWhere(
       (path) => location == path || location.startsWith('$path/'),
     );
@@ -35,6 +37,11 @@ class WidgetTree extends StatelessWidget {
     final current = GoRouterState.of(context).uri.path;
 
     if (current == target) return;
+
+    if (index == 1) {
+      context.push(AppRoutes.scan);
+      return;
+    }
 
     context.go(target);
   }

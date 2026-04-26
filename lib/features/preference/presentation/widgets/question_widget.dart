@@ -28,24 +28,43 @@ class QuestionPage extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.w700,
               color: cs.onSurface,
-              letterSpacing: -0.5,
+              letterSpacing: -0.3,
+              height: 1.3,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Choose one option',
+            style: TextStyle(
+              fontSize: 13,
+              color: cs.onSurface.withOpacity(0.4),
+              fontWeight: FontWeight.w400,
             ),
           ),
           const SizedBox(height: 20),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: options.map((option) {
+
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 2.6,
+            ),
+            itemCount: options.length,
+            itemBuilder: (context, index) {
+              final option = options[index];
               return OptionChip(
                 option: option,
                 isSelected: selected == option,
                 colorScheme: cs,
                 onTap: () => onSelected(option),
               );
-            }).toList(),
+            },
           ),
         ],
       ),
@@ -70,38 +89,56 @@ class OptionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final label = option is int ? '< $option ${l10n.min}' : option.toString();
 
     return RepaintBoundary(
       child: Material(
         color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(12),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 180),
             curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
             decoration: BoxDecoration(
               color: isSelected
-                  ? colorScheme.primaryContainer
+                  ? colorScheme.primary
                   : colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: isSelected
                     ? colorScheme.primary
-                    : colorScheme.outline.withOpacity(0.2),
-                width: isSelected ? 2 : 1,
+                    : colorScheme.outline.withOpacity(0.15),
+                width: 1.5,
               ),
             ),
-            child: Text(
-              option is int ? "< $option ${l10n.min}" : option.toString(),
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: isSelected
-                    ? colorScheme.onPrimaryContainer
-                    : colorScheme.onSurface,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (isSelected) ...[
+                  Icon(
+                    Icons.check_rounded,
+                    size: 15,
+                    color: colorScheme.onPrimary,
+                  ),
+                  const SizedBox(width: 6),
+                ],
+                Flexible(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurface.withOpacity(0.75),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

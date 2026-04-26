@@ -10,3 +10,7 @@ abstract class HomeEvent extends Equatable {
 class LoadRecentRecipes extends HomeEvent {
   const LoadRecentRecipes();
 }
+
+class RefreshRecentRecipes extends HomeEvent {
+  const RefreshRecentRecipes();
+}

@@ -4,5 +4,5 @@ class RecipeListArgs {
   final String imagePath;
   final TastePreferences preferences;
 
-  RecipeListArgs({required this.imagePath, required this.preferences});
+  const RecipeListArgs({required this.imagePath, required this.preferences});
 }

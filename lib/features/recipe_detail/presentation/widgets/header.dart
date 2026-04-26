@@ -42,7 +42,7 @@ class Header extends StatelessWidget {
           colorScheme: cs,
         ),
 
-        if (recipe.cuisine != null || recipe.dietaryInfo != null)
+        if (recipe.cuisine.isNotEmpty|| recipe.dietaryInfo.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: RecipeTagsRow(

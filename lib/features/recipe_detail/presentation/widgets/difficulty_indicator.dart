@@ -19,33 +19,35 @@ class RecipeDifficultyIndicator extends StatelessWidget {
 
     return Row(
       children: [
-        Text(
-          "${l10n.difficulty}: ",
-          style: TextStyle(
-            color: colorScheme.onSurface.withOpacity(0.7),
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(5, (index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Icon(
+                  index < difficulty ? Icons.circle : Icons.circle_outlined,
+                  size: 10,
+                  color: index < difficulty
+                      ? colorScheme.primary
+                      : colorScheme.onSurface.withOpacity(0.2),
+                ),
+              );
+            }),
           ),
         ),
-        ...List.generate(5, (index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 1),
-            child: Icon(
-              index < difficulty ? Icons.circle : Icons.circle_outlined,
-              size: 12,
-              color: index < difficulty
-                  ? colorScheme.primary
-                  : colorScheme.onSurface.withOpacity(0.3),
-            ),
-          );
-        }),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Text(
           DifficultyUtils.getDifficultyLabel(difficulty, l10n),
           style: TextStyle(
-            color: colorScheme.primary,
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface.withOpacity(0.6),
           ),
         ),
       ],

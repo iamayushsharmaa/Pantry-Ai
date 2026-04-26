@@ -17,24 +17,19 @@ class RecipeRepositoryImpl implements RecipeRepository {
     TastePreferences preferences,
     List<Recipe>? previouslySuggestedRecipes,
   ) async {
-    try {
-      final previousModels = previouslySuggestedRecipes
-          ?.map(RecipeMapper.toModel)
-          .toList();
+    final previousModels = previouslySuggestedRecipes
+        ?.map(RecipeMapper.toModel)
+        .toList();
 
-      final models = await remote.generateRecipes(
-        imagePath,
-        preferences,
-        previousModels,
-      );
+    final models = await remote.generateRecipes(
+      imagePath,
+      preferences,
+      previousModels,
+    );
 
-      await local.cacheRecipes(models);
+    await local.cacheRecipes(models);
 
-      return models;
-    } catch (_) {
-      final cachedModels = await local.getCachedRecipes();
-      return cachedModels;
-    }
+    return models;
   }
 
   @override

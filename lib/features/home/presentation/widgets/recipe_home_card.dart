@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pantry_ai/core/utils/difficulty_level.dart';
+
+import '../../../../core/utils/recipe_image_helper.dart';
 
 class RecipeHomeCard extends StatelessWidget {
   final ColorScheme colorScheme;
   final String title;
   final String cookTime;
-  final String difficulty;
+  final int difficulty;
   final String? imageUrl;
   final VoidCallback onTap;
 
@@ -19,152 +20,157 @@ class RecipeHomeCard extends StatelessWidget {
     required this.onTap,
   });
 
-  Color _getDifficultyColor() {
-    switch (difficulty.toLowerCase()) {
-      case 'easy':
-        return Colors.green;
-      case 'medium':
-        return Colors.orange;
-      case 'hard':
-        return Colors.red;
-      default:
-        return colorScheme.primary;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            width: 180,
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: colorScheme.outline.withOpacity(0.1)),
-              boxShadow: [
-                BoxShadow(
-                  color: colorScheme.shadow.withOpacity(0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 160,
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: colorScheme.outline.withOpacity(0.1)),
+            boxShadow: [
+              BoxShadow(
+                color: colorScheme.shadow.withOpacity(0.05),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ✅ Image with real cutout — no overflow
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(14),
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Image Section
-                Container(
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer.withOpacity(0.3),
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                    ),
+                child: SizedBox(
+                  height: 110,
+                  width: double.infinity,
+                  child: CardImage(
+                    imageUrl: imageUrl,
+                    title: title,
+                    colorScheme: colorScheme,
                   ),
-                  child: Stack(
-                    children: [
-                      if (imageUrl != null)
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(16),
-                          ),
-                          child: Image.network(
-                            imageUrl!,
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      else
-                        Center(
-                          child: Icon(
-                            Icons.restaurant_rounded,
-                            size: 48,
-                            color: colorScheme.onPrimaryContainer.withOpacity(
-                              0.4,
-                            ),
-                          ),
-                        ),
+                ),
+              ),
 
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: DifficultyUtils.getDifficultyColor(
-                              difficulty,
-                              colorScheme,
-                            ),
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            difficulty,
-                            style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
+                        height: 1.3,
                       ),
-                    ],
-                  ),
-                ),
-
-                // Content Section
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
                       children: [
+                        Icon(
+                          Icons.access_time_rounded,
+                          size: 12,
+                          color: colorScheme.onSurface.withOpacity(0.45),
+                        ),
+                        const SizedBox(width: 3),
                         Text(
-                          title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          cookTime,
                           style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: colorScheme.onSurface,
-                            height: 1.3,
+                            fontSize: 11,
+                            color: colorScheme.onSurface.withOpacity(0.5),
                           ),
                         ),
                         const Spacer(),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.access_time_rounded,
-                              size: 14,
-                              color: colorScheme.onSurface.withOpacity(0.6),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              cookTime,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: colorScheme.onSurface.withOpacity(0.6),
+                        ...List.generate(
+                          5,
+                          (i) => Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Container(
+                              width: 5,
+                              height: 5,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: i < difficulty
+                                    ? colorScheme.primary
+                                    : colorScheme.onSurface.withOpacity(0.15),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardImage extends StatelessWidget {
+  final String? imageUrl;
+  final String title;
+  final ColorScheme colorScheme;
+
+  const CardImage({
+    required this.imageUrl,
+    required this.title,
+    required this.colorScheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (imageUrl != null && imageUrl!.isNotEmpty) {
+      return Image.network(
+        imageUrl!,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        loadingBuilder: (_, child, progress) {
+          if (progress == null) return child;
+          return Placeholder(title: title);
+        },
+        errorBuilder: (_, __, ___) => Placeholder(title: title),
+      );
+    }
+    return Placeholder(title: title);
+  }
+}
+
+class Placeholder extends StatelessWidget {
+  final String title;
+
+  const Placeholder({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = recipeColorFromTitle(title);
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [color, color.withOpacity(0.7)],
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          Icons.restaurant_menu_rounded,
+          color: Colors.white.withOpacity(0.7),
+          size: 28,
         ),
       ),
     );

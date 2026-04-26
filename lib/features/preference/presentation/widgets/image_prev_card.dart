@@ -14,7 +14,7 @@ class ImagePreviewCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: RepaintBoundary(
         child: Container(
-          height: 180,
+          height: 300,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             boxShadow: [

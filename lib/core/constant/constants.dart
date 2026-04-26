@@ -3,16 +3,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../shared/models/recipe/recipe.dart';
 
 class Constants {
-  static String get geminiApiKey {
+  static late final String _geminiApiKey;
+  static late final String geminiApiUrl;
+
+  static void init() {
     final key = dotenv.env['GEMINI_API_KEY'];
     if (key == null || key.isEmpty) {
       throw Exception('GEMINI_API_KEY not found in .env');
     }
-    return key;
+    _geminiApiKey = key;
+    geminiApiUrl =
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=$_geminiApiKey";
   }
-
-  static String get geminiApiUrl =>
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey";
 
   static final List<Recipe> dummyRecipeList = [
     Recipe(
@@ -71,9 +73,7 @@ class Constants {
       tags: ["Dinner", "Pasta"],
     ),
 
-    // -------------------------------------------------------------
-    // 2. Veggie Avocado Salad Bowl
-    // -------------------------------------------------------------
+
     Recipe(
       id: "r2",
       title: "Veggie Avocado Salad Bowl",
@@ -129,9 +129,6 @@ class Constants {
       tags: ["Healthy", "Salad", "Vegan"],
     ),
 
-    // -------------------------------------------------------------
-    // 3. Classic Margherita Pizza
-    // -------------------------------------------------------------
     Recipe(
       id: "r3",
       title: "Classic Margherita Pizza",

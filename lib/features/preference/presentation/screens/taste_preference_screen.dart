@@ -1,15 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/common/recipe_list_args.dart';
 import '../../../../core/constant/preference_constant.dart';
 import '../../../../core/router/app_route_names.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/taste_preference_bloc.dart';
 import '../models/taste_preference_ui_model.dart';
-import '../widgets/image_prev_card.dart';
-import '../widgets/page_indicator.dart';
 import '../widgets/question_widget.dart';
 
 class TastePreferenceScreen extends StatefulWidget {
@@ -54,13 +53,36 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
     );
   }
 
+  void _onFinish(TastePreferenceState state) {
+    if (!mounted) return;
+
+    final prefs = TastePreferencesUi(
+      taste: state.taste,
+      cuisine: state.cuisine,
+      diet: state.diet,
+      maxCookingTime: state.maxCookingTime,
+    ).toEntity();
+
+    context.pushReplacementNamed(
+      AppRouteNames.recipesList,
+      extra: {
+        'imagePath': widget.imagePath,
+        'taste': prefs.taste,
+        'cuisine': prefs.cuisine,
+        'diet': prefs.diet,
+        'maxCookingTime': prefs.maxCookingTime,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
     return BlocBuilder<TastePreferenceBloc, TastePreferenceState>(
-      builder: (context, state) {
+      buildWhen: (prev, curr) => prev != curr,
+      builder: (blocContext, state) {
         return Scaffold(
           backgroundColor: cs.surface,
           appBar: AppBar(
@@ -83,13 +105,59 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
           body: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: 18),
-                ImagePreviewCard(imagePath: widget.imagePath, colorScheme: cs),
-                const SizedBox(height: 20),
-                PageIndicator(
-                  currentPage: state.currentPage,
-                  totalPages: 4,
-                  colorScheme: cs,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
+                          File(widget.imagePath),
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.taste_preference_title,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: cs.onSurface,
+                              ),
+                            ),
+                            Text(
+                              'Step ${state.currentPage + 1} of 4',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: cs.onSurface.withOpacity(0.45),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16,),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: (state.currentPage + 1) / 4,
+                      backgroundColor: cs.surfaceContainerHighest,
+                      color: cs.primary,
+                      minHeight: 4,
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 24),
@@ -149,22 +217,10 @@ class _TastePreferenceScreenState extends State<TastePreferenceScreen> {
                   isLastPage: state.isLastPage,
                   onPressed: () {
                     if (!state.isLastPage) {
-                      _nextPage(context, state.currentPage);
+                      _nextPage(blocContext, state.currentPage);
                       return;
                     }
-                    final prefs = TastePreferencesUi(
-                      taste: state.taste,
-                      cuisine: state.cuisine,
-                      diet: state.diet,
-                      maxCookingTime: state.maxCookingTime,
-                    );
-                    context.pushReplacementNamed(
-                      AppRouteNames.recipesList,
-                      extra: RecipeListArgs(
-                        imagePath: widget.imagePath,
-                        preferences: prefs.toEntity(),
-                      ),
-                    );
+                    _onFinish(state);
                   },
                 ),
               ],
@@ -201,24 +257,9 @@ class BottomActionButton extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: enabled
-                ? LinearGradient(
-                    colors: [
-                      colorScheme.primary,
-                      colorScheme.primary.withOpacity(0.9),
-                    ],
-                  )
-                : null,
-            color: enabled ? null : colorScheme.surfaceContainerHighest,
-            boxShadow: enabled
-                ? [
-                    BoxShadow(
-                      color: colorScheme.primary.withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ]
-                : null,
+            color: enabled
+                ? colorScheme.primary
+                : colorScheme.surfaceContainerHighest,
           ),
           child: Material(
             color: Colors.transparent,

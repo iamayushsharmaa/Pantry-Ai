@@ -97,9 +97,8 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     if (state.controller == null) return;
 
     try {
-      final XFile? file = await state.controller!.takePicture();
-
-      emit(state.copyWith(imagePath: file!.path));
+      final XFile file = await state.controller!.takePicture();
+      emit(state.copyWith(imagePath: file.path));
     } catch (e) {
       emit(state.copyWith(error: "Error capturing image: $e"));
     }

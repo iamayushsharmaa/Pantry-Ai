@@ -19,18 +19,20 @@ class RecipeSectionHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
+        Expanded(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 18, // ✅ reduced from 22
+              fontWeight: FontWeight.w700,
+              color: colorScheme.onSurface,
+              letterSpacing: -0.3,
+            ),
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(20),
@@ -39,7 +41,7 @@ class RecipeSectionHeader extends StatelessWidget {
             "$count ${l10n.items}",
             style: TextStyle(
               color: colorScheme.onPrimaryContainer,
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),

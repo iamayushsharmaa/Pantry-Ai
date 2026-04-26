@@ -21,7 +21,7 @@ class RecentRecipesList extends StatelessWidget {
       builder: (context, state) {
         if (state is HomeLoading) {
           return const SizedBox(
-            height: 204,
+            height: 220,
             child: Center(child: CircularProgressIndicator()),
           );
         }
@@ -55,7 +55,7 @@ class RecentRecipesList extends StatelessWidget {
                     colorScheme: colorScheme,
                     title: recipe.title,
                     cookTime: '${recipe.cookingTime} min',
-                    difficulty: recipe.difficulty.toString(),
+                    difficulty: recipe.difficulty,
                     imageUrl: recipe.imageUrl,
                     onTap: () {
                       context.pushNamed(

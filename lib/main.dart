@@ -6,13 +6,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/app_settings/app_settings_bloc.dart';
+import 'core/constant/constants.dart';
 import 'core/di/injections.dart';
 import 'core/router/router.dart';
 import 'core/theme/theme.dart';
 import 'features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/favorites/presentation/bloc/favorites_bloc.dart';
-import 'features/home/presentation/bloc/quick_bloc/quick_recipe_bloc.dart';
 import 'features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
 import 'features/settings/presentation/bloc/settings_bloc.dart';
@@ -24,8 +24,9 @@ void main() async {
   await Hive.initFlutter();
   try {
     await dotenv.load(fileName: ".env");
+    Constants.init();
   } catch (_) {
-    throw Exception('.env file not lfound');
+    throw Exception('.env file not found');
   }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initDependencies();
@@ -40,12 +41,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<HomeBloc>()..add(const LoadRecentRecipes()),
-        ),
-        BlocProvider(
-          create: (_) => sl<QuickRecipesBloc>()..add(const LoadQuickRecipes()),
-        ),
+        BlocProvider(create: (_) => sl<HomeBloc>()),
         BlocProvider(create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics())),
         BlocProvider(create: (_) => sl<SettingsBloc>()..add(SettingsStarted())),
         BlocProvider(create: (_) => sl<AuthBloc>()),
