@@ -10,7 +10,7 @@ class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
 
   static const _cacheKey = 'recipes';
   static const _timestampKey = 'recipes_timestamp';
-  static const _cacheDuration = Duration(days: 7);
+  static const _cacheDuration = Duration(days: 2);
 
   @override
   Future<void> cacheRecipes(List<RecipeModel> recipes) async {
