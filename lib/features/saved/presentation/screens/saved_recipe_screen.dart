@@ -37,12 +37,36 @@ class SavedScreen extends StatelessWidget {
 
             SliverToBoxAdapter(
               child: BlocBuilder<FavoritesBloc, FavoritesState>(
+                builder: (context, favState) {
+                  return BlocBuilder<SavedBloc, SavedState>(
+                    builder: (context, savedState) {
+                      final bothLoading =
+                          favState.isLoading &&
+                          favState.favorites.isEmpty &&
+                          savedState.savedRecipes.isEmpty;
+
+                      if (bothLoading) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 80),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
+                      return const SizedBox.shrink();
+                    },
+                  );
+                },
+              ),
+            ),
+
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+
+            SliverToBoxAdapter(
+              child: BlocBuilder<FavoritesBloc, FavoritesState>(
                 builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
+                  if (state.isLoading || state.favorites.isEmpty) {
+                    return const SizedBox.shrink();
                   }
 
                   if (state.favorites.isEmpty) {

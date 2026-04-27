@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pantry_ai/features/home/presentation/widgets/recipe_home_card.dart';
 
 import '../../../../core/router/app_route_names.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../recipe_suggestions/presentation/widgets/recipe_card_widget.dart';
 import '../bloc/recent_bloc/home_bloc.dart';
 import 'empty_state.dart';
 
@@ -20,8 +20,8 @@ class RecentRecipesList extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is HomeLoading) {
-          return const SizedBox(
-            height: 220,
+          return const Padding(
+            padding: EdgeInsets.only(top: 40),
             child: Center(child: CircularProgressIndicator()),
           );
         }
@@ -38,40 +38,34 @@ class RecentRecipesList extends StatelessWidget {
         if (state is HomeLoaded) {
           final recipes = state.recipes;
 
-          return SizedBox(
-            height: 204,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: recipes.length,
-              itemBuilder: (context, index) {
-                final recipe = recipes[index];
-
-                return Padding(
-                  padding: EdgeInsets.only(
-                    right: index < recipes.length - 1 ? 12 : 0,
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: recipes.length,
+            itemBuilder: (context, index) {
+              final recipe = recipes[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: RecipeCard(
+                  recipe: recipe,
+                  colorScheme: colorScheme,
+                  onTap: () => context.pushNamed(
+                    AppRouteNames.recipeDetail,
+                    extra: recipe.id,
                   ),
-                  child: RecipeHomeCard(
-                    colorScheme: colorScheme,
-                    title: recipe.title,
-                    cookTime: '${recipe.cookingTime} min',
-                    difficulty: recipe.difficulty,
-                    imageUrl: recipe.imageUrl,
-                    onTap: () {
-                      context.pushNamed(
-                        AppRouteNames.recipeDetail,
-                        extra: recipe.id,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           );
         }
 
         if (state is HomeError) {
-          return Center(child: Text(state.message));
+          return Center(
+            child: Text(
+              state.message,
+              style: TextStyle(color: colorScheme.error, fontSize: 13),
+            ),
+          );
         }
 
         return const SizedBox.shrink();

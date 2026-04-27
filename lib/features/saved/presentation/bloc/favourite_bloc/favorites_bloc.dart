@@ -14,33 +14,33 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   final ToggleFavorite toggleFavorite;
   final GetFavoritesStream getFavoritesStream;
 
-  StreamSubscription<List<FavoriteRecipe>>? _subscription;
-
   FavoritesBloc({
     required this.toggleFavorite,
     required this.getFavoritesStream,
   }) : super(FavoritesState.initial()) {
     on<LoadFavorites>(_onLoadFavorites);
     on<ToggleFavoriteEvent>(_onToggleFavorite);
-
     add(LoadFavorites());
   }
 
-  void _onLoadFavorites(LoadFavorites event, Emitter<FavoritesState> emit) {
+  Future<void> _onLoadFavorites(
+    LoadFavorites event,
+    Emitter<FavoritesState> emit,
+  ) async {
     emit(state.copyWith(isLoading: true));
-    _subscription?.cancel();
 
-    _subscription = getFavoritesStream().listen((favorites) {
-      final ids = favorites.map((f) => f.recipeId).toSet();
-
-      emit(
-        state.copyWith(
+    await emit.forEach<List<FavoriteRecipe>>(
+      getFavoritesStream(),
+      onData: (favorites) {
+        final ids = favorites.map((f) => f.recipeId).toSet();
+        return state.copyWith(
           favorites: favorites,
           favoriteIds: ids,
           isLoading: false,
-        ),
-      );
-    });
+        );
+      },
+      onError: (_, __) => state.copyWith(isLoading: false),
+    );
   }
 
   Future<void> _onToggleFavorite(
@@ -48,11 +48,5 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     Emitter<FavoritesState> emit,
   ) async {
     await toggleFavorite(event.recipeSnapshot);
-  }
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    return super.close();
   }
 }
