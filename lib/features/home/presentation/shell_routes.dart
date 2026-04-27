@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:pantry_ai/features/home/presentation/screens/all_recipe_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/home_screen.dart';
 import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 
