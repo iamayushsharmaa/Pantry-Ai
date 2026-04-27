@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../../core/utils/show_snackbar.dart';
-import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
+import '../../features/saved/presentation/bloc/favourite_bloc/favorites_bloc.dart';
 import '../../l10n/app_localizations.dart';
 
 class FavoriteAppBarButton extends StatelessWidget {

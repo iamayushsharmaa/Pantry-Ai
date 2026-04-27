@@ -14,7 +14,7 @@ class WidgetTree extends StatelessWidget {
   static const List<String> _tabs = [
     AppRoutes.home,
     AppRoutes.scan,
-    AppRoutes.analytics,
+    AppRoutes.saved,
     AppRoutes.settings,
   ];
 
@@ -87,15 +87,13 @@ class WidgetTree extends StatelessWidget {
             label: l10n.scan,
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/analytics.svg',
-              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+            icon: const Icon(Icons.bookmark_border_rounded, size: 22),
+            activeIcon: const Icon(
+              Icons.bookmark_rounded,
+              size: 22,
+              color: brandColor,
             ),
-            activeIcon: SvgPicture.asset(
-              'assets/icons/analytics.svg',
-              colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
-            ),
-            label: l10n.analytics,
+            label: 'Saved',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(

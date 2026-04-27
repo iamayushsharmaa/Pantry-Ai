@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../features/favorites/data/models/favorite_model.dart';
+import '../../../features/saved/data/model/favorite_model.dart';
 import '../recipe/recipe_model.dart';
 import '../recipe/recipe_snapshot_model.dart';
 

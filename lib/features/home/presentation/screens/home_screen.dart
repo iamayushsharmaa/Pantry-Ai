@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/core/common/state_chip.dart';
 import 'package:pantry_ai/core/common/theme_scaffold.dart';
-import 'package:pantry_ai/core/router/app_route_names.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../saved/presentation/bloc/saved_bloc/saved_bloc.dart';
 import '../bloc/recent_bloc/home_bloc.dart';
 import '../widgets/recent_recipe_list.dart';
 import '../widgets/scan_card_widget.dart';
@@ -19,20 +18,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _searchController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<HomeBloc>().add(const RefreshRecentRecipes());
     });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
 
   @override
@@ -56,23 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ScanCardWidget(),
                 const SizedBox(height: 25),
 
-                BlocBuilder<HomeBloc, HomeState>(
-                  builder: (context, state) {
-                    final hasData =
-                        state is HomeLoaded && state.recipes.isNotEmpty;
-
-                    return SectionHeader(
-                      colorScheme: cs,
-                      title: l10n.recently_generated,
-                      subtitle: l10n.your_latest_recipe_discoveries,
-                    );
-                  },
+                SectionHeader(
+                  colorScheme: cs,
+                  title: l10n.recently_generated,
+                  subtitle: l10n.your_latest_recipe_discoveries,
                 ),
                 const SizedBox(height: 14),
 
                 RecentRecipesList(colorScheme: cs),
 
-                const SizedBox(height: 14),
+                const SizedBox(height: 24),
               ],
             ),
           ),
@@ -117,11 +101,19 @@ class AppBarSection extends StatelessWidget {
             ),
           ],
         ),
-        StatChip(
-          icon: Icons.local_fire_department_rounded,
-          label: "630 ${l10n.cal}",
-          iconColor: Colors.deepOrange,
-          colorScheme: colorScheme,
+        BlocSelector<SavedBloc, SavedState, int>(
+          selector: (state) =>
+              state.savedRecipes.fold(0, (sum, r) => sum + r.recipe.calories),
+          builder: (context, totalCalories) {
+            if (totalCalories == 0) return const SizedBox.shrink();
+
+            return StatChip(
+              icon: Icons.local_fire_department_rounded,
+              label: '$totalCalories ${l10n.cal}',
+              iconColor: Colors.deepOrange,
+              colorScheme: colorScheme,
+            );
+          },
         ),
       ],
     );

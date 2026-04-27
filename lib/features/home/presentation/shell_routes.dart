@@ -5,7 +5,7 @@ import 'package:pantry_ai/features/home/presentation/screens/widget_tree.dart';
 
 import '../../../core/router/app_route_names.dart';
 import '../../../core/router/app_routes.dart';
-import '../../analytics/presentation/screens/analytics_screen.dart';
+import '../../saved/presentation/screens/saved_recipe_screen.dart';
 import '../../settings/presentation/screens/settings_screen.dart';
 
 ShellRoute shellRoute = ShellRoute(
@@ -16,13 +16,11 @@ ShellRoute shellRoute = ShellRoute(
       name: AppRouteNames.home,
       builder: (_, __) => const HomeScreen(),
     ),
-
     GoRoute(
-      path: AppRoutes.analytics,
-      name: AppRouteNames.analytics,
-      builder: (_, __) => const AnalyticsScreen(),
+      path: AppRoutes.saved,
+      name: AppRouteNames.saved,
+      builder: (_, __) => const SavedScreen(),
     ),
-
     GoRoute(
       path: AppRoutes.settings,
       name: AppRouteNames.settings,
@@ -30,14 +28,3 @@ ShellRoute shellRoute = ShellRoute(
     ),
   ],
 );
-
-List<GoRoute> recipeHomeRoutes = [
-  GoRoute(
-    path: AppRoutes.categorySeeAll,
-    name: AppRouteNames.categorySeeAll,
-    builder: (_, state) {
-      final category = state.extra! as String;
-      return AllRecipesScreen(category: category);
-    },
-  ),
-];

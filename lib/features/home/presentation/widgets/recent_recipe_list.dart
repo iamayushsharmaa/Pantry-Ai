@@ -60,7 +60,7 @@ class RecentRecipesList extends StatelessWidget {
                     onTap: () {
                       context.pushNamed(
                         AppRouteNames.recipeDetail,
-                        extra: recipe,
+                        extra: recipe.id,
                       );
                     },
                   ),

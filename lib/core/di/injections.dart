@@ -17,21 +17,12 @@ import 'package:pantry_ai/features/auth/data/remote/profile_remote_datasource.da
 import 'package:pantry_ai/features/auth/data/remote/profile_remote_datasource_impl.dart';
 import 'package:pantry_ai/features/auth/domain/usecases/update_profile_photo_usecase.dart';
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:pantry_ai/features/favorites/data/repository/favorite_repository_impl.dart';
-import 'package:pantry_ai/features/favorites/domain/usecases/toggle_favorite.dart';
-import 'package:pantry_ai/features/favorites/presentation/bloc/favorites_bloc.dart';
-import 'package:pantry_ai/features/home/data/remote/user_remote_datasource.dart';
-import 'package:pantry_ai/features/home/data/remote/user_remote_datasource_impl.dart';
 import 'package:pantry_ai/features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource.dart';
 import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource_impl.dart';
 import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
 import 'package:pantry_ai/features/recipe_detail/presentation/bloc/recipe_detail_bloc.dart';
-import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource.dart';
-import 'package:pantry_ai/features/save_recipe/data/datasource/saved_datasource_impl.dart';
-import 'package:pantry_ai/features/save_recipe/domain/repository/saved_repository.dart';
-import 'package:pantry_ai/features/save_recipe/presentation/bloc/saved_bloc.dart';
 import 'package:pantry_ai/features/scan/presentation/bloc/scan_bloc.dart';
 import 'package:pantry_ai/features/settings/presentation/bloc/settings_bloc.dart';
 
@@ -49,10 +40,6 @@ import '../../features/auth/domain/usecases/sign_in_usecase.dart';
 import '../../features/auth/domain/usecases/sign_out_usecase.dart';
 import '../../features/auth/domain/usecases/update_email_usecase.dart';
 import '../../features/auth/domain/usecases/update_name_usecase.dart';
-import '../../features/favorites/data/remote/favorite_data_source.dart';
-import '../../features/favorites/data/remote/favorite_data_source_impl.dart';
-import '../../features/favorites/domain/repository/favorite_repository.dart';
-import '../../features/favorites/domain/usecases/get_favorite_stream.dart';
 import '../../features/home/domain/usecases/get_recent_recipe_usecase.dart';
 import '../../features/recipe_detail/data/repository/recipe_detail_repository_impl.dart';
 import '../../features/recipe_detail/domain/usecases/get_recipe_by_id.dart';
@@ -65,9 +52,20 @@ import '../../features/recipe_suggestions/domain/repository/recipe_repository.da
 import '../../features/recipe_suggestions/domain/usecases/cache_reccipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/generate_recipe_usecase.dart';
 import '../../features/recipe_suggestions/domain/usecases/get_cached_recipes_usecase.dart';
-import '../../features/save_recipe/data/repository/saved_repository_impl.dart';
-import '../../features/save_recipe/domain/usecases/get_saved_stream.dart';
-import '../../features/save_recipe/domain/usecases/toogle_saved.dart';
+import '../../features/saved/data/datasource/favorite_data_source.dart';
+import '../../features/saved/data/datasource/favorite_data_source_impl.dart';
+import '../../features/saved/data/datasource/saved_datasource.dart';
+import '../../features/saved/data/datasource/saved_datasource_impl.dart';
+import '../../features/saved/data/repository/favorite_repository_impl.dart';
+import '../../features/saved/data/repository/saved_repository_impl.dart';
+import '../../features/saved/domain/repository/favorite_repository.dart';
+import '../../features/saved/domain/repository/saved_repository.dart';
+import '../../features/saved/domain/usecases/get_favorite_stream.dart';
+import '../../features/saved/domain/usecases/get_saved_stream.dart';
+import '../../features/saved/domain/usecases/toggle_favorite.dart';
+import '../../features/saved/domain/usecases/toogle_saved.dart';
+import '../../features/saved/presentation/bloc/favourite_bloc/favorites_bloc.dart';
+import '../../features/saved/presentation/bloc/saved_bloc/saved_bloc.dart';
 import '../network/network_info.dart';
 import '../services/image_picker_services.dart';
 import '../utils/firebase_auth_service.dart';
@@ -158,10 +156,6 @@ Future<void> _initRecipeFeature() async {
 
 Future<void> _initHomeFeature() async {
   sl.registerLazySingleton(() => GetRecentRecipesUseCase(sl()));
-
-  sl.registerLazySingleton<UserRecipesRemoteDataSource>(
-    () => UserRecipesRemoteDataSourceImpl(firestore: sl()),
-  );
 
   sl.registerFactory<HomeBloc>(() => HomeBloc(getRecentRecipes: sl()));
 }

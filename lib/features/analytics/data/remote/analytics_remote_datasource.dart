@@ -1,6 +1,6 @@
 
-import '../../../favorites/domain/entities/favorite_recipe_entity.dart';
-import '../../../save_recipe/domain/entities/save_recipe_entity.dart';
+import '../../../saved/domain/entities/favorite_recipe_entity.dart';
+import '../../../../shared/models/saved_recipe/save_recipe.dart';
 
 abstract class AnalyticsLocalDataSource {
   Future<List<SavedRecipe>> getSavedRecipes();

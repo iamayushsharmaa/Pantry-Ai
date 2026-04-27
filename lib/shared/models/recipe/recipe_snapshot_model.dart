@@ -40,14 +40,14 @@ class RecipeSnapshot {
 
   factory RecipeSnapshot.fromJson(Map<String, dynamic> map) {
     return RecipeSnapshot(
-      id: map['id'],
-      title: map['title'],
-      imageUrl: map['imageUrl'],
-      difficulty: map['difficulty'],
-      cookingTime: map['cookingTime'],
-      calories: map['calories'],
-      servings: map['servings'],
-      cuisine: map['cuisine'],
+      id: map['id']?.toString() ?? '',
+      title: map['title']?.toString() ?? '',
+      imageUrl: map['imageUrl']?.toString() ?? '',
+      difficulty: (map['difficulty'] as num?)?.toInt() ?? 1,
+      cookingTime: (map['cookingTime'] as num?)?.toInt() ?? 0,
+      calories: (map['calories'] as num?)?.toInt() ?? 0,
+      servings: (map['servings'] as num?)?.toInt() ?? 1,
+      cuisine: map['cuisine']?.toString() ?? '',
       tags: List<String>.from(map['tags'] ?? []),
     );
   }
@@ -79,12 +79,12 @@ class RecipeSnapshot {
       imageUrl: imageUrl,
       cookingTime: cookingTime,
       prepTime: 0,
-      difficulty: 0,
+      difficulty: difficulty,
       servings: servings,
       cuisine: cuisine,
       dietaryInfo: const [],
       rating: 0,
-      calories: 0,
+      calories: calories,
       nutrition: NutritionInfo(protein: 0, carbs: 0, fat: 0, fiber: 0),
       ingredients: const [],
       missingIngredients: const [],

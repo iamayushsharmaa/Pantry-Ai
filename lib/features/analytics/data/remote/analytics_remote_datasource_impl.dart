@@ -1,7 +1,7 @@
-import '../../../favorites/domain/entities/favorite_recipe_entity.dart';
-import '../../../favorites/domain/repository/favorite_repository.dart';
-import '../../../save_recipe/domain/entities/save_recipe_entity.dart';
-import '../../../save_recipe/domain/repository/saved_repository.dart';
+import '../../../../shared/models/saved_recipe/save_recipe.dart';
+import '../../../saved/domain/entities/favorite_recipe_entity.dart';
+import '../../../saved/domain/repository/favorite_repository.dart';
+import '../../../saved/domain/repository/saved_repository.dart';
 import 'analytics_remote_datasource.dart';
 
 class AnalyticsLocalDataSourceImpl implements AnalyticsLocalDataSource {

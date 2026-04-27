@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../save_recipe/domain/entities/save_recipe_entity.dart';
+import '../../../../shared/models/saved_recipe/save_recipe.dart';
 import '../../domain/entities/analytics_data.dart';
 import '../../domain/entities/range.dart';
 import '../../domain/repository/analytics_repository.dart';

@@ -12,9 +12,9 @@ import 'core/router/router.dart';
 import 'core/theme/theme.dart';
 import 'features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'features/saved/presentation/bloc/favourite_bloc/favorites_bloc.dart';
 import 'features/home/presentation/bloc/recent_bloc/home_bloc.dart';
-import 'features/save_recipe/presentation/bloc/saved_bloc.dart';
+import 'features/saved/presentation/bloc/saved_bloc/saved_bloc.dart';
 import 'features/settings/presentation/bloc/settings_bloc.dart';
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
@@ -42,8 +42,14 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<HomeBloc>()),
-        BlocProvider(create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics())),
-        BlocProvider(create: (_) => sl<SettingsBloc>()..add(SettingsStarted())),
+        BlocProvider(
+          lazy: true,
+          create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics()),
+        ),
+        BlocProvider(
+          lazy: true,
+          create: (_) => sl<SettingsBloc>()..add(SettingsStarted()),
+        ),
         BlocProvider(create: (_) => sl<AuthBloc>()),
         BlocProvider(create: (_) => sl<FavoritesBloc>()),
         BlocProvider(create: (_) => sl<SavedBloc>()),
