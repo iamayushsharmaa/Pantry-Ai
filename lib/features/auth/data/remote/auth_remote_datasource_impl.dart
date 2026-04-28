@@ -87,32 +87,31 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw ServerException();
     }
   }
+
   @override
   Future<UserModel> updateName(String newName) async {
     try {
       final user = firebaseAuth.currentUser;
       if (user == null) {
-        debugPrint('❌ updateName: no current user');
         throw ServerException();
       }
 
       debugPrint('👤 updateName: user=${user.uid}, newName=$newName');
       await user.updateDisplayName(newName);
-      debugPrint('✅ displayName updated');
       await user.reload();
-      debugPrint('✅ user reloaded');
+
+      await firestore.collection('users').doc(user.uid).update({
+        'displayName': newName,
+      });
 
       final updatedUser = firebaseAuth.currentUser!;
-      debugPrint('✅ returning updated user: ${updatedUser.displayName}');
       return UserModel.fromFirebaseUser(updatedUser);
     } on fb.FirebaseAuthException catch (e) {
-      debugPrint('❌ FirebaseAuthException: ${e.code} - ${e.message}');
       if (e.code == 'requires-recent-login') {
         throw ReAuthenticationRequiredException();
       }
       throw ServerException();
     } catch (e) {
-      debugPrint('❌ Unknown error in updateName: $e'); // 👈 catches non-Firebase errors
       throw ServerException();
     }
   }

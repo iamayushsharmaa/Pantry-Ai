@@ -102,6 +102,7 @@ class SettingsScreen extends StatelessWidget {
             children: [
               Scaffold(
                 appBar: AppBar(
+                  centerTitle: false,
                   title: Text(
                     l10n.settings,
                     style: TextStyle(
@@ -225,11 +226,7 @@ class SettingsScreen extends StatelessWidget {
       title: Text(label),
       onTap: () {
         context.read<AppSettingsBloc>().add(ChangeLanguage(locale));
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (Navigator.canPop(context)) {
-            Navigator.pop(context);
-          }
-        });
+        context.pop();
       },
     );
   }
@@ -239,17 +236,21 @@ class SettingsScreen extends StatelessWidget {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (_) => AlertDialog(
         title: Text(l10n.logout),
         content: Text(l10n.logout_confirmation),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              context.pop();
+              bloc.add(CloseLogoutDialog());
+            },
             child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pop();
               bloc.add(LogoutConfirmed());
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
@@ -265,17 +266,21 @@ class SettingsScreen extends StatelessWidget {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (_) => AlertDialog(
         title: Text(l10n.deleteAccount),
         content: Text(l10n.delete_confirmation),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              context.pop();
+              bloc.add(CloseDeleteDialog());
+            },
             child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pop();
               bloc.add(DeleteAccountConfirmed());
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),

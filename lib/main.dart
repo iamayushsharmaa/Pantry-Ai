@@ -45,7 +45,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider.value(value: appSettingsBloc),
         BlocProvider(create: (_) => sl<HomeBloc>()),
-        BlocProvider(create: (_) => sl<SettingsBloc>()..add(SettingsStarted())),
+        BlocProvider(
+          lazy: false,
+          create: (_) => sl<SettingsBloc>()..add(SettingsStarted()),
+        ),
         BlocProvider(create: (_) => sl<AuthBloc>()),
         BlocProvider(create: (_) => sl<FavoritesBloc>()),
         BlocProvider(create: (_) => sl<SavedBloc>()),
