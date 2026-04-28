@@ -44,10 +44,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<HomeBloc>()),
         BlocProvider(
           lazy: true,
-          create: (_) => sl<AnalyticsBloc>()..add(LoadAnalytics()),
-        ),
-        BlocProvider(
-          lazy: true,
           create: (_) => sl<SettingsBloc>()..add(SettingsStarted()),
         ),
         BlocProvider(create: (_) => sl<AuthBloc>()),

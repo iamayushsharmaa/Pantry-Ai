@@ -116,10 +116,16 @@ class SettingsScreen extends StatelessWidget {
                         onEditPressed: () => bloc.add(EditProfilePressed()),
                       ),
                       const SizedBox(height: 24),
-
                       SettingsSection(
                         title: l10n.app_settings,
                         children: [
+                          SettingsTile.navigation(
+                            icon: Icons.bar_chart_rounded,
+                            title: l10n.analytics,
+                            onTap: () =>
+                                context.pushNamed(AppRouteNames.analytics),
+                          ),
+
                           BlocBuilder<AppSettingsBloc, AppSettingsState>(
                             builder: (context, appState) {
                               return SettingsTile.switchTile(
@@ -170,7 +176,6 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
 
-              // ✅ action loader overlay
               if (state.isActionLoading)
                 Positioned.fill(
                   child: Container(
