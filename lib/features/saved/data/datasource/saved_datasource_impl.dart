@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pantry_ai/features/saved/data/datasource/saved_datasource.dart';
 
 import '../../../../shared/models/saved_recipe/saved_recipe_model.dart';
@@ -17,7 +18,9 @@ class SavedRemoteDataSourceImpl implements SavedRemoteDataSource {
     required String uid,
     required SavedRecipeModel recipe,
   }) async {
+    debugPrint('💾 Saving recipe: ${recipe.recipeId} for uid: $uid');
     await _col(uid).doc(recipe.recipeId).set(recipe.toFirestore());
+    debugPrint('✅ Recipe saved to Firestore');
   }
 
   @override
@@ -35,13 +38,13 @@ class SavedRemoteDataSourceImpl implements SavedRemoteDataSource {
 
   @override
   Stream<List<SavedRecipeModel>> getSavedStream(String uid) {
-    return _col(uid)
-        .orderBy('savedAt', descending: true)
-        .snapshots()
-        .map(
-          (snapshot) =>
-              snapshot.docs.map(SavedRecipeModel.fromFirestore).toList(),
-        );
+    debugPrint('📡 Starting saved stream for uid: $uid');
+    return _col(uid).orderBy('savedAt', descending: true).snapshots().map((
+      snapshot,
+    ) {
+      debugPrint('📬 Saved stream got ${snapshot.docs.length} docs');
+      return snapshot.docs.map(SavedRecipeModel.fromFirestore).toList();
+    });
   }
 
   @override

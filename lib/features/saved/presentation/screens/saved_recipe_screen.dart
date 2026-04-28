@@ -5,7 +5,7 @@ import '../bloc/favourite_bloc/favorites_bloc.dart';
 import '../bloc/saved_bloc/saved_bloc.dart';
 import '../widgets/cooking_list_section.dart';
 import '../widgets/favourite_section.dart';
-import '../widgets/saved_empty_section.dart';
+import '../widgets/full_saved_empty_widget.dart';
 
 class SavedScreen extends StatelessWidget {
   const SavedScreen({super.key});
@@ -40,68 +40,53 @@ class SavedScreen extends StatelessWidget {
                 builder: (context, favState) {
                   return BlocBuilder<SavedBloc, SavedState>(
                     builder: (context, savedState) {
-                      final bothLoading =
+                      final isLoading =
                           favState.isLoading &&
                           favState.favorites.isEmpty &&
                           savedState.savedRecipes.isEmpty;
 
-                      if (bothLoading) {
-                        return const Padding(
-                          padding: EdgeInsets.only(top: 80),
+                      final isEmpty =
+                          !favState.isLoading &&
+                          favState.favorites.isEmpty &&
+                          savedState.savedRecipes.isEmpty;
+
+                      // Loading
+                      if (isLoading) {
+                        return const SizedBox(
+                          height: 300,
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }
 
-                      return const SizedBox.shrink();
+                      if (isEmpty) {
+                        return SavedEmptyState(colorScheme: cs);
+                      }
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (favState.favorites.isNotEmpty) ...[
+                            FavoritesSection(
+                              favorites: favState.favorites,
+                              colorScheme: cs,
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+
+                          if (savedState.savedRecipes.isNotEmpty)
+                            CookingListSection(
+                              recipes: savedState.savedRecipes,
+                              colorScheme: cs,
+                            ),
+
+                          const SizedBox(height: 24),
+                        ],
+                      );
                     },
                   );
                 },
               ),
             ),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
-
-            SliverToBoxAdapter(
-              child: BlocBuilder<FavoritesBloc, FavoritesState>(
-                builder: (context, state) {
-                  if (state.isLoading || state.favorites.isEmpty) {
-                    return const SizedBox.shrink();
-                  }
-
-                  if (state.favorites.isEmpty) {
-                    return EmptySection(
-                      icon: Icons.favorite_border_rounded,
-                      message: 'No favorites yet',
-                      subtitle: 'Tap ♥ on any recipe to save it here',
-                      colorScheme: cs,
-                    );
-                  }
-
-                  return FavoritesSection(
-                    favorites: state.favorites,
-                    colorScheme: cs,
-                  );
-                },
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: BlocBuilder<SavedBloc, SavedState>(
-                builder: (context, state) {
-                  if (state.savedRecipes.isEmpty) {
-                    return const SizedBox.shrink();
-                  }
-
-                  return CookingListSection(
-                    recipes: state.savedRecipes,
-                    colorScheme: cs,
-                  );
-                },
-              ),
-            ),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
           ],
         ),
       ),

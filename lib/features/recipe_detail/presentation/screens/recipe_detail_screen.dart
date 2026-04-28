@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/recipe/recipe.dart';
@@ -68,10 +67,7 @@ class RecipeDetailScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: FavoriteAppBarButton(
-              recipe: recipe,
-              cs: cs,
-            ),
+            child: FavoriteAppBarButton(recipe: recipe, cs: cs),
           ),
         ],
       ),

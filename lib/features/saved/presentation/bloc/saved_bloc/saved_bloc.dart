@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../../shared/models/recipe/recipe.dart';
 import '../../../../../shared/models/saved_recipe/save_recipe.dart';
@@ -33,10 +34,11 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
 
     _subscription = getSavedStream().listen((either) {
       either.fold(
-        (_) {
-          // optional: emit error state
+        (failure) {
+          debugPrint('SavedStream failure: $failure');
         },
         (savedList) {
+          debugPrint('SavedStream got ${savedList.length} recipes');
           add(_SavedStreamUpdated(savedList));
         },
       );
@@ -55,9 +57,7 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
   ) async {
     final result = await toggleSaved(event.recipe, notes: event.notes);
 
-    result.fold((failure) {
-      // optional: emit error / snackbar
-    }, (_) {});
+    result.fold((failure) {}, (_) {});
   }
 
   @override
