@@ -5,6 +5,7 @@ import '../../../../core/services/image_picker_services.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/settings_bloc.dart';
 import '../widgets/profile_avatar.dart';
+
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 

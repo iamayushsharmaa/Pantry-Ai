@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pantry_ai/features/recipe_suggestions/presentation/recipe_routes.dart';
 
+import '../../features/analytics/presentation/analytics_route.dart';
 import '../../features/auth/presentation/auth_routes.dart';
 import '../../features/home/presentation/shell_routes.dart';
 import '../../features/preference/presentation/preference_routes.dart';
@@ -20,6 +21,7 @@ final GoRouter appRouter = GoRouter(
     ...recipeRoutes,
     ...detailRecipeRoutes,
     ...editProfileRoutes,
+    ...analyticsRoute,
     shellRoute,
   ],
   errorBuilder: (_, state) =>

@@ -260,10 +260,8 @@ Future<void> _initSettingsFeature() async {
     ),
   );
 
-  sl.registerFactory<AppSettingsBloc>(() => AppSettingsBloc());
-
   sl.registerFactory<SettingsBloc>(
-    () => SettingsBloc(
+        () => SettingsBloc(
       checkAuthStatusUseCase: sl(),
       updateEmailUseCase: sl(),
       updateNameUseCase: sl(),

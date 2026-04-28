@@ -10,10 +10,9 @@ import 'core/constant/constants.dart';
 import 'core/di/injections.dart';
 import 'core/router/router.dart';
 import 'core/theme/theme.dart';
-import 'features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/saved/presentation/bloc/favourite_bloc/favorites_bloc.dart';
 import 'features/home/presentation/bloc/recent_bloc/home_bloc.dart';
+import 'features/saved/presentation/bloc/favourite_bloc/favorites_bloc.dart';
 import 'features/saved/presentation/bloc/saved_bloc/saved_bloc.dart';
 import 'features/settings/presentation/bloc/settings_bloc.dart';
 import 'firebase_options.dart';
@@ -29,27 +28,27 @@ void main() async {
     throw Exception('.env file not found');
   }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await initDependencies();
 
-  runApp(const MyApp());
+  await initDependencies();
+  final appSettingsBloc = await AppSettingsBloc.create();
+  runApp(MyApp(appSettingsBloc: appSettingsBloc));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AppSettingsBloc appSettingsBloc;
+
+  const MyApp({super.key, required this.appSettingsBloc});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider.value(value: appSettingsBloc),
         BlocProvider(create: (_) => sl<HomeBloc>()),
-        BlocProvider(
-          lazy: true,
-          create: (_) => sl<SettingsBloc>()..add(SettingsStarted()),
-        ),
+        BlocProvider(create: (_) => sl<SettingsBloc>()..add(SettingsStarted())),
         BlocProvider(create: (_) => sl<AuthBloc>()),
         BlocProvider(create: (_) => sl<FavoritesBloc>()),
         BlocProvider(create: (_) => sl<SavedBloc>()),
-        BlocProvider(create: (_) => sl<AppSettingsBloc>()),
       ],
       child: const _AppView(),
     );

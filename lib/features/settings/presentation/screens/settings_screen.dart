@@ -26,7 +26,8 @@ class SettingsScreen extends StatelessWidget {
           prev.logoutSuccess != curr.logoutSuccess ||
           prev.accountDeleted != curr.accountDeleted ||
           prev.errorMessage != curr.errorMessage ||
-          prev.successMessage != curr.successMessage,
+          prev.successMessage != curr.successMessage ||
+          prev.navigation != curr.navigation,
       listener: (context, state) {
         if (state.navigation == SettingsNavigation.editProfile) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -80,9 +81,13 @@ class SettingsScreen extends StatelessWidget {
           });
         }
       },
-      builder: (context, state) {
-        final bloc = context.read<SettingsBloc>();
 
+      buildWhen: (prev, curr) =>
+          prev.isInitialLoading != curr.isInitialLoading ||
+          prev.isActionLoading != curr.isActionLoading ||
+          prev.user != curr.user,
+
+      builder: (context, state) {
         if (state.isInitialLoading && state.user == null) {
           return const ThemedScaffold(
             child: Center(child: CircularProgressIndicator()),
@@ -90,6 +95,7 @@ class SettingsScreen extends StatelessWidget {
         }
 
         final user = state.user!;
+        final bloc = context.read<SettingsBloc>();
 
         return ThemedScaffold(
           child: Stack(
@@ -127,6 +133,8 @@ class SettingsScreen extends StatelessWidget {
                           ),
 
                           BlocBuilder<AppSettingsBloc, AppSettingsState>(
+                            buildWhen: (prev, curr) =>
+                                prev.themeMode != curr.themeMode,
                             builder: (context, appState) {
                               return SettingsTile.switchTile(
                                 icon: Icons.dark_mode_outlined,
@@ -176,13 +184,18 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
 
-              if (state.isActionLoading)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.15),
-                    child: const Center(child: CircularProgressIndicator()),
-                  ),
-                ),
+              BlocSelector<SettingsBloc, SettingsState, bool>(
+                selector: (state) => state.isActionLoading,
+                builder: (context, isLoading) {
+                  if (!isLoading) return const SizedBox.shrink();
+                  return Positioned.fill(
+                    child: Container(
+                      color: Colors.black.withOpacity(0.15),
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         );

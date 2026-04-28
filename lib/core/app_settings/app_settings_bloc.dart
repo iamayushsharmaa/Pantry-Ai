@@ -8,24 +8,16 @@ part 'app_settings_event.dart';
 part 'app_settings_state.dart';
 
 class AppSettingsBloc extends Bloc<AppSettingsEvent, AppSettingsState> {
-  AppSettingsBloc()
-    : super(
-        const AppSettingsState(
-          themeMode: ThemeMode.system,
-          locale: Locale('en'),
-        ),
-      ) {
-    _loadSavedPreferences();
-
+  AppSettingsBloc._({required ThemeMode themeMode, required Locale locale})
+    : super(AppSettingsState(themeMode: themeMode, locale: locale)) {
     on<ChangeThemeMode>(_onChangeThemeMode);
     on<ChangeLanguage>(_onChangeLanguage);
   }
 
-  Future<void> _loadSavedPreferences() async {
+  static Future<AppSettingsBloc> create() async {
     final themeMode = await AppPreferences.getThemeMode();
     final locale = await AppPreferences.getLocale();
-    add(ChangeThemeMode(themeMode));
-    add(ChangeLanguage(locale));
+    return AppSettingsBloc._(themeMode: themeMode, locale: locale);
   }
 
   Future<void> _onChangeThemeMode(

@@ -12,6 +12,7 @@ class AnalyticsKpiGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
 
     return GridView(
       shrinkWrap: true,
@@ -26,22 +27,26 @@ class AnalyticsKpiGrid extends StatelessWidget {
         AnalyticsKpiCard(
           title: l10n.added_to_cooking,
           value: analytics.totalAddedToCooking.toString(),
-          icon: Icons.restaurant_menu,
+          icon: Icons.restaurant_menu_rounded,
+          iconBg: cs.primaryContainer,
         ),
         AnalyticsKpiCard(
           title: l10n.this_week,
           value: analytics.addedThisWeek.toString(),
-          icon: Icons.calendar_today,
+          icon: Icons.calendar_today_rounded,
+          iconBg: Colors.teal.withOpacity(0.15),
         ),
         AnalyticsKpiCard(
           title: l10n.top_cuisine,
           value: analytics.topCuisine,
-          icon: Icons.local_fire_department,
+          icon: Icons.local_fire_department_rounded,
+          iconBg: Colors.orange.withOpacity(0.15),
         ),
         AnalyticsKpiCard(
           title: l10n.avg_cook_time,
           value: '${analytics.averageCookingTime.toStringAsFixed(0)} min',
-          icon: Icons.timer,
+          icon: Icons.timer_rounded,
+          iconBg: Colors.amber.withOpacity(0.15),
         ),
       ],
     );

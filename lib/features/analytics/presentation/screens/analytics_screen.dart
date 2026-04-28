@@ -33,9 +33,6 @@ class AnalyticsScreen extends StatelessWidget {
         ),
 
         body: BlocBuilder<AnalyticsBloc, AnalyticsState>(
-          buildWhen: (previous, current) {
-            return previous.runtimeType != current.runtimeType;
-          },
           builder: (context, state) {
             if (state is AnalyticsLoading) {
               return Center(
