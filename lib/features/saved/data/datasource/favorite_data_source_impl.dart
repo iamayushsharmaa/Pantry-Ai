@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../../shared/models/recipe/recipe_snapshot_model.dart';
+import '../../../../shared/models/recipe/recipe.dart';
 import '../model/favorite_model.dart';
 import 'favorite_data_source.dart';
 
@@ -17,12 +17,9 @@ class FavoriteRemoteDataSourceImpl implements FavoriteRemoteDataSource {
       firestore.collection('users').doc(_uid).collection('favorites');
 
   @override
-  Future<void> addToFavorites(RecipeSnapshot snapshot) async {
-    await _favCol.doc(snapshot.id).set({
-      'recipeId': snapshot.id,
-      'favoritedAt': FieldValue.serverTimestamp(),
-      'recipeSnapshot': snapshot.toJson(),
-    });
+  Future<void> addToFavorites(Recipe recipe) async {
+    final model = FavoriteRecipeModel.fromRecipe(userId: _uid, recipe: recipe);
+    await _favCol.doc(recipe.id).set(model.toFirestore());
   }
 
   @override

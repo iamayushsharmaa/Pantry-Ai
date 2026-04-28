@@ -3,9 +3,9 @@ part of 'favorites_bloc.dart';
 sealed class FavoritesEvent {}
 
 class ToggleFavoriteEvent extends FavoritesEvent {
-  final RecipeSnapshot recipeSnapshot;
+  final Recipe recipe;
 
-  ToggleFavoriteEvent(this.recipeSnapshot);
+  ToggleFavoriteEvent(this.recipe);
 }
 
 class LoadFavorites extends FavoritesEvent {}

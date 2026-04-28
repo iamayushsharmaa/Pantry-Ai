@@ -1,24 +1,24 @@
-import '../../../../shared/models/recipe/recipe_snapshot_model.dart';
+import '../../../../shared/models/recipe/recipe.dart';
 
 class FavoriteRecipe {
   final String userId;
   final String recipeId;
   final DateTime favoritedAt;
-  final RecipeSnapshot recipeSnapshot;
+  final Recipe recipe;
 
   FavoriteRecipe({
     required this.userId,
     required this.recipeId,
     required this.favoritedAt,
-    required this.recipeSnapshot,
+    required this.recipe,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FavoriteRecipe &&
-          runtimeType == other.runtimeType &&
-          recipeId == other.recipeId;
+          other is FavoriteRecipe &&
+              runtimeType == other.runtimeType &&
+              recipeId == other.recipeId;
 
   @override
   int get hashCode => recipeId.hashCode;

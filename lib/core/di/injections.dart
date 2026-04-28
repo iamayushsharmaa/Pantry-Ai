@@ -19,8 +19,6 @@ import 'package:pantry_ai/features/auth/domain/usecases/update_profile_photo_use
 import 'package:pantry_ai/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pantry_ai/features/home/presentation/bloc/recent_bloc/home_bloc.dart';
 import 'package:pantry_ai/features/preference/presentation/bloc/taste_preference_bloc.dart';
-import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource.dart';
-import 'package:pantry_ai/features/recipe_detail/data/remote/recipe_detail_datasource_impl.dart';
 import 'package:pantry_ai/features/recipe_detail/domain/repository/recipe_detail_repository.dart';
 import 'package:pantry_ai/features/recipe_detail/presentation/bloc/recipe_detail_bloc.dart';
 import 'package:pantry_ai/features/scan/presentation/bloc/scan_bloc.dart';
@@ -136,12 +134,8 @@ Future<void> _initRecipeFeature() async {
     () => RecipeRepositoryImpl(remote: sl(), local: sl()),
   );
 
-  sl.registerLazySingleton<RecipeDetailRemoteDataSource>(
-    () => RecipeDetailRemoteDataSourceImpl(sl()),
-  );
-
   sl.registerLazySingleton<RecipeDetailRepository>(
-    () => RecipeDetailRepositoryImpl(sl()),
+    () => RecipeDetailRepositoryImpl(local: sl()),
   );
 
   sl.registerLazySingleton(() => GetRecipeById(sl()));

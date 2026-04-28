@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../recipe/recipe.dart';
+import '../recipe/recipe_model.dart';
 import 'save_recipe.dart';
 
 class SavedRecipeModel {
   final String recipeId;
   final DateTime savedAt;
-  final RecipeSnapshot recipeSnapshot;
+  final Map<String, dynamic> recipeJson;
   final String? notes;
 
   SavedRecipeModel({
     required this.recipeId,
     required this.savedAt,
-    required this.recipeSnapshot,
+    required this.recipeJson,
     this.notes,
   });
 
@@ -21,7 +21,7 @@ class SavedRecipeModel {
     return {
       'recipeId': recipeId,
       'savedAt': Timestamp.fromDate(savedAt),
-      'recipeSnapshot': recipeSnapshot.toJson(),
+      'recipe': recipeJson,
       'notes': notes,
     };
   }
@@ -29,10 +29,10 @@ class SavedRecipeModel {
   factory SavedRecipeModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return SavedRecipeModel(
-      recipeId: data['recipeId'],
+      recipeId: data['recipeId'] as String,
       savedAt: (data['savedAt'] as Timestamp).toDate(),
-      recipeSnapshot: RecipeSnapshot.fromJson(data['recipeSnapshot']),
-      notes: data['notes'],
+      recipeJson: Map<String, dynamic>.from(data['recipe']),
+      notes: data['notes'] as String?,
     );
   }
 
@@ -40,7 +40,7 @@ class SavedRecipeModel {
     return SavedRecipe(
       recipeId: recipeId,
       savedAt: savedAt,
-      recipe: recipeSnapshot.toEntity(),
+      recipe: RecipeModel.fromJson(recipeJson),
       notes: notes,
     );
   }
@@ -49,7 +49,7 @@ class SavedRecipeModel {
     return SavedRecipeModel(
       recipeId: recipe.id,
       savedAt: DateTime.now(),
-      recipeSnapshot: RecipeSnapshot.fromRecipe(recipe),
+      recipeJson: RecipeModel.fromEntity(recipe).toJson(),
       notes: notes,
     );
   }

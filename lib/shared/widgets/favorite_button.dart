@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe.dart';
 
 import '../../core/utils/show_snackbar.dart';
 import '../../features/saved/presentation/bloc/favourite_bloc/favorites_bloc.dart';
 import '../../l10n/app_localizations.dart';
 
 class FavoriteAppBarButton extends StatelessWidget {
-  final RecipeSnapshot recipe;
+  final Recipe recipe;
   final ColorScheme cs;
 
-  const FavoriteAppBarButton({
-    required this.recipe,
-    required this.cs,
-  });
+  const FavoriteAppBarButton({required this.recipe, required this.cs});
 
   @override
   Widget build(BuildContext context) {

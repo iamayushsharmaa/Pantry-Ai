@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/recipe_image_helper.dart';
-import '../../../../shared/models/recipe/recipe_snapshot_model.dart';
+import '../../../../shared/models/recipe/recipe.dart';
 import 'gradient_placeholder.dart';
 
 class FavoriteCard extends StatelessWidget {
-  final RecipeSnapshot snapshot;
+  final Recipe recipe;
   final ColorScheme colorScheme;
   final VoidCallback onTap;
   final VoidCallback onUnfavorite;
 
   const FavoriteCard({
-    required this.snapshot,
+    required this.recipe,
     required this.colorScheme,
     required this.onTap,
     required this.onUnfavorite,
@@ -19,7 +19,7 @@ class FavoriteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = recipeColorFromTitle(snapshot.title);
+    final color = recipeColorFromTitle(recipe.title);
 
     return GestureDetector(
       onTap: onTap,
@@ -48,9 +48,9 @@ class FavoriteCard extends StatelessWidget {
               child: SizedBox(
                 height: 110,
                 width: double.infinity,
-                child: snapshot.imageUrl.isNotEmpty
+                child: (recipe.imageUrl != null && recipe.imageUrl!.isNotEmpty)
                     ? Image.network(
-                        snapshot.imageUrl,
+                        recipe.imageUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) =>
                             GradientPlaceholder(color: color),
@@ -65,7 +65,7 @@ class FavoriteCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    snapshot.title,
+                    recipe.title,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -85,7 +85,7 @@ class FavoriteCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 3),
                       Text(
-                        '${snapshot.cookingTime} min',
+                        '${recipe.cookingTime} min',
                         style: TextStyle(
                           fontSize: 11,
                           color: colorScheme.onSurface.withOpacity(0.5),

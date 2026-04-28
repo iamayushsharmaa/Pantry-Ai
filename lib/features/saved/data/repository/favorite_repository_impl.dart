@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../shared/models/recipe/recipe.dart';
 import '../../../auth/data/remote/auth_local_data_source.dart';
 import '../../domain/entities/favorite_recipe_entity.dart';
 import '../../domain/repository/favorite_repository.dart';
@@ -14,11 +14,9 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   FavoriteRepositoryImpl({required this.remote, required this.auth});
 
   @override
-  Future<Either<Failure, void>> addToFavorites(
-    RecipeSnapshot recipeSnapshot,
-  ) async {
+  Future<Either<Failure, void>> addToFavorites(Recipe recipe) async {
     try {
-      await remote.addToFavorites(recipeSnapshot);
+      await remote.addToFavorites(recipe);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure());
@@ -49,17 +47,8 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   Stream<Either<Failure, List<FavoriteRecipe>>> getFavoritesStream() {
     return remote
         .getFavoritesStream()
-        .map((favoriteModels) {
-          final entities = favoriteModels
-              .map(
-                (model) => FavoriteRecipe(
-                  userId: model.userId,
-                  recipeId: model.recipeId,
-                  favoritedAt: model.favoritedAt,
-                  recipeSnapshot: model.recipeSnapshot,
-                ),
-              )
-              .toList();
+        .map((models) {
+          final entities = models.map((m) => m.toEntity()).toList();
           return Right<Failure, List<FavoriteRecipe>>(entities);
         })
         .handleError(
@@ -71,7 +60,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   Future<Either<Failure, List<FavoriteRecipe>>> getFavoritesOnce() async {
     try {
       final models = await remote.getFavoritesOnce();
-      return Right(models.map((model) => model).toList());
+      return Right(models.map((m) => m.toEntity()).toList());
     } catch (_) {
       return Left(ServerFailure());
     }

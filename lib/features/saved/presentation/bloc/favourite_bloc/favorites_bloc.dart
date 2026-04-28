@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
+import '../../../../../shared/models/recipe/recipe.dart';
 import '../../../domain/entities/favorite_recipe_entity.dart';
 import '../../../domain/usecases/get_favorite_stream.dart';
 import '../../../domain/usecases/toggle_favorite.dart';
@@ -47,6 +47,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     ToggleFavoriteEvent event,
     Emitter<FavoritesState> emit,
   ) async {
-    await toggleFavorite(event.recipeSnapshot);
+    await toggleFavorite(event.recipe);
   }
 }

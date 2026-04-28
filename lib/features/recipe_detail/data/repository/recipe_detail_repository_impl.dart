@@ -1,24 +1,26 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:pantry_ai/features/recipe_suggestions/data/datasource/local/recipe_local_datasource.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../domain/repository/recipe_detail_repository.dart';
-import '../remote/recipe_detail_datasource.dart';
 
 class RecipeDetailRepositoryImpl implements RecipeDetailRepository {
-  final RecipeDetailRemoteDataSource remote;
+  final RecipeLocalDataSource local;
 
-  RecipeDetailRepositoryImpl(this.remote);
+  RecipeDetailRepositoryImpl({required this.local});
 
   @override
   Future<Either<Failure, Recipe>> getRecipeById(String recipeId) async {
     try {
-      final model = await remote.getRecipeById(recipeId);
-      return Right(model);
+      final cached = await local.getCachedRecipes();
+      final recipe = cached.where((r) => r.id == recipeId).firstOrNull;
+      if (recipe != null) return Right(recipe);
+      return Left(ServerFailure());
     } on NetworkException {
       return Left(NetworkFailure());
-    }  catch (_) {
+    } catch (_) {
       return Left(ServerFailure());
     }
   }

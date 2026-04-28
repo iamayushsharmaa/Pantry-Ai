@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pantry_ai/shared/models/recipe/recipe.dart';
 
 import 'ingredients_model.dart';
@@ -96,40 +95,40 @@ class RecipeModel extends Recipe {
     'tags': tags,
   };
 
-  Map<String, dynamic> toFirestore({bool includeTimestamp = true}) {
-    return {
-      ...toJson(),
-      if (includeTimestamp) 'createdAt': FieldValue.serverTimestamp(),
-    };
-  }
-
-  factory RecipeModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>? ?? {};
-    return RecipeModel.fromJson({'id': doc.id, ...data});
-  }
-
-  factory RecipeModel.fromSnapshot(
-    Map<String, dynamic> snapshot,
-    String recipeId,
-  ) {
+  factory RecipeModel.fromEntity(Recipe recipe) {
     return RecipeModel(
-      id: recipeId,
-      title: snapshot['title'] ?? '',
-      description: '',
-      imageUrl: snapshot['imageUrl'] ?? '',
-      cookingTime: snapshot['cookingTime'] as int? ?? 0,
-      prepTime: 0,
-      difficulty: snapshot['difficulty'] as int? ?? 1,
-      servings: 1,
-      cuisine: snapshot['cuisine'] ?? '',
-      dietaryInfo: const [],
-      rating: 0.0,
-      calories: snapshot['calories'] as int? ?? 0,
-      nutrition: const NutritionInfo(protein: 0, carbs: 0, fat: 0, fiber: 0),
-      ingredients: const [],
-      missingIngredients: const [],
-      instructions: const [],
-      tags: List<String>.from(snapshot['tags'] ?? const []),
+      id: recipe.id,
+      title: recipe.title,
+      description: recipe.description,
+      imageUrl: recipe.imageUrl,
+      cookingTime: recipe.cookingTime,
+      prepTime: recipe.prepTime,
+      difficulty: recipe.difficulty,
+      servings: recipe.servings,
+      cuisine: recipe.cuisine,
+      dietaryInfo: recipe.dietaryInfo,
+      rating: recipe.rating,
+      calories: recipe.calories,
+      nutrition: NutritionInfoModel(
+        protein: recipe.nutrition.protein,
+        carbs: recipe.nutrition.carbs,
+        fat: recipe.nutrition.fat,
+        fiber: recipe.nutrition.fiber,
+      ),
+      ingredients: recipe.ingredients
+          .map(
+            (i) => IngredientModel(
+              id: i.id,
+              name: i.name,
+              quantity: i.quantity,
+              unit: i.unit,
+              isAvailable: i.isAvailable,
+            ),
+          )
+          .toList(),
+      missingIngredients: recipe.missingIngredients,
+      instructions: recipe.instructions,
+      tags: recipe.tags,
     );
   }
 }

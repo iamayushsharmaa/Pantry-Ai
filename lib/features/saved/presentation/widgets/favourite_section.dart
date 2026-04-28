@@ -37,13 +37,13 @@ class FavoritesSection extends StatelessWidget {
             itemCount: favorites.length,
             itemBuilder: (context, index) {
               final fav = favorites[index];
-              final r = fav.recipeSnapshot;
+              final r = fav.recipe;
               return Padding(
                 padding: EdgeInsets.only(
                   right: index < favorites.length - 1 ? 10 : 0,
                 ),
                 child: FavoriteCard(
-                  snapshot: r,
+                  recipe: r,
                   colorScheme: colorScheme,
                   onTap: () => context.pushNamed(
                     AppRouteNames.recipeDetail,

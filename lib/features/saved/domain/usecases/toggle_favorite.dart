@@ -1,4 +1,4 @@
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
+import 'package:pantry_ai/shared/models/recipe/recipe.dart';
 
 import '../repository/favorite_repository.dart';
 
@@ -7,14 +7,14 @@ class ToggleFavorite {
 
   ToggleFavorite(this.repo);
 
-  Future<void> call(RecipeSnapshot recipeSnapshot) async {
+  Future<void> call(Recipe recipe) async {
     final isFav = await repo
-        .isFavorite(recipeSnapshot.id)
+        .isFavorite(recipe.id)
         .then((e) => e.fold((_) => false, (v) => v));
     if (isFav) {
-      await repo.removeFromFavorites(recipeSnapshot.id);
+      await repo.removeFromFavorites(recipe.id);
     } else {
-      await repo.addToFavorites(recipeSnapshot);
+      await repo.addToFavorites(recipe);
     }
   }
 }

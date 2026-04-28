@@ -1,14 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pantry_ai/shared/models/recipe/recipe_snapshot_model.dart';
 
+import '../../../../shared/models/recipe/recipe.dart';
+import '../../../../shared/models/recipe/recipe_model.dart';
 import '../../domain/entities/favorite_recipe_entity.dart';
 
-class FavoriteRecipeModel extends FavoriteRecipe {
+class FavoriteRecipeModel {
+  final String userId;
+  final String recipeId;
+  final DateTime favoritedAt;
+  final Map<String, dynamic> recipeJson;
+
   FavoriteRecipeModel({
-    required super.userId,
-    required super.recipeId,
-    required super.favoritedAt,
-    required super.recipeSnapshot,
+    required this.userId,
+    required this.recipeId,
+    required this.favoritedAt,
+    required this.recipeJson,
   });
 
   Map<String, dynamic> toFirestore() {
@@ -16,17 +22,38 @@ class FavoriteRecipeModel extends FavoriteRecipe {
       'userId': userId,
       'recipeId': recipeId,
       'favoritedAt': Timestamp.fromDate(favoritedAt),
-      'recipeSnapshot': recipeSnapshot.toJson(),
+      'recipe': recipeJson,
     };
   }
 
   factory FavoriteRecipeModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return FavoriteRecipeModel(
-      userId: data['userId'],
-      recipeId: data['recipeId'],
+      userId: data['userId'] as String,
+      recipeId: data['recipeId'] as String,
       favoritedAt: (data['favoritedAt'] as Timestamp).toDate(),
-      recipeSnapshot: RecipeSnapshot.fromJson(data['recipeSnapshot']),
+      recipeJson: Map<String, dynamic>.from(data['recipe']),
+    );
+  }
+
+  FavoriteRecipe toEntity() {
+    return FavoriteRecipe(
+      userId: userId,
+      recipeId: recipeId,
+      favoritedAt: favoritedAt,
+      recipe: RecipeModel.fromJson(recipeJson),
+    );
+  }
+
+  factory FavoriteRecipeModel.fromRecipe({
+    required String userId,
+    required Recipe recipe,
+  }) {
+    return FavoriteRecipeModel(
+      userId: userId,
+      recipeId: recipe.id,
+      favoritedAt: DateTime.now(),
+      recipeJson: RecipeModel.fromEntity(recipe).toJson(),
     );
   }
 }
