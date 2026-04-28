@@ -69,7 +69,7 @@ class RecipeDetailScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: FavoriteAppBarButton(
-              recipe: RecipeSnapshot.fromRecipe(recipe),
+              recipe: recipe,
               cs: cs,
             ),
           ),
