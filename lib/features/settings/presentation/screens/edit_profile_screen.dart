@@ -7,7 +7,9 @@ import '../bloc/settings_bloc.dart';
 import '../widgets/profile_avatar.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  final ImagePickerService imagePickerService;
+
+  const EditProfileScreen({super.key, required this.imagePickerService});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -38,7 +40,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
-    final imagePicker = context.read<ImagePickerService>();
 
     return Scaffold(
       appBar: AppBar(
@@ -52,20 +53,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
       body: BlocConsumer<SettingsBloc, SettingsState>(
+        listenWhen: (prev, curr) =>
+            prev.errorMessage != curr.errorMessage ||
+            prev.successMessage != curr.successMessage,
         listener: (context, state) {
           if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
           }
-
           if (state.successMessage != null) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.successMessage!)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.successMessage!)));
           }
         },
+
+        buildWhen: (prev, curr) =>
+            prev.isActionLoading != curr.isActionLoading ||
+            prev.user != curr.user,
+
         builder: (context, state) {
           final user = state.user;
-
           if (user == null) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -78,12 +87,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   photoUrl: user.profile?.photoUrl,
                   isLoading: state.isActionLoading,
                   onTap: () async {
-                    final image =
-                    await imagePicker.pickImageFromGallery();
+                    final image = await widget.imagePickerService
+                        .pickImageFromGallery();
                     if (image != null && context.mounted) {
-                      context
-                          .read<SettingsBloc>()
-                          .add(UpdateProfilePhotoRequested(image));
+                      context.read<SettingsBloc>().add(
+                        UpdateProfilePhotoRequested(image),
+                      );
                     }
                   },
                 ),
@@ -94,8 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   style: TextStyle(color: cs.onSurface),
                   decoration: InputDecoration(
                     labelText: l10n.full_name,
-                    prefixIcon:
-                    Icon(Icons.person_outline, color: cs.primary),
+                    prefixIcon: Icon(Icons.person_outline, color: cs.primary),
                     filled: true,
                     fillColor: cs.surface,
                     border: OutlineInputBorder(
@@ -112,20 +120,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     onPressed: state.isActionLoading
                         ? null
                         : () {
-                      final newName =
-                      _nameController.text.trim();
-                      if (newName.isNotEmpty &&
-                          newName != user.name) {
-                        context
-                            .read<SettingsBloc>()
-                            .add(UpdateNameRequested(newName));
-                      }
-                    },
+                            final newName = _nameController.text.trim();
+                            if (newName.isNotEmpty && newName != user.name) {
+                              context.read<SettingsBloc>().add(
+                                UpdateNameRequested(newName),
+                              );
+                            }
+                          },
                     child: state.isActionLoading
                         ? const CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    )
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          )
                         : Text(l10n.save_changes),
                   ),
                 ),

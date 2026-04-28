@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/errors/exceptions.dart';
@@ -86,22 +87,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw ServerException();
     }
   }
-
   @override
   Future<UserModel> updateName(String newName) async {
     try {
       final user = firebaseAuth.currentUser;
-      if (user == null) throw ServerException();
+      if (user == null) {
+        debugPrint('❌ updateName: no current user');
+        throw ServerException();
+      }
 
+      debugPrint('👤 updateName: user=${user.uid}, newName=$newName');
       await user.updateDisplayName(newName);
+      debugPrint('✅ displayName updated');
       await user.reload();
+      debugPrint('✅ user reloaded');
 
       final updatedUser = firebaseAuth.currentUser!;
+      debugPrint('✅ returning updated user: ${updatedUser.displayName}');
       return UserModel.fromFirebaseUser(updatedUser);
     } on fb.FirebaseAuthException catch (e) {
+      debugPrint('❌ FirebaseAuthException: ${e.code} - ${e.message}');
       if (e.code == 'requires-recent-login') {
         throw ReAuthenticationRequiredException();
       }
+      throw ServerException();
+    } catch (e) {
+      debugPrint('❌ Unknown error in updateName: $e'); // 👈 catches non-Firebase errors
       throw ServerException();
     }
   }

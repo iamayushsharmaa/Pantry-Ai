@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fpdart/fpdart.dart';
 import 'package:pantry_ai/core/type_def.dart';
 import 'package:pantry_ai/features/auth/domain/entity/user_entity.dart';
@@ -93,7 +91,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> updateName(String newName) async {
     try {
       final userModel = await remoteDataSource.updateName(newName);
-      return Right(userModel as UserEntity);
+      return Right(userModel.toEntity());
     } on ReAuthenticationRequiredException {
       return Left(ReAuthenticationFailure());
     } on ServerException {
