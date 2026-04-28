@@ -42,7 +42,7 @@ class CookingListSection extends StatelessWidget {
                 recipe: r,
                 colorScheme: colorScheme,
                 onTap: () =>
-                    context.pushNamed(AppRouteNames.recipeDetail, extra: r.id),
+                    context.pushNamed(AppRouteNames.recipeDetail, extra: r),
                 onRemove: () =>
                     context.read<SavedBloc>().add(ToggleSavedEvent(r)),
               ),

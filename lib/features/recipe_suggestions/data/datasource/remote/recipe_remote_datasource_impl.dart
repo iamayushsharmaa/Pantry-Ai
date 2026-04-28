@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:pantry_ai/core/constant/constants.dart';
 import 'package:pantry_ai/features/recipe_suggestions/data/datasource/remote/recipe_remote_datasource.dart';
 
+import '../../../../../core/errors/exceptions.dart';
 import '../../../../../shared/models/recipe/recipe_model.dart';
 import '../../../../../shared/models/recipe/taste_preference.dart';
 import '../../utils/prompt_builder.dart';
@@ -77,12 +78,19 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
           .replaceAll(RegExp(r'```\s*'), '')
           .trim();
 
+      debugPrint('🤖 Raw AI response: $rawText');
+
       late final Map<String, dynamic> jsonData;
 
       try {
         jsonData = jsonDecode(rawText);
       } catch (_) {
         throw Exception('Invalid JSON returned from Gemini $rawText');
+      }
+
+      final errorCode = jsonData['error'] as String?;
+      if (errorCode == 'no_groceries') {
+        throw const NoGroceriesDetectedException();
       }
 
       final recipes = jsonData['recipes'];

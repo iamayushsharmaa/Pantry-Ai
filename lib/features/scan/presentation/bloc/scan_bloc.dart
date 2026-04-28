@@ -119,11 +119,12 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     DisposeCamera event,
     Emitter<ScanState> emit,
   ) async {
+    emit(state.copyWith(isLoading: true));
     try {
       await state.controller?.dispose();
     } catch (_) {}
 
-    emit(state.copyWith(controller: null, isFlashOn: false));
+    emit(state.copyWith(controller: null, isFlashOn: false, isLoading: false));
   }
 
   @override

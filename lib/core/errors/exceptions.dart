@@ -15,3 +15,11 @@ class ReAuthenticationRequiredException implements Exception {
   @override
   String toString() => message;
 }
+
+
+class NoGroceriesDetectedException implements Exception {
+  const NoGroceriesDetectedException();
+
+  @override
+  String toString() => 'No groceries detected in the image.';
+}

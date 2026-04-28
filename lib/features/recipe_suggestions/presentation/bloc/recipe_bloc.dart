@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../shared/models/recipe/recipe.dart';
 import '../../../../shared/models/recipe/taste_preference.dart';
 import '../../domain/usecases/cache_reccipe_usecase.dart';
@@ -59,6 +60,17 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         ),
       );
     } catch (e, stack) {
+      if (e is NoGroceriesDetectedException) {
+        emit(
+          state.copyWith(
+            status: RecipeStatus.noGroceries,
+            imagePath: event.imagePath,
+            preferences: event.preferences,
+          ),
+        );
+        return;
+      }
+
       try {
         final cached = await getCachedRecipes();
         emit(

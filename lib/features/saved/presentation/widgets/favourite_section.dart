@@ -45,10 +45,8 @@ class FavoritesSection extends StatelessWidget {
                 child: FavoriteCard(
                   recipe: r,
                   colorScheme: colorScheme,
-                  onTap: () => context.pushNamed(
-                    AppRouteNames.recipeDetail,
-                    extra: r.id,
-                  ),
+                  onTap: () =>
+                      context.pushNamed(AppRouteNames.recipeDetail, extra: r),
                   onUnfavorite: () =>
                       context.read<FavoritesBloc>().add(ToggleFavoriteEvent(r)),
                 ),

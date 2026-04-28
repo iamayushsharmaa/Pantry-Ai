@@ -50,6 +50,15 @@ class _ScanScreenState extends State<ScanScreen> {
 
         final controller = state.controller!;
 
+        if (!controller.value.isInitialized) {
+          return const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: CircularProgressIndicator(color: Color(0xFF00A87D)),
+            ),
+          );
+        }
+
         return Scaffold(
           backgroundColor: Colors.black,
           body: Stack(

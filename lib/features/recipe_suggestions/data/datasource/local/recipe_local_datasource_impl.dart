@@ -14,7 +14,15 @@ class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
 
   @override
   Future<void> cacheRecipes(List<RecipeModel> recipes) async {
-    final jsonList = recipes.map((e) => e.toJson()).toList();
+    final existing = await getCachedRecipes();
+    final existingIds = existing.map((r) => r.id).toSet();
+
+    final merged = [
+      ...existing,
+      ...recipes.where((r) => !existingIds.contains(r.id)),
+    ];
+
+    final jsonList = merged.map((e) => e.toJson()).toList();
     await box.put(_cacheKey, jsonList);
     await box.put(_timestampKey, DateTime.now().millisecondsSinceEpoch);
   }

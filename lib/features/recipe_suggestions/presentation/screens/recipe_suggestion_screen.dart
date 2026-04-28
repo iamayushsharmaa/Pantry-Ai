@@ -31,6 +31,45 @@ class RecipeListScreen extends StatelessWidget {
             return const RecipeLoadingWidget();
           }
 
+          // no groceries in image
+          if (state.status == RecipeStatus.noGroceries) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.no_food_outlined, size: 72, color: cs.outline),
+                    const SizedBox(height: 20),
+                    Text(
+                      "No groceries detected!",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: cs.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Please take a photo of your pantry or groceries so we can suggest recipes for you.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: cs.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    FilledButton.icon(
+                      onPressed: () => context.pop(),
+                      icon: const Icon(Icons.camera_alt_outlined),
+                      label: const Text("Scan Again"),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
           if (state.status == RecipeStatus.failure && state.recipes.isEmpty) {
             return const RecipeErrorWidget();
           }

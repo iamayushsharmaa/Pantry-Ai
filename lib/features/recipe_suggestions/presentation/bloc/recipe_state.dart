@@ -1,6 +1,6 @@
 part of 'recipe_bloc.dart';
 
-enum RecipeStatus { initial, loading, success, failure }
+enum RecipeStatus { initial, loading, success, failure, noGroceries}
 
 @immutable
 class RecipeState {
