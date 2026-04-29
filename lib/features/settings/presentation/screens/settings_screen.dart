@@ -16,12 +16,14 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final cs = Theme
+        .of(context)
+        .colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
     return BlocConsumer<SettingsBloc, SettingsState>(
       listenWhen: (prev, curr) =>
-          prev.showLogoutDialog != curr.showLogoutDialog ||
+      prev.showLogoutDialog != curr.showLogoutDialog ||
           prev.showDeleteDialog != curr.showDeleteDialog ||
           prev.logoutSuccess != curr.logoutSuccess ||
           prev.accountDeleted != curr.accountDeleted ||
@@ -83,12 +85,12 @@ class SettingsScreen extends StatelessWidget {
       },
 
       buildWhen: (prev, curr) =>
-          prev.isInitialLoading != curr.isInitialLoading ||
+      prev.isInitialLoading != curr.isInitialLoading ||
           prev.isActionLoading != curr.isActionLoading ||
           prev.user != curr.user,
 
       builder: (context, state) {
-        if (state.isInitialLoading && state.user == null) {
+        if (state.isInitialLoading || state.user == null) {
           return const ThemedScaffold(
             child: Center(child: CircularProgressIndicator()),
           );
@@ -135,7 +137,7 @@ class SettingsScreen extends StatelessWidget {
 
                           BlocBuilder<AppSettingsBloc, AppSettingsState>(
                             buildWhen: (prev, curr) =>
-                                prev.themeMode != curr.themeMode,
+                            prev.themeMode != curr.themeMode,
                             builder: (context, appState) {
                               return SettingsTile.switchTile(
                                 icon: Icons.dark_mode_outlined,
@@ -207,17 +209,18 @@ class SettingsScreen extends StatelessWidget {
   void _showLanguageDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(l10n.select_language),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _languageTile(context, l10n.english, const Locale('en')),
-            _languageTile(context, l10n.hindi, const Locale('hi')),
-            _languageTile(context, l10n.spanish, const Locale('es')),
-          ],
-        ),
-      ),
+      builder: (_) =>
+          AlertDialog(
+            title: Text(l10n.select_language),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _languageTile(context, l10n.english, const Locale('en')),
+                _languageTile(context, l10n.hindi, const Locale('hi')),
+                _languageTile(context, l10n.spanish, const Locale('es')),
+              ],
+            ),
+          ),
     );
   }
 
@@ -237,27 +240,28 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: Text(l10n.logout),
-        content: Text(l10n.logout_confirmation),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pop();
-              bloc.add(CloseLogoutDialog());
-            },
-            child: Text(l10n.cancel),
+      builder: (_) =>
+          AlertDialog(
+            title: Text(l10n.logout),
+            content: Text(l10n.logout_confirmation),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                  bloc.add(CloseLogoutDialog());
+                },
+                child: Text(l10n.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                  bloc.add(LogoutConfirmed());
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: Text(l10n.logout),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              context.pop();
-              bloc.add(LogoutConfirmed());
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(l10n.logout),
-          ),
-        ],
-      ),
     );
   }
 
@@ -267,27 +271,28 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: Text(l10n.deleteAccount),
-        content: Text(l10n.delete_confirmation),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pop();
-              bloc.add(CloseDeleteDialog());
-            },
-            child: Text(l10n.cancel),
+      builder: (_) =>
+          AlertDialog(
+            title: Text(l10n.deleteAccount),
+            content: Text(l10n.delete_confirmation),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                  bloc.add(CloseDeleteDialog());
+                },
+                child: Text(l10n.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                  bloc.add(DeleteAccountConfirmed());
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: Text(l10n.delete),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              context.pop();
-              bloc.add(DeleteAccountConfirmed());
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
     );
   }
 }

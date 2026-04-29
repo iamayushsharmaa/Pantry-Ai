@@ -74,6 +74,7 @@ dev_dependencies:
   build_runner: ^2.4.6
   json_serializable: ^6.6.2
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.1
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -87,6 +88,22 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/scan_app_icon.png"
+  background_color: "#00A87D"
+  adaptive_icon_background: "#00A87D"
+  adaptive_icon_foreground: "assets/icons/scan_app_icon.png"
+  adaptive_icon_scale: 0.6
+
+flutter_native_splash:
+  color: "#00A87D"
+  android_12:
+    color: "#00A87D"
+
+
 flutter:
   generate: true
 
